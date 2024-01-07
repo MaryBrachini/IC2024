@@ -8,41 +8,41 @@ Servidor de login, usuários, grupos e direitos
 https://gist.github.com/leocomelli/2545add34e4fec21ec16
 
 # sincronizar o repositório LOCAL com o ONLINE. Fazer isso toda vez que for terminar um dia de trabalho.
-git add . <br />
-git commit -m "first commit"  <br />
-git push -u origin main ou nomeDoBranch- Vai pedir o token como senha <br />
+```git add .```
+```git commit -m "first commit"```
+```git push -u origin main ``` 
 
 # sincronizar o repositório ONLINE com o LOCAL. Fazer isso toda vez que for iniciar o trabalho.
-git pull aqui eu faço um pull do main. se existir branchs, vai dar pau.<br />
-git pull origin nomeDoBranch - aqui eu faço um de um branch que eu estou<br />
+```git pull```  aqui eu faço um pull do main. se existir branchs, vai dar pau.<br />
+```git pull origin nomeDoBranch```  - aqui eu faço um de um branch que eu estou<br />
 
 # criar branchs
 
-git checkout -b jwtRotina    -> cria um branch Local chamado de jwtRotina <br />
-git push origin jwtRotina    -> cria um branch no Github chamado de jwRotina  <br />
+```git checkout -b jwtRotina```    -> cria um branch Local chamado de jwtRotina <br />
+```git push origin jwtRotina```    -> cria um branch no Github chamado de jwRotina  <br />
 
 
 # fazer merge do brach
 
 Considerando que eu estou no branch jwtRotina
 
-git checkout main <br />
-git merge jwtRotina <br />
-git push -u origin main <br />
+```git checkout main```
+```git merge jwtRotina```
+```git push -u origin main```
 
 # Saber o branch ativo
-git branch
+```git branch```
 
 # Apagando um branch
-git branch -d nomeBranch
+```git branch -d nomeBranch```
 
 # Apagando uma branch(Ramificação) remota
-git push origin --delete nomeBrach
+```git push origin``` --delete nomeBrach
 
 # Usuarios
-git config user.name -> Mostra o usuário configurado
-git config user.email -> Mostra o e-mail configurado
-git config --global user.email "email" -> seta o usuario
+```git config user.name``` -> Mostra o usuário configurado
+```git config user.email``` -> Mostra o e-mail configurado
+```git config --global user.email "email"``` -> seta o usuario
 
 
 # Teste com pytest
