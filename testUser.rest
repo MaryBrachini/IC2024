@@ -1,0 +1,112 @@
+### Necessário para pegar o token
+### Post
+# @name loginAutenticado
+POST http://localhost:20100/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",    
+    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+}
+
+# Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+
+### Testes de aclUser
+## GetAll
+GET http://localhost:20100/acl/user/v1/GetAllUsers HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+}
+
+
+### GetUserByID
+POST http://localhost:20100/acl/user/v1/GetUserByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Userid":68
+}
+
+
+### InsertUser
+@datahora = {{$localDatetime iso8601}}
+POST http://localhost:20100/acl/user/v1/InsertUser HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+ "Removido": false,    
+ "Username": "user_{{datahora}}",   
+ "Password": "76d80224611fc919a5d54f0ff9fba446",    
+ "Datacadastro" : "{{datahora}}",
+ "Dataexpiracao": null,
+ "Userbloqueado": false,
+ "Trocarsenha": false  
+}
+
+### UpdateUser
+@datahora = {{$localDatetime iso8601}}
+PUT http://localhost:20100/acl/user/v1/UpdateUser HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+ "userid": 19,   
+ "Removido": false,    
+ "Username": "user_{{datahora}}",   
+ "Password": "76d80224611fc919a5d54f0ff9fba446",    
+ "Datacadastro" : "{{datahora}}",
+ "Dataexpiracao": null,
+ "Userbloqueado": true,
+ "Trocarsenha": true  
+}
+
+### deleteUser
+@datahora = {{$localDatetime iso8601}}
+DELETE  http://localhost:20100/acl/user/v1/DeleteUser HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+ "userid": 68   
+}
+
+### changeUserPassword
+# senha: 123 em md5 202cb962ac59075b964b07152d234b70
+@datahora = {{$localDatetime iso8601}}
+PUT  http://localhost:20100/acl/user/v1/ChangeUserPassword HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+ "userid": 93,
+ "password": "202cb962ac59075b964b07152d234b70"  
+}
+
+###
+POST http://localhost:20100/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "user_2023-11-13T17:19:16.908567",    
+    "passWord": "202cb962ac59075b964b07152d234b70"
+}
+
+### InsertUserInGroup
+@datahora = {{$localDatetime iso8601}}
+POST  http://localhost:20100/acl/user/v1/InsertUserInGroup HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+ "Username": "{{username}}",
+ "Userid": 55,
+ "Groupsid": [4,5,5,4,6]
+}

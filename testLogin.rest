@@ -1,0 +1,24 @@
+## Post
+# @name loginAutenticado
+POST http://localhost:20100/login HTTP/1.1
+content-type: application/json
+
+{
+    "userName": "qwe",    
+    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+}
+
+# Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@accessTokenRefresh = {{loginAutenticado.response.body.$.tokenRefresh}}
+
+
+### Renova o token
+
+POST http://localhost:20100/seguranca/JwtRefreshToken HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessTokenRefresh}}
+
+{
+    "userName": "qwe"
+}

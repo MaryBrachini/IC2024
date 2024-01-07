@@ -1,2 +1,88 @@
+<<<<<<< HEAD
 # IC2024
 Iniciação Cientifica 
+
+
+# srvApp
+Servidor de login, usuários, grupos e direitos
+
+# Lista de comando úteis no Git
+https://gist.github.com/leocomelli/2545add34e4fec21ec16
+
+# sincronizar o repositório LOCAL com o ONLINE. Fazer isso toda vez que for terminar um dia de trabalho.
+git add . <br />
+git commit -m "first commit"  <br />
+git push -u origin main ou nomeDoBranch- Vai pedir o token como senha <br />
+
+# sincronizar o repositório ONLINE com o LOCAL. Fazer isso toda vez que for iniciar o trabalho.
+git pull aqui eu faço um pull do main. se existir branchs, vai dar pau.<br />
+git pull origin nomeDoBranch - aqui eu faço um de um branch que eu estou<br />
+
+# criar branchs
+
+git checkout -b jwtRotina    -> cria um branch Local chamado de jwtRotina <br />
+git push origin jwtRotina    -> cria um branch no Github chamado de jwRotina  <br />
+
+
+# fazer merge do brach
+
+Considerando que eu estou no branch jwtRotina
+
+git checkout main <br />
+git merge jwtRotina <br />
+git push -u origin main <br />
+
+# Saber o branch ativo
+git branch
+
+# Apagando um branch
+git branch -d nomeBranch
+
+# Apagando uma branch(Ramificação) remota
+git push origin --delete nomeBrach
+
+# Usuarios
+git config user.name -> Mostra o usuário configurado
+git config user.email -> Mostra o e-mail configurado
+git config --global user.email "email" -> seta o usuario
+
+
+# Teste com pytest
+Para rodar o arquivo Executável no Windows:
+
+
+
+1) Descompacte o ZIP em um diretório qualquer.
+
+2) Abra o PGADMIN e carreque o arquivo createDatabaseVDados.sql
+
+3) O arquivo cria um usuário e um  database chamados de vdados
+
+4) As tabelas devem ser criadas dentro deste database
+
+5) Abra o arquivo srvApp.env e altere o endereço IP do postgres. O srvApp.exe usará este arquivo para saber onde o postgres está.
+
+6) Rode o arquivo srvApp.exe e torça os dedos que tudo dará certo.
+
+7) Abra o VSCode e rode os testes de API que está no  arquivo testOcorrencia.rest. 
+
+8) Se você conseguiir chegar até aqui a gente avança para a próxima fase.
+
+
+
+
+Sem usar arquivo requeriments: Dentro do diretório tests fazer:
+1 - python3.9 -m venv venv <br/>
+2 - source venv/bin/activate <br/>
+3 - Instalar: pip3.9 install requests pytest psycopg2 <br/>
+4 - Fazer o arquivo de teste <br/>
+5- Testar com pytest testNomeModulo.py -s <br/>
+
+Usando arquivo requeriments: Dentro do diretório tests fazer:
+1 - python3.9 -m venv venvNomeAPP <br/>
+2 - source venvNomeAPP/bin/activate 
+3 - copiar para dentro do diretório o arquivo requirements.txt <br/>
+4 - pip3.9 install -r requirements.txt <br/>
+5 - Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
+6- Testar com pytest testNomeModulo.py -s <br/>
+>>>>>>> 02e9ba9 (first commit)
