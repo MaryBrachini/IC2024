@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 # IC2024
 Iniciação Cientifica 
-
 
 # srvApp
 Servidor de login, usuários, grupos e direitos
@@ -85,4 +83,3 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 4 - pip3.9 install -r requirements.txt <br/>
 5 - Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
 6- Testar com pytest testNomeModulo.py -s <br/>
->>>>>>> 02e9ba9 (first commit)
