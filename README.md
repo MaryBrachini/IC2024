@@ -21,11 +21,10 @@ Senha Database
 ```
 p0stdb@!
 ```
+Após isso será criado o SQL
 
-Apos isso será criado o SQL
-
-
-##Executando o backend
+##################################################################################
+## Executando o backend
 Para Executar o arquivo do bach
 ```
 ./srvApp
