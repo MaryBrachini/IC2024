@@ -1,5 +1,4 @@
-# IC2024
-Iniciação Cientifica 
+# IC -INICIAÇÃO CIENTIFICA 2024
 
 ## Fazendo a conexão do banco
 Dentro do diretorio do Back-end
@@ -23,6 +22,7 @@ p0stdb@!
 ```
 Após isso será criado o SQL
 
+
 #################################################################################################################
 ## Executando o backend
 Para Executar o arquivo do bach
@@ -30,6 +30,8 @@ Para Executar o arquivo do bach
 ./srvApp
 ```
 
+#################################################################################################################
+## Informações
 
 # srvApp
 Servidor de login, usuários, grupos e direitos
@@ -103,7 +105,7 @@ Para rodar o arquivo Executável no Windows:
 8) Se você conseguiir chegar até aqui a gente avança para a próxima fase.
 
 
-
+##Dentro do diretório tests
 
 Sem usar arquivo requeriments: Dentro do diretório tests fazer:
 1 - python3.9 -m venv venv <br/>
