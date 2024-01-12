@@ -25,6 +25,8 @@ Após isso será criado o SQL
 
 #################################################################################################################
 ## Executando o backend
+Trocar o IP do Host no srvApp.env para ```127.0.0.1```
+
 Para Executar o arquivo do bach
 ```
 ./srvApp
