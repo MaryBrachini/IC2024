@@ -3,23 +3,33 @@ Iniciação Cientifica
 
 ## Fazendo a conexão do banco
 Dentro do diretorio do Back-end
-```psql -h 127.0.0.1 -U postgres```
+```
+psql -h 127.0.0.1 -U postgres
+```
 
 Abrir o Pager Off
-```\pset pager off```
+```
+\pset pager off
+```
 
 Para criar o database 
-```\i createDatabaseVDados.sql```
+```
+\i createDatabaseVDados.sql
+```
 
 Senha Database
-```p0stdb@!```
+```
+p0stdb@!
+```
 
 Apos isso será criado o SQL
 
 
 ##
 Para Executar o arquivo do bach
-```./srvApp```
+```
+./srvApp
+```
 
 
 # srvApp
@@ -29,9 +39,15 @@ Servidor de login, usuários, grupos e direitos
 https://gist.github.com/leocomelli/2545add34e4fec21ec16
 
 # sincronizar o repositório LOCAL com o ONLINE. Fazer isso toda vez que for terminar um dia de trabalho.
-```git add .```
-```git commit -m "first commit"```
-```git push -u origin main ``` 
+```
+git add .
+```
+```
+git commit -m "first commit"
+```
+```
+git push -u origin main 
+``` 
 
 # sincronizar o repositório ONLINE com o LOCAL. Fazer isso toda vez que for iniciar o trabalho.
 ```git pull```  aqui eu faço um pull do main. se existir branchs, vai dar pau.<br />
