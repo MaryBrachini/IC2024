@@ -1,6 +1,27 @@
 # IC2024
 Iniciação Cientifica 
 
+## Fazendo a conexão do banco
+Dentro do diretorio do Back-end
+```psql -h 127.0.0.1 -U postgres```
+
+Abrir o Pager Off
+```\pset pager off```
+
+Para criar o database 
+```\i createDatabaseVDados.sql```
+
+Senha Database
+```p0stdb@!```
+
+Apos isso será criado o SQL
+
+
+##
+Para Executar o arquivo do bach
+```./srvApp```
+
+
 # srvApp
 Servidor de login, usuários, grupos e direitos
 
