@@ -35,6 +35,11 @@ Para Executar o arquivo do bach
 #################################################################################################################
 ## Informações
 
+#Lista as Tabelas
+```
+\dt
+```
+
 # srvApp
 Servidor de login, usuários, grupos e direitos
 
