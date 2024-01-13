@@ -22,8 +22,8 @@ Content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "nomeCidade": "Cidade_{{datahora}}",
-    "estadoIDFK": 68
+    "nomeCidade": "Votuporanga",
+    "estadoIDFK": 1
 }
 
 ### Testes de Cidade
@@ -66,5 +66,5 @@ Content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "CidadeID": 2
+    "CidadeID": 68
 }

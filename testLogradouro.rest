@@ -23,8 +23,8 @@ content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {   
-    "nomelogradouro": "LogradouroRest_{{datahora}}",
-    "cidadeidfk": 3
+    "nomelogradouro": "Rua Padre Isidoro Cordeiro Paranhos",
+    "cidadeidfk": 1
 }
 
 ### Testes de Logradouro

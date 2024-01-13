@@ -42,8 +42,8 @@ Authorization: Bearer {{accessToken}}
 
 {
     "Removido": false,
-    "Codigobairro": "codB_2023-2",
-    "Nomebairro": "Boa Esperança"
+    "Codigobairro": "codB_2023-22",
+    "Nomebairro": "Vila America"
 }
 
 ### Testes de vdaBairro

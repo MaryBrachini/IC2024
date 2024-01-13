@@ -27,11 +27,11 @@ Authorization: Bearer {{accessToken}}
 	"NomeSuspeito": "nome_{{datahora}}",	
     "datacadastro": "{{datahora}}",       
     "dataocorrencia": "{{datahora}}",
-    "epidemiaidfk":17,
+    "epidemiaidfk":1,
     "logradouroidfk":1,
-    "numero": 20330,   
-    "bairroidfk":24,
-    "Localtrabalho":"local_{{datahora}}",
+    "numero": 2953,   
+    "bairroidfk":3,
+    "Localtrabalho":"nao informado",
     "LogradourolocaltrabalhoIDFK": 1,
     "Numerolocaltrabalho": 200    
 }
