@@ -76,18 +76,34 @@ Considerando que eu estou no branch jwtRotina
 ```git push -u origin main```
 
 # Saber o branch ativo
-```git branch```
+```
+git branch
+```
 
 # Apagando um branch
-```git branch -d nomeBranch```
+```
+git branch -d nomeBranch
+```
 
 # Apagando uma branch(Ramificação) remota
-```git push origin``` --delete nomeBrach
+```
+git push origin
+```
+--delete nomeBrach
 
 # Usuarios
-```git config user.name``` -> Mostra o usuário configurado
-```git config user.email``` -> Mostra o e-mail configurado
-```git config --global user.email "email"``` -> seta o usuario
+```
+git config user.name
+```
+-> Mostra o usuário configurado
+```
+git config user.email
+```
+-> Mostra o e-mail configurado
+```
+git config --global user.email "email"
+``` 
+-> seta o usuario
 
 
 # Teste com pytest
@@ -112,7 +128,7 @@ Para rodar o arquivo Executável no Windows:
 8) Se você conseguiir chegar até aqui a gente avança para a próxima fase.
 
 
-##Dentro do diretório tests
+## Dentro do diretório tests
 
 Sem usar arquivo requeriments: Dentro do diretório tests fazer:
 1 - python3.9 -m venv venv <br/>
@@ -128,3 +144,33 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 4 - pip3.9 install -r requirements.txt <br/>
 5 - Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
 6- Testar com pytest testNomeModulo.py -s <br/>
+
+
+
+
+
+
+
+## usando o streamlit 
+
+### 1- Instalar python
+```
+```
+### 2- Instalar o Streamlit
+```
+pip install streamlit
+
+```
+### 3- Para começar o arquivo do streamlit basta começar com
+```
+import streamlit as st
+```
+### 
+```
+```
+### 
+```
+```
+### 
+```
+```
