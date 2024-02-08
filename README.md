@@ -1,4 +1,4 @@
-# IC -INICIAÇÃO CIENTIFICA 2024
+# TCC - Controle de dengue 2024
 
 ## Fazendo a conexão do banco
 Dentro do diretorio do Back-end
