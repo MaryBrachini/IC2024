@@ -165,8 +165,9 @@ pip install streamlit
 ```
 import streamlit as st
 ```
-### 
+### 4- Para executar os arquivos
 ```
+streamlit run app.py
 ```
 ### 
 ```
