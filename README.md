@@ -155,6 +155,7 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 
 ### 1- Instalar python
 ```
+sudo apt install python
 ```
 ### 2- Instalar o Streamlit
 ```
