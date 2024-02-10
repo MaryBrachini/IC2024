@@ -1,5 +1,8 @@
 # TCC - Controle de dengue 2024
 
+## Links uteis
+https://docs.streamlit.io/library/api-reference/charts/st.map
+
 ## Fazendo a conexão do banco
 Dentro do diretorio do Back-end
 ```
