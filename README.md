@@ -160,10 +160,19 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 ```
 sudo apt install python
 ```
-sudo apt install python3-venv
+sudo apt install python3-venv 
+
+
 apt install virtualenv
+
+
 python3 -m venv .venv
+
+
 source .venv/bin/activate
+install dps
+streamlit hello
+
 deactivate
 
 ### 2- Instalar o Streamlit
