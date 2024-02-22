@@ -169,6 +169,7 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 
 <details>
 <summary> usando o streamlit **Funciona apenas com pcs processador intel** </summary>
+  
 ### 1- Instalar python
   
 ```
