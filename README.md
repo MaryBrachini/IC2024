@@ -1,9 +1,9 @@
 # TCC - Controle de dengue 2024
 
 ## Links uteis
-~~https://docs.streamlit.io/library/api-reference/charts/st.map~~
+https://docs.streamlit.io/library/api-reference/charts/st.map
 
-possivel solução streamlit
+solução streamlit
 https://github.com/streamlit/streamlit/issues/2397
 
 https://developers.google.com/chart/interactive/docs/gallery/map?hl=pt-br#fullhtml
