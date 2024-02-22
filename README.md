@@ -1,4 +1,4 @@
-# TCC - Controle de dengue 2024
+# TCC - 2024
 
 ## Links uteis
 https://docs.streamlit.io/library/api-reference/charts/st.map
