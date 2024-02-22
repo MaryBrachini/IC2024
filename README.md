@@ -192,6 +192,11 @@ source .venv/bin/activate
 pip install streamlit
 
 ```
+tentar instalar o Streamlit especifico
+```
+pip install streamlit==0.62.0
+```
+
 1. Para testar se está funcionando
 ```
 streamlit hello
