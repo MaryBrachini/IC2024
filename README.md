@@ -3,22 +3,21 @@
 ## Links uteis
 https://docs.streamlit.io/library/api-reference/charts/st.map
 
+https://developers.google.com/chart/interactive/docs/gallery/map?hl=pt-br#fullhtml
+
 ## Fazendo a conexão do banco
 Dentro do diretorio do Back-end
 ```
 psql -h 127.0.0.1 -U postgres
 ```
-
 Abrir o Pager Off
 ```
 \pset pager off
 ```
-
 Para criar o database 
 ```
 \i createDatabaseVDados.sql
 ```
-
 Senha Database
 ```
 p0stdb@!
@@ -28,8 +27,10 @@ Após isso será criado o SQL
 
 #################################################################################################################
 ## Executando o backend
-Trocar o IP do Host no srvApp.env para ```127.0.0.1```
-
+Trocar o IP do Host no srvApp.env para
+```
+127.0.0.1
+```
 Para Executar o arquivo do bach
 ```
 ./srvApp
@@ -148,14 +149,17 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 5 - Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
 6- Testar com pytest testNomeModulo.py -s <br/>
 
+#################################################################################################################
+## Front-End com Google Charts Maps
+
+### 1- Instalar python
+```
+```
 
 
 
 
-
-
-## usando o streamlit 
-
+## usando o streamlit --Funciona apenas com pcs processador intel
 ### 1- Instalar python
 ```
 sudo apt install python
@@ -187,10 +191,4 @@ import streamlit as st
 ### 4- Para executar os arquivos
 ```
 streamlit run app.py
-```
-### 
-```
-```
-### 
-```
 ```
