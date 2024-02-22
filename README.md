@@ -1,11 +1,13 @@
 # TCC - Controle de dengue 2024
 
 ## Links uteis
-https://docs.streamlit.io/library/api-reference/charts/st.map
+~~https://docs.streamlit.io/library/api-reference/charts/st.map~~
 
 https://developers.google.com/chart/interactive/docs/gallery/map?hl=pt-br#fullhtml
 
-## Fazendo a conexão do banco
+<details>
+<summary> Fazendo a conexão do banco </summary>
+  
 Dentro do diretorio do Back-end
 ```
 psql -h 127.0.0.1 -U postgres
@@ -23,10 +25,11 @@ Senha Database
 p0stdb@!
 ```
 Após isso será criado o SQL
+</details>
 
-
-#################################################################################################################
-## Executando o backend
+<details>
+<summary> Executando o backend</summary>
+  
 Trocar o IP do Host no srvApp.env para
 ```
 127.0.0.1
@@ -35,9 +38,10 @@ Para Executar o arquivo do bach
 ```
 ./srvApp
 ```
-
-#################################################################################################################
-## Informações
+</details>
+  
+<details>
+<summary> Informações</summary>
 
 #Lista as Tabelas
 ```
@@ -135,54 +139,63 @@ Para rodar o arquivo Executável no Windows:
 ## Dentro do diretório tests
 
 Sem usar arquivo requeriments: Dentro do diretório tests fazer:
-1 - python3.9 -m venv venv <br/>
-2 - source venv/bin/activate <br/>
-3 - Instalar: pip3.9 install requests pytest psycopg2 <br/>
-4 - Fazer o arquivo de teste <br/>
-5- Testar com pytest testNomeModulo.py -s <br/>
+1. python3.9 -m venv venv <br/>
+2. source venv/bin/activate <br/>
+3. Instalar: pip3.9 install requests pytest psycopg2 <br/>
+4. Fazer o arquivo de teste <br/>
+5. Testar com pytest testNomeModulo.py -s <br/>
 
 Usando arquivo requeriments: Dentro do diretório tests fazer:
-1 - python3.9 -m venv venvNomeAPP <br/>
-2 - source venvNomeAPP/bin/activate 
-3 - copiar para dentro do diretório o arquivo requirements.txt <br/>
-4 - pip3.9 install -r requirements.txt <br/>
-5 - Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
-6- Testar com pytest testNomeModulo.py -s <br/>
+1. python3.9 -m venv venvNomeAPP <br/>
+2. source venvNomeAPP/bin/activate 
+3. copiar para dentro do diretório o arquivo requirements.txt <br/>
+4. pip3.9 install -r requirements.txt <br/>
+5. Copiar um arquivo de teste.py e adaptá-lo para a necessidade <br/>
+6. Testar com pytest testNomeModulo.py -s <br/>
 
-#################################################################################################################
-## Front-End com Google Charts Maps
+</details>
+<details>
+<summary> Front-End com Google Charts Maps </summary>
 
 ### 1- Instalar python
+
 ```
 ```
 
+</details>
 
-
-
-## usando o streamlit --Funciona apenas com pcs processador intel
+<details>
+<summary> usando o streamlit **Funciona apenas com pcs processador intel** </summary>
 ### 1- Instalar python
+  
 ```
 sudo apt install python
+``` 
 ```
 sudo apt install python3-venv 
-
-
+```
+```
 apt install virtualenv
-
-
+```
+```
 python3 -m venv .venv
-
-
+```
+```
 source .venv/bin/activate
-install dps
-streamlit hello
-
-deactivate
+```
 
 ### 2- Instalar o Streamlit
 ```
 pip install streamlit
 
+```
+1. Para testar se está funcionando
+```
+streamlit hello
+```
+2. Para desativar o ambiente virtual venv
+```
+deactivate
 ```
 ### 3- Para começar o arquivo do streamlit basta começar com
 ```
@@ -192,3 +205,4 @@ import streamlit as st
 ```
 streamlit run app.py
 ```
+</details>
