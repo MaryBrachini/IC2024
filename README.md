@@ -168,13 +168,10 @@ Usando arquivo requeriments: Dentro do diretório tests fazer:
 </details>
 
 <details>
-<summary> usando o streamlit **Funciona apenas com pcs processador intel** </summary>
+<summary> usando o streamlit</summary>
   
 ### 1- Instalar python
-  
-```
-sudo apt install python
-``` 
+
 ```
 sudo apt install python3-venv 
 ```
@@ -188,14 +185,24 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 2- Instalar o Streamlit
+### 2- Instalar o Streamlit intel
 ```
 pip install streamlit
 
 ```
-tentar instalar o Streamlit especifico
+1. Streamlit para arquiteturas AMD 
 ```
-pip install streamlit==0.62.0
+pip install streamlit==0.84
+```
+
+2. Se der o erro 
+> "TypeError: Descriptors cannot be created directly.
+>If this call came from a _pb2.py file, your generated code is out of date and must be regenerated with protoc >= 3.19.0.
+>If you cannot immediately regenerate your protos, some other possible workarounds are:
+> 1. Downgrade the protobuf package to 3.20.x or lower.
+> 2. Set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python (but this will use pure-Python parsing and will be much slower)."
+```
+pip install protobuf==3.20
 ```
 
 1. Para testar se está funcionando
