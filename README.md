@@ -221,4 +221,19 @@ import streamlit as st
 ```
 streamlit run app.py
 ```
+
+Caso precise da biblioteca pandas a versão ideal para streamlit 0.84
+```
+pip install pandas==1.2.4
+```
+Caso precise da biblioteca numpy a versão ideal para streamlit 0.84
+```
+pip install pandas==1.22
+```
+
+### 5- Instalar o folium
+```
+pip install streamlit-folium==0.1.0 folium==0.11.0
+```
+
 </details>
