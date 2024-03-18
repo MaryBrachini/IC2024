@@ -237,3 +237,14 @@ pip install streamlit-folium==0.1.0 folium==0.11.0
 ```
 
 </details>
+
+
+<details>
+<summary>Frontend</summary>
+  
+### Executando 
+```
+DEBUG=frontnode:* npm start
+```
+### 
+</details>
