@@ -238,6 +238,39 @@ pip install streamlit-folium==0.1.0 folium==0.11.0
 
 </details>
 
+<details>
+<summary>Backup Git</summary>
+  
+### Conectando primeira vez 
+```
+git config --global user.email "email@email"
+```
+### Padrão
+```
+git init
+```
+```
+git add .
+```
+```
+git commit -m "commit"
+```
+```
+git remote add origin "link.git"
+```
+```
+git branch -M main
+```
+```
+git branch -M main
+```
+
+### Caso de conflito no push
+```
+git config pull.rebase false
+```
+</details>
+
 
 <details>
 <summary>Frontend</summary>
