@@ -1,0 +1,21 @@
+{
+  "name": "frontnode",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "http-errors": "~1.6.3",
+    "moment": "^2.30.1",
+    "morgan": "~1.9.1",
+    "vash": "~0.12.6"
+  }
+}

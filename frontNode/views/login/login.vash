@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+@html.include("header")
+
+<link rel="stylesheet" href="/css/css_login.css">
+
+<body class="text-center bg-img">
+
+    <div class="container">
+        <div class="row">
+            <div class="div-img col-6">
+                <h1 class="txt" style="font-size:50px;">BEM-VINDO !</h1>
+                <p class="txt">Faça o login para acessar ao nosso site !</p>
+            </div>
+
+            <div class="col-6">
+                <main class="form-login w-100 m-auto">
+                    <form class="form-signin" action="Login" method="POST">
+
+                        <img class="mb-4" src="img/user.png" alt="" width="100" height="100">
+
+                       <div class="form-floating">
+    <input type="text" class="form-control" id="usuario" name="username" required autofocus>
+    <label for="usuario" class="form-label mt-4">Informe seu usuário</label><br />
+</div>
+
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="password" required><label
+                                for="labelpassword" class="form-label mt-2">Informe seu password</label><br />
+                        </div>
+
+                        <div class="text-center">
+                            <input class="w-100 btn btn-lg btn-primary" type="submit" value="Entrar" />
+                        </div>
+
+                        @if(model.message) {
+                        <p>
+                            <label style="color:Red"> @model.message </label>
+                        </p>
+                        }
+
+                        <p class="mt-5 mb-3 text-body-secondary">&copy; Diteiros reservado IFSP</p>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/5.3.0/bootstrap.min.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

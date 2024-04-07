@@ -1,0 +1,74 @@
+### Necessário para pegar o token
+### Post
+# @name loginAutenticado
+POST http://localhost:20100/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",    
+    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+}
+
+# Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+### Testes de Estado
+## InsertBairro
+@datahora = {{$localDatetime iso8601}}
+POST http://localhost:20100/acl/estado/v1/InsertEstado HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Nomeestado": "São Paulo",
+	"Uf":         "SP"
+}
+
+
+### Testes de Estado
+## GetALL
+GET http://localhost:20100/acl/estado/v1/GetAllEstados HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+}
+
+
+### Testes de Estado
+## GetEstadoByID
+POST http://localhost:20100/acl/estado/v1/GetEstadoByID HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EstadoID": 1
+}
+
+
+### Testes de Estado
+## UpdateEstado
+@datahora = {{$localDatetime iso8601}}
+PUT http://localhost:20100/acl/estado/v1/UpdateEstado HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EstadoID": 2,
+    "Nomeestado": "Est_{{datahora}}",
+	"Uf":         "MG"
+
+}
+
+
+### Testes de Estado
+## DeleteEstado
+DELETE http://localhost:20100/acl/estado/v1/DeleteEstado HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EstadoID": 111  
+}

@@ -1,0 +1,70 @@
+### Necessário para pegar o token
+### Post
+# @name loginAutenticado
+POST http://localhost:20100/login HTTP/1.1
+Content-type: application/json
+
+{
+    "username": "qwe",    
+    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+}
+
+# Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+### Testes de Cidade
+## InsertCidade
+@datahora = {{$localDatetime iso8601}}
+POST http://localhost:20100/acl/cidade/v1/InsertCidade HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "nomeCidade": "Votuporanga",
+    "estadoIDFK": 2
+}
+
+### Testes de Cidade
+## GetALL
+GET http://localhost:20100/acl/cidade/v1/GetAllCidades HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+}
+
+### Testes de Cidade
+## GetCidadeByID
+POST http://localhost:20100/acl/cidade/v1/GetCidadeByID HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "CidadeID": 2
+}
+
+### Testes de Cidade
+## UpdateCidade
+@datahora = {{$localDatetime iso8601}}
+PUT http://localhost:20100/acl/cidade/v1/UpdateCidade HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "CidadeID": 3,
+    "nomeCidade": "Cidade_{{datahora}}",
+    "estadoIDFK": 68
+}
+
+
+### Testes de Cidade
+## DeleteCidade
+DELETE http://localhost:20100/acl/cidade/v1/DeleteCidade HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "CidadeID": 68
+}

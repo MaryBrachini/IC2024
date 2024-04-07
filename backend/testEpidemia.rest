@@ -1,0 +1,71 @@
+    ### Necessário para pegar o token
+### Post
+# @name loginAutenticado
+POST http://localhost:20100/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",    
+    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+}
+
+# Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+### Testes de vdaEpidemia
+## InsertEpidemia
+@datahora = {{$localDatetime iso8601}}
+POST http://localhost:20100/acl/epidemia/v1/InsertEpidemia HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Removido": false,
+    "nomeepidemia": "Dengue"
+   
+}
+
+### Testes de Epidemia
+## GetALL
+GET http://localhost:20100/acl/epidemia/v1/GetAllEpidemias HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+}
+
+### Testes de Epidemia
+## GetEpidemiaByID
+POST http://localhost:20100/acl/epidemia/v1/GetEpidemiaByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EpidemiaID": 3
+}
+
+
+### Testes de Epidemia
+## UpdateEpidemia
+PUT http://localhost:20100/acl/epidemia/v1/UpdateEpidemia HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EpidemiaID": 3,
+    "Removido": false,    
+    "Nomeepidemia": "EPI_{{datahora}}"
+}
+
+
+### Testes de Epidemia
+## DeleteEpidemia
+DELETE http://localhost:20100/acl/epidemia/v1/DeleteEpidemia HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "EpidemiaID": 3  
+}
