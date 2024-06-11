@@ -1,0 +1,304 @@
+@html.extend('layout', function(model){ @html.block('content', function(model){
+
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-2">@model.title</h1>
+    <ol class="breadcrumb mb-2">
+      <li class="breadcrumb-item active">@model.title</li>
+    </ol>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card-header"></div>
+
+        <div class="card-body">
+          <div class="col-sm-6 col-xxl-12">
+            <form id="form">
+              <div class="mb-1" style="display: none">
+                <input type="number" name="epidemiaid" class="form-control" id="epidemiaid" />
+              </div>
+
+                <label for="nomeepidemia" class="col-sm-2 col-xxl-1 col-form-label required">Nome Epidemia:</label>
+                <div class="col-sm-4 col-xxl-3">
+                  <input type="text" name="nomeepidemia" class="form-control-plaintext" id="nomeepidemia" maxlength="30" required readonly />
+                </div>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="removido" id="removido" checked disabled />
+                <label class="form-check-label" for="removido"> Removido </label>
+              </div>
+            </form>
+          </div>
+          <div class="">
+            <button type="button" class="btn btn-success me-2" onclick="btnSalvar()" id="btnSalvar" hidden>
+              Salvar
+            </button>
+
+            <button type="button" class="btn btn-warning me-2" onclick="btnAlterar()" id="btnAlterar" hidden>
+              Alterar
+            </button>
+
+            <button type="button" class="btn btn-warning me-2" onclick="btnSalvarAlteracao()" id="btnSalvarAlteracao" hidden>
+              Salvar Alteração
+            </button>
+
+            <button type="button" class="btn btn-info me-2" onclick="btnCancelarAlteracao()" id="btnCancelarAlteracao" hidden>
+              Cancelar Alteração
+            </button>
+
+            <button type="" class="btn btn-danger" onclick="btnRemover()" id="btnRemover" hidden>
+              Remover
+            </button>
+
+            <button type="button" class="btn btn-primary" onclick="window.location.href = '/epidemia'" id="btnFechar">
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+}) })
+
+<script>
+  const form = document.getElementById("form");
+  var oper = "@model.oper";
+
+  window.onload = limpaForm();
+
+  //@ Limpa o conteúdo dos campos do formulário
+  async function limpaForm() {
+
+    $("#form").each(function() {
+      this.reset();
+    });
+
+    // Mostra os botões de acordo com o tipo da operação
+    if (oper == "c") {
+      $("#btnSalvar").prop("hidden", false);
+      habilitaForm();
+    }
+
+    if (oper == "u") {
+      $("#btnAlterar").prop("hidden", false);
+    }
+
+    //Necessário para buscar dados de acordo com o ID para serem alterados
+    if (oper == "u") {
+      idBusca = "@model.idBusca";
+      await getDados(idBusca);
+    }
+
+    //Coloca o epidemia no primeiro campo do formulário
+    $("#nomeepidemia").focus();
+  }
+
+  //@ Busca os dados de acordo com o ID para serem alterados
+  async function getDados(idBuscaPar) {
+    console.log("[getDados] idBusca", idBuscaPar);
+
+    try {
+      const resp = await axios.post(
+        "/epidemia/getDados", {
+          idBusca: idBuscaPar
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (resp.data.status == "ok") {
+        $("#epidemiaid").val(resp.data.registro.epidemiaid);
+        $("#nomeepidemia").val(resp.data.registro.nomeepidemia);
+        if (resp.data.registro.removido) {
+          $("#removido").prop("checked", true);
+        } else {
+          $("#removido").prop("checked", false);
+        }
+
+      } else {
+        alert("Houve erro ao buscar os dados das ocorrências!");
+      }
+    } catch (error) {
+      alert("[view_cadEpidemia|getDados]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  //@ Valida o formulário antes de salvá-lo
+  function validaForm(formDataPar) {
+    var validado = true;
+    $("#form input, #form select").each(function(index) {
+      var input = $(this);
+      if (
+        input.attr("type") == "text" &&
+        input.prop("required") &&
+        String(input.val()).length == 0
+      ) {
+        alert("Campo obrigatório");
+        //console.log('Type: ' + input.attr('type') + ' ID: ' + input.attr('id') + ' Name: ' + input.attr('name') + ' Value: ' + input.val() + ' Obrigatori: ' + input.prop("required"));
+        $(input).focus();
+        validado = false;
+        return false;
+      }
+    });
+
+    if (formDataPar.get("removido") == "on") {
+      formDataPar.set("removido", true);
+    } else {
+      formDataPar.set("removido", false);
+    }
+    formDataPar.set("removido", false);
+
+    return validado;
+  }
+
+  //@ Salva os dados
+  async function btnSalvar() {
+    const formData = new FormData(form);
+
+    const validado = validaForm(formData);
+    if (!validado) {
+      return;
+    }
+
+    try {
+      resp = await axios.post("/epidemia/insertEpidemia", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        limpaForm();
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEpidemia|btnSalvar]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  //@ Habilita form para alteração
+  function habilitaForm() {
+    $("#nomeepidemia").prop("class", "form-control");
+    $("#nomeepidemia").prop("readonly", false);
+
+    $("#removido").prop("disabled", false);
+  }
+
+  //@ Habilita a alteração
+  async function btnAlterar() {
+    $("#btnSalvarAlteracao").prop("hidden", false);
+    $("#btnCancelarAlteracao").prop("hidden", false);
+    $("#btnRemover").prop("hidden", false);
+    $("#btnAlterar").prop("hidden", true);
+
+    habilitaForm();
+  }
+
+  //@ Salva a alteração
+  //@ console.log("[view_cadEpidemia|btnSalvarAlteracao] :", )
+  async function btnSalvarAlteracao() {
+    const formData = new FormData(form);
+    const validado = validaForm(formData);
+    if (!validado) {
+      return;
+    }
+
+    try {
+      resp = await axios.post("/epidemia/updateEpidemia", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        window.open("/epidemia/openEpidemiaUpdate/" + String($("#epidemiaid").val()), "_self");
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEpidemia|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+    }
+
+
+  }
+
+  //@ Cancela a alteração
+  //@ console.log("[view_cadEpidemia|btnCancelarAlteracao] Valor do id", $("#epidemiaid").val());    
+  async function btnCancelarAlteracao() {
+    window.open("/epidemia/openEpidemiaUpdate/" + String($("#epidemiaid").val()), "_self");
+  }
+
+  //@ Remove epidemia
+  //@ console.log("[view_cadEpidemia|btnSalvarAlteracao] :", )
+  async function btnRemover() { 
+
+    var confirma = confirm("Deseja realmente remover o registro?");
+    if (!confirma) {
+      return; //@ Se o usuário selecionar Cancela, o registro não é removido.
+    }
+    const formData = new FormData(form);
+
+    try {
+      resp = await axios.post("/epidemia/deleteEpidemia", {
+        epidemiaid: formData.get("epidemiaid")
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        window.open("/epidemia", "_self");
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEpidemia|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+
+  $(function() {
+    $("#rendafamiliar").maskMoney();
+  });
+
+  async function deleteOcorrencias(epidemiaidPar) {
+    resp = await axios.post(
+      "/ocorrencias/DeleteOcorrencias", {
+        id: $("#id").val(),
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (resp.data.status == "ok") {
+      alert("Ocorrência removida com sucesso!");
+      window.open("/ocorrencias", "_self");
+    } else {
+      alert("Houve erro ao remover os dados das ocorrências!");
+    }
+  }
+
+  async function testeFormData() {
+    const form = document.getElementById("form");
+    const formData = new FormData(form);
+
+    console.log("ocorrenciaid: ", formData.get("ocorrenciaid"));
+  }
+</script>
+
+<style>
+  .required:after {
+    content: " *";
+    color: red;
+  }
+</style>

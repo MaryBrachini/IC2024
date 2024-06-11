@@ -1,0 +1,288 @@
+@html.extend('layout', function(model){ @html.block('content', function(model){
+
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-2">@model.title</h1>
+    <ol class="breadcrumb mb-2">
+      <li class="breadcrumb-item active">@model.title</li>
+    </ol>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card-header"></div>
+
+        <div class="card-body">
+          <div class="col-sm-6 col-xxl-12">
+            <form id="form">
+              <div class="mb-1" style="display: none">
+                <input type="number" name="estadoid" class="form-control" id="estadoid" />
+              </div>
+              <div class="mb-1 row ">
+                <label for="nomeestado" class="col-sm-2 col-xxl-1 col-form-label required">Nome do Estado:</label>
+                <div class="col-sm-4 col-xxl-2">
+                  <input type="text" name="nomeestado" class="form-control-plaintext" id="nomeestado" maxlength="30" required readonly />
+                </div>
+
+                <label for="uf" class="col-sm-2 col-xxl-1 col-form-label required">UF:</label>
+                <div class="col-sm-4 col-xxl-3">
+                  <input type="text" name="uf" class="form-control-plaintext" id="uf" maxlength="2" required readonly />
+                </div>
+              </div>            
+            </form>
+          </div>
+          <div class="">
+            <button type="button" class="btn btn-success me-2" onclick="btnSalvar()" id="btnSalvar" hidden>
+              Salvar
+            </button>
+
+            <button type="button" class="btn btn-warning me-2" onclick="btnAlterar()" id="btnAlterar" hidden>
+              Alterar
+            </button>
+
+            <button type="button" class="btn btn-warning me-2" onclick="btnSalvarAlteracao()" id="btnSalvarAlteracao" hidden>
+              Salvar Alteração
+            </button>
+
+            <button type="button" class="btn btn-info me-2" onclick="btnCancelarAlteracao()" id="btnCancelarAlteracao" hidden>
+              Cancelar Alteração
+            </button>
+
+            <button type="" class="btn btn-danger" onclick="btnRemover()" id="btnRemover" hidden>
+              Remover
+            </button>
+
+            <button type="button" class="btn btn-primary" onclick="window.location.href = '/estado'" id="btnFechar">
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+}) })
+
+<script>
+  const form = document.getElementById("form");
+  var oper = "@model.oper";
+
+  window.onload = limpaForm();
+
+  //@ Limpa o conteúdo dos campos do formulário
+  async function limpaForm() {
+
+    $("#form").each(function() {
+      this.reset();
+    });
+
+    // Mostra os botões de acordo com o tipo da operação
+    if (oper == "c") {
+      $("#btnSalvar").prop("hidden", false);
+      habilitaForm();
+    }
+
+    if (oper == "u") {
+      $("#btnAlterar").prop("hidden", false);
+    }
+
+    //Necessário para buscar dados de acordo com o ID para serem alterados
+    if (oper == "u") {
+      idBusca = "@model.idBusca";
+      await getDados(idBusca);
+    }
+
+    //Coloca o estado no primeiro campo do formulário
+    $("#nomeestado").focus();
+  }
+
+  //@ Busca os dados de acordo com o ID para serem alterados
+  async function getDados(idBuscaPar) {
+    console.log("[getDados] idBusca", idBuscaPar);
+
+    try {
+      const resp = await axios.post(
+        "/estado/getDados", {
+          idBusca: idBuscaPar
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (resp.data.status == "ok") {
+        $("#estadoid").val(resp.data.registro.estadoid);
+        $("#nomeestado").val(resp.data.registro.nomeestado);
+        $("#uf").val(resp.data.registro.uf);
+      } else {
+        alert("Houve erro ao buscar os dados dos estado!");
+      }
+    } catch (error) {
+      alert("[view_cadEstado|getDados]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  //@ Valida o formulário antes de salvá-lo
+  function validaForm(formDataPar) {
+    var validado = true;
+    $("#form input, #form select").each(function(index) {
+      var input = $(this);
+      if (
+        input.attr("type") == "text" &&
+        input.prop("required") &&
+        String(input.val()).length == 0
+      ) {
+        alert("Campo obrigatório");
+        $(input).focus();
+        validado = false;
+        return false;
+      }
+    });
+
+    formDataPar.set("removido", false);
+
+    return validado;
+  }
+
+  //@ Salva os dados
+  async function btnSalvar() {
+    const formData = new FormData(form);
+
+    const validado = validaForm(formData);
+    if (!validado) {
+      return;
+    }
+
+    try {
+      resp = await axios.post("/estado/insertEstado", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        limpaForm();
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEstado|btnSalvar]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  //@ Habilita form para alteração
+  function habilitaForm() {
+    $("#nomeestado").prop("class", "form-control");
+    $("#nomeestado").prop("readonly", false);
+
+    $("#uf").prop("class", "form-control");
+    $("#uf").prop("readonly", false);
+  }
+
+  //@ Habilita a alteração
+  async function btnAlterar() {
+    $("#btnSalvarAlteracao").prop("hidden", false);
+    $("#btnCancelarAlteracao").prop("hidden", false);
+    $("#btnRemover").prop("hidden", false);
+    $("#btnAlterar").prop("hidden", true);
+
+    habilitaForm();
+  }
+
+  //@ Salva a alteração
+  async function btnSalvarAlteracao() {
+    const formData = new FormData(form);
+    const validado = validaForm(formData);
+    if (!validado) {
+      return;
+    }
+
+    try {
+      resp = await axios.post("/estado/updateEstado", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        window.open("/estado/openEstadoUpdate/" + String($("#estadoid").val()), "_self");
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEstado|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  //@ Cancela a alteração
+  async function btnCancelarAlteracao() {
+    window.open("/estado/openEstadoUpdate/" + String($("#estadoid").val()), "_self");
+  }
+
+  //@ Remove estado
+  async function btnRemover() { 
+
+    var confirma = confirm("Deseja realmente remover o registro?");
+    if (!confirma) {
+      return; //@ Se o usuário selecionar Cancela, o registro não é removido.
+    }
+    const formData = new FormData(form);
+
+    try {
+      resp = await axios.post("/estado/deleteEstado", {
+        estadoid: formData.get("estadoid")
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (resp.data.status == "ok") {
+        alert(resp.data.mensagem);
+        window.open("/estado", "_self");
+      } else {
+        alert("Houve um erro: " + resp.data.mensagem);
+      }
+    } catch (error) {
+      alert("[view_cadEstado|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+    }
+  }
+
+  $(function() {
+    $("#rendafamiliar").maskMoney();
+  });
+
+  async function deleteEstado(estadoidPar) {
+    resp = await axios.post(
+      "/estado/deleteEstado", {
+        id: $("#id").val(),
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (resp.data.status == "ok") {
+      alert("Estado removido com sucesso!");
+      window.open("/estado", "_self");
+    } else {
+      alert("Houve erro ao remover os dados dos estado!");
+    }
+  }
+
+  async function testeFormData() {
+    const form = document.getElementById("form");
+    const formData = new FormData(form);
+
+    console.log("Estadoid: ", formData.get("estadoid"));
+  }
+</script>
+
+<style>
+  .required:after {
+    content: " *";
+    color: red;
+  }
+</style>

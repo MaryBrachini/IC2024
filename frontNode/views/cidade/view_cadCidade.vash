@@ -1,0 +1,122 @@
+@html.extend('layout', function(model){
+
+@html.block('content', function(model){
+
+
+<main>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-2">@model.title</h1>
+        <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item active">@model.title</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-12">
+
+                <div class="card-header">
+
+                </div>
+
+                <div class="card-body">
+                    <div class="col-xl-5">
+                        <form  id="form">
+                            <div class="mb-1" style="display: none">
+                                <input type="text" name="cidadeID" value="@model.data.cidadeID" class="form-control" id="id">
+                            </div>
+                            <div class="mb-1">
+                                <label for="nomeCidade" class="form-label">Nome da Cidade</label>
+                                <input type="text" name="nomeCidade" value="@model.data.nomeCidade" class="form-control" id="nomeCidade"
+                                    @(model.oper=='v' ? 'disabled' : '' )>
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="" class="form-label">Estado</label>
+                                <select class="form-select" aria-label="Default select example" id="estadoIDFK"
+                                    @(model.oper=='v' ? 'disabled' : '' ) name="estadoIDFK">
+                                    @model.estado.forEach(function(item){
+                                    @if(model.data.estadoIDFK === item.estadoIDFK) {
+                                    <option value="@item.estadoIDFK" selected>@item.nomeestado</option>
+                                    } else {
+                                    <option value="@item.estadoIDFK">@item.nomeestado</option>
+                                    }
+                                    });
+                                </select>
+                            </div>
+
+                            @if (model.oper=="c") {
+                            <button type="submit" class="btn btn-success me-2" onclick=""
+                                formmethod="POST">Salvar</button>
+                            }
+
+                        </form>
+                        <div>
+                            @if (model.oper=="vu") {
+                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar
+                                Alteração</button>
+                            }
+
+                            @if (model.oper=="v") {
+                            <button type="button" class="btn btn-warning me-2 mb-3"
+                                onclick="window.open('/cidade/viewCidade/' + $('cidadeID').val() + '/vu', '_self')">Alterar</button>
+                            }
+
+                            @if (model.oper=="v") {
+                            <button type="" class="btn btn-danger mb-3" onclick="deleteCidade()">Remover</button>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/cidade'">Fechar
+                            sem salvar</button>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+})
+
+})
+
+<script>
+    async function alteraRegistro() {
+        // event.preventDefault();        
+        resp = await axios.post("/cidade/viewCidade", {
+            cidadeID: $("cidadeID").val(),
+            nomeCidade: $("#nomeCidade").val(),
+            estadoIDFK: $("#estadoIDFK").val(),
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        //console.log("[view_cadCidade.vash|alteraRegistro] valor resp:", resp.data.status);
+        if (resp.data.status == "ok") {
+            alert("Cidade alterada com sucesso!");
+        } else {
+            alert("Houve erro ao alterar os dados das cidade!");
+        }
+    }
+
+    async function deleteCidade(nomeCidadePar) {
+        resp = await axios.post("/cidade/DeleteCidade", {
+            cidadeID: $("cidadeID").val(),
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (resp.data.status == "ok") {
+            alert("Cidade removida com sucesso!");
+            window.open("/cidade", "_self");
+        } else {
+            alert("Houve erro ao remover os dados das cidade!");
+        }
+    }
+
+    async function testeFormData() {
+        const form = document.getElementById("form");
+        const formData = new FormData(form);                 
+    }
+</script>

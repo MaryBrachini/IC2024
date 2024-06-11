@@ -1,11 +1,216 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta>
-  <title>@model.title</title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-<body>
-  @html.block('content')
+<!-- Inclui o cabeçalho -->
+@html.include("header")
+
+<!-- Corpo da página -->
+<body class="sb-nav-fixed">
+
+    <!-- Barra de navegação superior -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Marca da barra de navegação -->
+        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <!-- Botão de alternância da barra lateral -->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Formulário de pesquisa da barra de navegação -->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <!-- Input de pesquisa -->
+            </div>
+        </form>
+        <!-- Links da barra de navegação -->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <!-- Dropdown do perfil do usuário -->
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <!-- Itens do dropdown -->
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">                   
+                    <li>
+                        <!-- Separador -->
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <!-- Item de logout -->
+                    <li><a class="dropdown-item" href="/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Barra lateral -->
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <!-- Navegação lateral -->
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <!-- Menu da navegação lateral -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <!-- Títulos do menu -->
+                        <div class="sb-sidenav-menu-heading">Principal</div>
+                        <!-- Item do menu -->
+                        <a class="nav-link" href="/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Home
+                        </a>
+                       
+                        <!-- Módulo Módulos -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+                            aria-expanded="false" aria-controls="collapsePages">
+                           <div class="sb-sidenav-menu-heading">Módulos</div>
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+
+                        <!-- Submenu do módulo Acadêmico -->
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                               
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                    aria-controls="pagesCollapseAuth">
+                                    Bairros
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Bairro -->
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Bairro -->
+                                        <a class="nav-link" href="/bairro">Manutenção dos Bairros</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Cidades
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Cidade -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Cidade -->
+                                        <a class="nav-link" href="/cidade/view_manutencao.vash">Manutenção das Cidades</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Epidemias
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Epidemia -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Epidemia -->
+                                        <a class="nav-link" href="/epidemia">Manutenção das Epidemias</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Estados
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Estado -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Estado -->
+                                        <a class="nav-link" href="/estado">Manutenção das Estados</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Ruas
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Logradouro -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Logradouro -->
+                                        <a class="nav-link" href="/logradouro">Manutenção das Ruas</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Ocorrencias
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item Ocorrencias -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de Ocorrencias -->
+                                        <a class="nav-link" href="/Ocorrencias">Manutenção das Ocorrencias</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Item do submenu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    UBS
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <!-- Submenu do item UBS -->
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <!-- Link para manutenção de UBS -->
+                                        <a class="nav-link" href="/UBS">Manutenção das UBS</a>
+                                    </nav>
+                                </div>
+
+
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Rodapé da navegação lateral -->
+                <div class="sb-sidenav-footer">
+                    <div class="small">Bem vindo:</div>
+                    <!-- Exibe o nome do usuário logado -->
+                    @model.userName
+                </div>
+            </nav>
+        </div>
+
+        <!-- Corpo das páginas filhas -->
+        <div id="layoutSidenav_content">
+            <!-- Inclui o conteúdo das páginas filhas -->
+            @html.block('content')
+            <!-- Inclui o rodapé -->
+            @html.include('footer')
+        </div>
+    </div>
+ 
+    <!-- Scripts -->
+    <script src="/js/5.3.0/popper.js_2.11.8_popper.min.js" ></script>
+    <script src="/js/5.3.0/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script> 
+    <script src="/js/fontawesome/v6.3.0_js_all.js" crossorigin="anonymous"></script>   
+    <script src="/js/datatables/pdfmake_0.2.7_pdfmake.min.js"></script>
+    <script src="/js/datatables/pdfmake_0.2.7_vfs_fonts.js"></script>
+    <script src="/js/datatables/html5-2.4.1_datatables.min.js"></script>    
+    <script src="/js/datatables/moment_2.29.2_moment.min.js"></script>
+    <script src="/js/jquery.maskMoney.min.js"></script> 
+    <script src="/js/axios.min.js"></script>
 </body>
-</html>
