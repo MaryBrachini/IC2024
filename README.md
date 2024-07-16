@@ -261,9 +261,6 @@ git remote add origin "link.git"
 ```
 git branch -M main
 ```
-```
-git branch -M main
-```
 
 ### Caso de conflito no push
 ```
