@@ -1,9 +1,7 @@
-@html.extend('layout', function(model){
-
-@html.block('content', function(model){
+@html.extend('layout', function(model) {
+@html.block('content', function(model) {
 
 <main>
-
     <div class="container-fluid px-4">
         <h1 class="mt-2">@model.title</h1>
         <ol class="breadcrumb mb-2">
@@ -11,236 +9,140 @@
         </ol>
         <div class="row">
             <div class="col-xl-12">
-
                 <div class="card-header">
-
+                    <!-- Card header content if any -->
                 </div>
-
                 <div class="card-body">
                     <div class="col-xl-5">
                         <form id="form">
                             <div class="mb-1" style="display: none">
-                                <input type="text" name="ocorrenciaid" value="@model.data.ocorrenciaid" class="form-control" id="id">
+                                <input type="text" name="ocorrenciaid" value="@model.data.ocorrenciaid" class="form-control" id="ocorrenciaid">
                             </div>
                             <div class="mb-1">
                                 <label for="nomeSuspeito" class="form-label">Nome do Suspeito</label>
                                 <input type="text" name="nomeSuspeito" value="@model.data.nomeSuspeito" class="form-control" id="nomeSuspeito"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
                             <div class="mb-4">
-                                <label for="datacadastro" class="form-label">Data do Cadastro <span
-                                        style="color: red;">*</span></label>
-                                <input type="date" name="datacadastro" value="@model.data.datacadastro"
-                                    class="form-control" id="datacadastro" @(model.oper=='v' ? 'disabled' : '' )>
+                                <label for="datacadastro" class="form-label">Data do Cadastro <span style="color: red;">*</span></label>
+                                <input type="date" name="datacadastro" value="@model.data.datacadastro" class="form-control" id="datacadastro"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
                             <div class="mb-4">
-                                <label for="dataocorrencia" class="form-label">Data Ocorrência <span
-                                        style="color: red;">*</span></label>
-                                <input type="date" name="dataocorrencia" value="@model.data.dataocorrencia"
-                                    class="form-control" id="dataocorrencia" @(model.oper=='v' ? 'disabled' : '' )>
+                                <label for="dataocorrencia" class="form-label">Data Ocorrência <span style="color: red;">*</span></label>
+                                <input type="date" name="dataocorrencia" value="@model.data.dataocorrencia" class="form-control" id="dataocorrencia"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
                             <div class="mb-1">
-                                <label for="" class="form-label">Epidemia</label>
-                                <select class="form-select" aria-label="Default select example" id="epidemiaidfk"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="epidemiaidfk">
-                                    @model.Epidemia.forEach(function(item){
-                                    @if(model.data.epidemiaidfk === item.epidemiaidfk) {
-                                    <option value="@item.epidemiaidfk" selected>@item.nomeepidemia</option>
-                                    } else {
-                                    <option value="@item.epidemiaidfk">@item.nomeepidemia</option>
-                                    }
+                                <label for="epidemiaidfk" class="form-label">Epidemia</label>
+                                <select class="form-select" aria-label="Default select example" id="epidemiaidfk" name="epidemiaidfk"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
+                                    @model.Epidemia.forEach(function(item) {
+                                        <option value="@item.epidemiaidfk" @(model.data.epidemiaidfk === item.epidemiaidfk ? 'selected' : '')>
+                                            @item.nomeepidemia
+                                        </option>
                                     });
                                 </select>
                             </div>
-
                             <div class="mb-1">
-                                <label for="" class="form-label">UBS</label>
-                                <select class="form-select" aria-label="Default select example" id="unidBasicaSaudeIDFK"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="unidBasicaSaudeIDFK">
-                                    @model.UBS.forEach(function(item){
-                                    @if(model.data.unidBasicaSaudeIDFK === item.unidBasicaSaudeIDFK) {
-                                    <option value="@item.unidBasicaSaudeIDFK" selected>@item.nomeUBS</option>
-                                    } else {
-                                    <option value="@item.unidBasicaSaudeIDFK">@item.nomeUBS</option>
-                                    }
+                                <label for="unidBasicaSaudeIDFK" class="form-label">UBS</label>
+                                <select class="form-select" aria-label="Default select example" id="unidBasicaSaudeIDFK" name="unidBasicaSaudeIDFK"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
+                                    @model.UBS.forEach(function(item) {
+                                        <option value="@item.unidBasicaSaudeIDFK" @(model.data.unidBasicaSaudeIDFK === item.unidBasicaSaudeIDFK ? 'selected' : '')>
+                                            @item.nomeUBS
+                                        </option>
                                     });
                                 </select>
                             </div>
-                            
                             <div class="mb-1">
-                                <label for="" class="form-label">Rua da residencia</label>
-                                <select class="form-select" aria-label="Default select example" id="logradouroidfk"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="logradouroidfk">
-                                    @model.Logradouro.forEach(function(item){
-                                    @if(model.data.logradouroidfk === item.logradouroidfk) {
-                                    <option value="@item.logradouroidfk" selected>@item.nomelogradouro</option>
-                                    } else {
-                                    <option value="@item.logradouroidfk">@item.nomelogradouro</option>
-                                    }
+                                <label for="logradouroidfk" class="form-label">Rua da Residência</label>
+                                <select class="form-select" aria-label="Default select example" id="logradouroidfk" name="logradouroidfk"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
+                                    @model.Logradouro.forEach(function(item) {
+                                        <option value="@item.logradouroidfk" @(model.data.logradouroidfk === item.logradouroidfk ? 'selected' : '')>
+                                            @item.nomelogradouro
+                                        </option>
                                     });
                                 </select>
                             </div>
-
                             <div class="mb-1">
-                                <label for="numero" class="form-label">Número da residencia</label>
+                                <label for="numero" class="form-label">Número da Residência</label>
                                 <input type="text" name="numero" value="@model.data.numero" class="form-control" id="numero"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-                            
                             <div class="mb-1">
-                                <label for="" class="form-label">Bairro da residencia</label>
-                                <select class="form-select" aria-label="Default select example" id="bairroidfk"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="bairroidfk">
-                                    @model.bairro.forEach(function(item){
-                                    @if(model.data.bairroidfk === item.bairroidfk) {
-                                    <option value="@item.bairroidfk" selected>@item.nomeBairro</option>
-                                    } else {
-                                    <option value="@item.bairroidfk">@item.nomeBairro</option>
-                                    }
+                                <label for="bairroidfk" class="form-label">Bairro da Residência</label>
+                                <select class="form-select" aria-label="Default select example" id="bairroidfk" name="bairroidfk"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
+                                    @model.bairro.forEach(function(item) {
+                                        <option value="@item.bairroidfk" @(model.data.bairroidfk === item.bairroidfk ? 'selected' : '')>
+                                            @item.nomeBairro
+                                        </option>
                                     });
                                 </select>
                             </div>
-
                             <div class="mb-1">
-                                <label for="latitude" class="form-label">latitude da residencia</label>
+                                <label for="latitude" class="form-label">Latitude da Residência</label>
                                 <input type="text" name="latitude" value="@model.data.latitude" class="form-control" id="latitude"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
-                             <div class="mb-1">
-                                <label for="longitude" class="form-label">longitude da residencia</label>
+                            <div class="mb-1">
+                                <label for="longitude" class="form-label">Longitude da Residência</label>
                                 <input type="text" name="longitude" value="@model.data.longitude" class="form-control" id="longitude"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-                            
                             <div class="mb-1">
                                 <label for="localTrabalho" class="form-label">Local de Trabalho</label>
                                 <input type="text" name="localTrabalho" value="@model.data.localTrabalho" class="form-control" id="localTrabalho"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
                             <div class="mb-1">
-                                <label for="" class="form-label">Rua do Trabalho</label>
-                                <select class="form-select" aria-label="Default select example" id="logradouroLocalTrabalhoIDFK"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="logradouroLocalTrabalhoIDFK">
-                                    @model.Logradouro.forEach(function(item){
-                                    @if(model.data.logradouroLocalTrabalhoIDFK === item.logradouroLocalTrabalhoIDFK) {
-                                    <option value="@item.logradouroLocalTrabalhoIDFK" selected>@item.nomelogradouro</option>
-                                    } else {
-                                    <option value="@item.logradouroLocalTrabalhoIDFK">@item.nomelogradouro</option>
-                                    }
+                                <label for="logradouroLocalTrabalhoIDFK" class="form-label">Rua do Trabalho</label>
+                                <select class="form-select" aria-label="Default select example" id="logradouroLocalTrabalhoIDFK" name="logradouroLocalTrabalhoIDFK"
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
+                                    @model.Logradouro.forEach(function(item) {
+                                        <option value="@item.logradouroLocalTrabalhoIDFK" @(model.data.logradouroLocalTrabalhoIDFK === item.logradouroLocalTrabalhoIDFK ? 'selected' : '')>
+                                            @item.nomelogradouro
+                                        </option>
                                     });
                                 </select>
                             </div>
-
-                           <div class="mb-1">
+                            <div class="mb-1">
                                 <label for="numeroLocalTrabalho" class="form-label">Número do Trabalho</label>
                                 <input type="text" name="numeroLocalTrabalho" value="@model.data.numeroLocalTrabalho" class="form-control" id="numeroLocalTrabalho"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
                             <div class="mb-1">
-                                <label for="latitudeLocalTrabalho" class="form-label">latitude do Local do Trabalho</label>
+                                <label for="latitudeLocalTrabalho" class="form-label">Latitude do Local do Trabalho</label>
                                 <input type="text" name="latitudeLocalTrabalho" value="@model.data.latitudeLocalTrabalho" class="form-control" id="latitudeLocalTrabalho"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
-                             <div class="mb-1">
-                                <label for="longitudeLocalTrabalho" class="form-label">longitude do Local do Trabalho</label>
+                            <div class="mb-1">
+                                <label for="longitudeLocalTrabalho" class="form-label">Longitude do Local do Trabalho</label>
                                 <input type="text" name="longitudeLocalTrabalho" value="@model.data.longitudeLocalTrabalho" class="form-control" id="longitudeLocalTrabalho"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                    @(model.oper === 'v' ? 'disabled' : '' )>
                             </div>
-
-                            @if (model.oper=="c") {
-                            <button type="submit" class="btn btn-success me-2" onclick=""
-                                formmethod="POST">Salvar</button>
+                            @if (model.oper === "c") {
+                                <button type="submit" class="btn btn-success me-2" formmethod="POST">Salvar</button>
                             }
-
                         </form>
                         <div>
-                            @if (model.oper=="vu") {
-                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar
-                                Alteração</button>
+                            @if (model.oper === "vu") {
+                                <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar Alteração</button>
                             }
-
-                            @if (model.oper=="v") {
-                            <button type="button" class="btn btn-warning me-2 mb-3"
-                                onclick="window.open('/Ocorrencias/viewOcorrencias/' + $('ocorrenciaid').val() + '/vu', '_self')">Alterar</button>
-                            }
-
-                            @if (model.oper=="v") {
-                            <button type="" class="btn btn-danger mb-3" onclick="deleteOcorrencias()">Remover</button>
+                            @if (model.oper === "v") {
+                                <button type="button" class="btn btn-warning me-2 mb-3" onclick="window.open('/Ocorrencias/viewOcorrencias/' + $('#ocorrenciaid').val() + '/vu', '_self')">Alterar</button>
+                                <button type="button" class="btn btn-danger mb-3" onclick="deleteOcorrencias()">Remover</button>
                             }
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/Ocorrencias'">Fechar
-                            sem salvar</button>                        
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/Ocorrencias'">Fechar sem salvar</button>                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
 
 })
-
 })
-
-<script>
-    async function alteraRegistro() {
-        // event.preventDefault();        
-        resp = await axios.post("/Ocorrencias/viewOcorrencias", {
-            ocorrenciaid: $("ocorrenciaid").val(),
-            nomeSuspeito: $("#nomeSuspeito").val(),
-            ocorrenciaid: $("#").val(),
-            nomeSuspeito: $("#").val(),
-            datacadastro: $("#").val(),
-            dataocorrencia: $("#").val(),
-            epidemiaidfk: $("#").val(),
-            logradouroidfk: $("#logradouroidfk").val(),
-            numero: $("#numero").val(),
-            bairroidfk: $("#bairroidfk").val(),
-            latitude: $("#latitude").val(),
-            longitude: $("#longitude").val(),
-            localTrabalho: $("#localTrabalho").val(),
-            logradouroLocalTrabalhoIDFK: $("#logradouroLocalTrabalhoIDFK").val(),
-            numeroLocalTrabalho: $("#numeroLocalTrabalho").val(),
-            latitudeLocalTrabalho: $("#latitudeLocalTrabalho").val(),
-            longitudeLocalTrabalho: $("#longitudeLocalTrabalho").val(),
-            unidBasicaSaudeIDFK: $("#unidBasicaSaudeIDFK").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        //console.log("[view_cadOcorrencias.vash|alteraRegistro] valor resp:", resp.data.status);
-        if (resp.data.status == "ok") {
-            alert("Rua alterada com sucesso!");
-        } else {
-            alert("Houve erro ao alterar os dados das Ocorrencias!");
-        }
-    }
-
-    async function deleteOcorrencias(nomeSuspeitoPar) {
-        resp = await axios.post("/Ocorrencias/DeleteOcorrencias", {
-            ocorrenciaid: $("ocorrenciaid").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        if (resp.data.status == "ok") {
-            alert("Ocorrencias removida com sucesso!");
-            window.open("/Ocorrencias", "_self");
-        } else {
-            alert("Houve erro ao remover os dados das Ocorrencias!");
-        }
-    }
-
-    async function testeFormData() {
-        const form = document.getElementById("form");
-        const formData = new FormData(form);                 
-    }
-</script>
