@@ -146,3 +146,69 @@
 
 })
 })
+<script>
+    async function alteraRegistro() {
+        try {
+            const resp = await axios.post("/Ocorrencias/viewOcorrencias", {
+                ocorrenciaid: $("#ocorrenciaid").val(),
+                nomeSuspeito: $("#nomeSuspeito").val(),
+                datacadastro: $("#datacadastro").val(),
+                dataocorrencia: $("#dataocorrencia").val(),
+                epidemiaidfk: $("#epidemiaidfk").val(),
+                logradouroidfk: $("#logradouroidfk").val(),
+                numero: $("#numero").val(),
+                bairroidfk: $("#bairroidfk").val(),
+                latitude: $("#latitude").val(),
+                longitude: $("#longitude").val(),
+                localTrabalho: $("#localTrabalho").val(),
+                logradouroLocalTrabalhoIDFK: $("#logradouroLocalTrabalhoIDFK").val(),
+                numeroLocalTrabalho: $("#numeroLocalTrabalho").val(),
+                latitudeLocalTrabalho: $("#latitudeLocalTrabalho").val(),
+                longitudeLocalTrabalho: $("#longitudeLocalTrabalho").val(),
+                unidBasicaSaudeIDFK: $("#unidBasicaSaudeIDFK").val(),
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (resp.data.status === "ok") {
+                alert("Registro alterado com sucesso!");
+            } else {
+                alert("Houve erro ao alterar os dados das Ocorrências!");
+            }
+        } catch (error) {
+            console.error("Erro ao alterar registro:", error);
+            alert("Houve um erro inesperado.");
+        }
+    }
+
+    async function deleteOcorrencias() {
+        try {
+            const resp = await axios.post("/Ocorrencias/DeleteOcorrencias", {
+                ocorrenciaid: $("#ocorrenciaid").val(),
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (resp.data.status === "ok") {
+                alert("Ocorrência removida com sucesso!");
+                window.location.href = "/Ocorrencias";
+            } else {
+                alert("Houve erro ao remover os dados das Ocorrências!");
+            }
+        } catch (error) {
+            console.error("Erro ao remover ocorrência:", error);
+            alert("Houve um erro inesperado.");
+        }
+    }
+
+    function testeFormData() {
+        const form = document.getElementById("form");
+        const formData = new FormData(form);
+        // You can now work with formData if needed
+        console.log([...formData.entries()]);
+    }
+</script>
