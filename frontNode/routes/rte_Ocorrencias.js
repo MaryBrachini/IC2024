@@ -1,5 +1,5 @@
 var express = require('express');
-var OcorrenciasApp = require("../app/Ocorrencias/controller/ctlOcorrencias");
+var OcorrenciasApp = require("../app/Ocorrencias/controller/ctlOcorrencias")
 
 var router = express.Router();
 
