@@ -1,5 +1,5 @@
 var express = require('express');
-var cidadeApp = require("../app/Cidade/controller/ctlCidade");
+var cidadeApp = require("../app/Cidade/controller/ctlCidade")
 
 var router = express.Router();
 
