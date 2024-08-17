@@ -99,3 +99,29 @@
 
 })
 })
+<script>
+    $(document).ready(function() {
+        // Inicialize a tabela DataTable com os botões
+        var table = $('#example').DataTable({
+            dom: 'Bfrtip', // Adiciona o contêiner dos botões
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: 'Copiar'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: 'Exportar para Excel'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Exportar para PDF'
+                }
+            ]
+        });
+
+        // Adicione os botões de ação no topo da tabela
+        table.buttons().container()
+            .appendTo($('.col-sm-12:eq(0)', table.table().container()));
+    });
+</script>
