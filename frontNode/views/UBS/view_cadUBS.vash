@@ -1,9 +1,7 @@
-@html.extend('layout', function(model){
-
-@html.block('content', function(model){
+@html.extend('layout', function(model) {
+@html.block('content', function(model) {
 
 <main>
-
     <div class="container-fluid px-4">
         <h1 class="mt-2">@model.title</h1>
         <ol class="breadcrumb mb-2">
@@ -11,34 +9,24 @@
         </ol>
         <div class="row">
             <div class="col-xl-12">
-
-                <div class="card-header">
-
-                </div>
-
                 <div class="card-body">
                     <div class="col-xl-5">
-                        <form  id="form">
+                        <form id="form">
                             <div class="mb-1" style="display: none">
                                 <input type="text" name="unidBasicaSaudeID" value="@model.data.unidBasicaSaudeID" class="form-control" id="id">
                             </div>
                             <div class="mb-1">
                                 <label for="nomeUBS" class="form-label">Nome da UBS</label>
-                                <input type="text" name="nomeUBS" value="@model.data.nomeUBS" class="form-control" id="nomeUBS"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
+                                <input type="text" name="nomeUBS" value="@model.data.nomeUBS" class="form-control" id="nomeUBS" @(model.oper=='v' ? 'disabled' : '')>
                             </div>
-
-                             <div class="mb-1">
-                                <label for="codigoUBS" class="form-label">Codigo da UBS</label>
-                                <input type="text" name="codigoUBS" value="@model.data.codigoUBS" class="form-control" id="codigoUBS"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
-                            </div>
-
                             <div class="mb-1">
-                                <label for="" class="form-label">Bairro</label>
-                                <select class="form-select" aria-label="Default select example" id="bairroIDFK"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="bairroIDFK">
-                                    @model.bairro.forEach(function(item){
+                                <label for="codigoUBS" class="form-label">Código da UBS</label>
+                                <input type="text" name="codigoUBS" value="@model.data.codigoUBS" class="form-control" id="codigoUBS" @(model.oper=='v' ? 'disabled' : '')>
+                            </div>
+                            <div class="mb-1">
+                                <label for="bairroIDFK" class="form-label">Bairro</label>
+                                <select class="form-select" aria-label="Default select example" id="bairroIDFK" name="bairroIDFK" @(model.oper=='v' ? 'disabled' : '')>
+                                    @model.bairro.forEach(function(item) {
                                     @if(model.data.bairroIDFK === item.bairroIDFK) {
                                     <option value="@item.bairroIDFK" selected>@item.nomeBairro</option>
                                     } else {
@@ -47,82 +35,83 @@
                                     });
                                 </select>
                             </div>
-
                             @if (model.oper=="c") {
-                            <button type="submit" class="btn btn-success me-2" onclick=""
-                                formmethod="POST">Salvar</button>
+                            <button type="submit" class="btn btn-success me-2">Salvar</button>
                             }
-
                         </form>
                         <div>
                             @if (model.oper=="vu") {
-                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar
-                                Alteração</button>
+                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar Alteração</button>
                             }
-
                             @if (model.oper=="v") {
-                            <button type="button" class="btn btn-warning me-2 mb-3"
-                                onclick="window.open('/UBS/viewUBS/' + $('unidBasicaSaudeID').val() + '/vu', '_self')">Alterar</button>
+                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="window.open('/UBS/viewUBS/' + $('#id').val() + '/vu', '_self')">Alterar</button>
                             }
-
                             @if (model.oper=="v") {
-                            <button type="" class="btn btn-danger mb-3" onclick="deleteUBS()">Remover</button>
+                            <button type="button" class="btn btn-danger mb-3" onclick="deleteUBS()">Remover</button>
                             }
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS'">Fechar
-                            sem salvar</button>                        
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS'">Fechar sem salvar</button>                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
 
 })
-
 })
+
 
 <script>
     async function alteraRegistro() {
-        // event.preventDefault();        
-        resp = await axios.post("/UBS/viewUBS", {
-            unidBasicaSaudeID: $("unidBasicaSaudeID").val(),
-            nomeUBS: $("#nomeUBS").val(),
-            codigoUBS: $("#codigoUBS").val(),
-            bairroIDFK: $("#bairroIDFK").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
+        try {
+            const resp = await axios.post("/UBS/viewUBS", {
+                unidBasicaSaudeID: $("#id").val(),
+                nomeUBS: $("#nomeUBS").val(),
+                codigoUBS: $("#codigoUBS").val(),
+                bairroIDFK: $("#bairroIDFK").val()
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (resp.data.status === "ok") {
+                alert("Registro alterado com sucesso!");
+            } else {
+                alert("Houve erro ao alterar os dados da UBS!");
             }
-        });
-        //console.log("[view_cadUBS.vash|alteraRegistro] valor resp:", resp.data.status);
-        if (resp.data.status == "ok") {
-            alert("Rua alterada com sucesso!");
-        } else {
-            alert("Houve erro ao alterar os dados das UBS!");
+        } catch (error) {
+            console.error("Erro ao alterar registro:", error);
+            alert("Houve um erro ao alterar o registro. Verifique o console para mais detalhes.");
         }
     }
 
-    async function deleteUBS(nomeUBSPar) {
-        resp = await axios.post("/UBS/DeleteUBS", {
-            unidBasicaSaudeID: $("unidBasicaSaudeID").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
+    async function deleteUBS() {
+        try {
+            const resp = await axios.post("/UBS/DeleteUBS", {
+                unidBasicaSaudeID: $("#id").val()
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-        if (resp.data.status == "ok") {
-            alert("UBS removida com sucesso!");
-            window.open("/UBS", "_self");
-        } else {
-            alert("Houve erro ao remover os dados das UBS!");
+            if (resp.data.status === "ok") {
+                alert("UBS removida com sucesso!");
+                window.open("/UBS", "_self");
+            } else {
+                alert("Houve erro ao remover os dados da UBS!");
+            }
+        } catch (error) {
+            console.error("Erro ao remover UBS:", error);
+            alert("Houve um erro ao remover a UBS. Verifique o console para mais detalhes.");
         }
     }
 
-    async function testeFormData() {
+    function testeFormData() {
         const form = document.getElementById("form");
-        const formData = new FormData(form);                 
+        const formData = new FormData(form);
+        // Você pode manipular o formData aqui, se necessário
     }
 </script>
