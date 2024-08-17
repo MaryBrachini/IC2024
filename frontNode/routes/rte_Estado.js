@@ -1,5 +1,5 @@
 var express = require('express');
-var estadoApp = require("../app/Estado/controller/ctlEstado");
+var estadoApp = require("../app/Estado/controller/ctlEstado")
 
 var router = express.Router();
 
