@@ -1,5 +1,5 @@
 var express = require('express');
-var LogradouroApp = require("../app/Logradouro/controller/ctlLogradouro")
+var LogradouroApp = require("../app/Logradouro/controller/ctlLogradouro");
 
 var router = express.Router();
 

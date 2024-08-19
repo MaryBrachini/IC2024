@@ -1,9 +1,8 @@
-@html.extend('layout', function(model){
+@html.extend('layout', function(model) {
 
-@html.block('content', function(model){
+@html.block('content', function(model) {
 
 <main>
-
     <div class="container-fluid px-4">
         <h1 class="mt-4">@model.title</h1>
         <ol class="breadcrumb mb-4">
@@ -31,18 +30,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @model.data.registro.forEach(function(registro){
-                                <tr>                                    
-                                    <td>
-                                        <a href="/bairro/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
-                                            <i class="fa fa-magnifying-glass"></i> Visualizar
-                                        </a>
-                                    </td>
-                                    <td>@registro.bairroid</td>
-                                    <td>@registro.codigobairro</td>
-                                    <td>@registro.nome</td>
-                                </tr>
-                                })
+                                @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
+                                    @model.data.registro.forEach(function(registro) {
+                                        <tr>                                    
+                                            <td>
+                                                <a href="/bairro/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
+                                                    <i class="fa fa-magnifying-glass"></i> Visualizar
+                                                </a>
+                                            </td>
+                                            <td>@registro.bairroid</td>
+                                            <td>@registro.codigobairro</td>
+                                            <td>@registro.nome</td>
+                                        </tr>
+                                    });
+                                } else {
+                                    <tr>
+                                        <td colspan="4">Nenhum registro encontrado</td>
+                                    </tr>
+                                }
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -63,12 +68,3 @@
 })
 
 })
-
-<script>
-    // Certifique-se de que a tabela esteja inicializada
-    var table = $('#example').DataTable();
-
-    // Adicione os botões de ação no topo da tabela
-    table.buttons().container()
-        .appendTo($('.col-sm-12:eq(0)', table.table().container()));
-</script>

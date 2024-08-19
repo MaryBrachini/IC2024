@@ -1,5 +1,5 @@
 var express = require('express');
-var UBSApp = require("../app/UBS/controller/ctlUBS")
+var UBSApp = require("../app/UBS/controller/ctlUBS");
 
 var router = express.Router();
 

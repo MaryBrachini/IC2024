@@ -1,5 +1,5 @@
 var express = require('express');
-var bairroApp = require("../app/Bairro/controller/ctlBairro")
+var bairroApp = require("../app/Bairro/controller/ctlBairro");
 
 var router = express.Router();
 
@@ -15,9 +15,9 @@ function authenticationMiddleware(req, res, next) {
 }; 
 
 //* GET métodos */
-router.get('/', authenticationMiddleware, bairroApp.getAllBairro);
+router.get('/', authenticationMiddleware, bairroApp.GetAllBairros);
 router.get('/openCursosInsert', authenticationMiddleware, bairroApp.openBairroInsert);
-router.get('/openCursosUpdate/:id:oper', authenticationMiddleware, bairroApp.openBairroUpdate);
+router.get('/openCursosUpdate/:id', authenticationMiddleware, bairroApp.openBairroUpdate);
 
 /* POST métodos */
 router.post('/insertBairro', authenticationMiddleware, bairroApp.insertBairro);

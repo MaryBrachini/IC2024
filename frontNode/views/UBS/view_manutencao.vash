@@ -1,7 +1,9 @@
-@html.extend('layout', function(model) {
-@html.block('content', function(model) {
+@html.extend('layout', function(model){
+
+@html.block('content', function(model){
 
 <main>
+
     <div class="container-fluid px-4">
         <h1 class="mt-4">@model.title</h1>
         <ol class="breadcrumb mb-4">
@@ -11,7 +13,8 @@
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS/insertUBS'">Nova UBS</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="window.location.href = '/UBS/insertUBS'">Nova UBS</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -25,12 +28,12 @@
                                     <th>ID</th>
                                     <th>UBS</th>
                                     <th>Código</th>
-                                    <th>Cidade</th>
+                                    <th>cidade</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @model.data.registro.forEach(function(registro) {
-                                <tr>
+                                @model.data.registro.forEach(function(registro){
+                                <tr>                                    
                                     <td>
                                         <a href="/UBS/viewUBS/@registro.unidBasicaSaudeID/v" class="btn btn-info btn-sm">
                                             <i class="fa fa-magnifying-glass"></i> Visualizar
@@ -39,7 +42,7 @@
                                     <td>@registro.unidBasicaSaudeID</td>
                                     <td>@registro.nomeUBS</td>
                                     <td>@registro.codigoUBS</td>
-                                    <td>@registro.cidade</td>
+                                    <td>@registro.bairroIDFK</td>
                                 </tr>
                                 })
                             </tbody>
@@ -49,7 +52,7 @@
                                     <th>ID</th>
                                     <th>UBS</th>
                                     <th>Código</th>
-                                    <th>Cidade</th>
+                                    <th>cidade</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -61,16 +64,14 @@
 </main>
 
 })
-})
-<script>
-    $(document).ready(function() {
-        // Inicializar DataTable
-        var table = $('#example').DataTable({
-            dom: 'Bfrtip', // Adiciona a posição dos botões
-            buttons: [
-                'copy', 'excel', 'pdf', 'print'
-            ]
-        });
-    });
-</script>
 
+})
+
+<script>
+    // Certifique-se de que a tabela esteja inicializada
+    var table = $('#example').DataTable();
+
+    // Adicione os botões de ação no topo da tabela
+    table.buttons().container()
+        .appendTo($('.col-sm-12:eq(0)', table.table().container()));
+</script>

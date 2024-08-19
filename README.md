@@ -228,7 +228,7 @@ pip install pandas==1.2.4
 ```
 Caso precise da biblioteca numpy a versão ideal para streamlit 0.84
 ```
-pip install numpy==1.22
+pip install pandas==1.22
 ```
 
 ### 5- Instalar o folium
@@ -257,6 +257,9 @@ git commit -m "commit"
 ```
 ```
 git remote add origin "link.git"
+```
+```
+git branch -M main
 ```
 ```
 git branch -M main

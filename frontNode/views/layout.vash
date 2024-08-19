@@ -7,7 +7,6 @@
     <!-- Barra de navegação superior -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Marca da barra de navegação -->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
         <!-- Botão de alternância da barra lateral -->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -42,153 +41,145 @@
         <div id="layoutSidenav_nav">
             <!-- Navegação lateral -->
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+
                 <!-- Menu da navegação lateral -->
                 <div class="sb-sidenav-menu">
                     <div class="nav">
+
                         <!-- Títulos do menu -->
                         <div class="sb-sidenav-menu-heading">Principal</div>
+
                         <!-- Item do menu -->
                         <a class="nav-link" href="/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Home
+                            <div class="sb-nav-link-icon"><i class="fa fa-home"></i></div>
+                            Início
                         </a>
-                       
-                        <!-- Módulo Módulos -->
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
-                           <div class="sb-sidenav-menu-heading">Módulos</div>
+
+                        <!--Segundo Item do menu -->
+                        <a class="nav-link" href="/">
+                            <div class="sb-nav-link-icon"><i class="bi bi-map"></i></div>
+                            Mapas
+                        </a>
+
+                        <!--Terceiro Item do menu -->
+                        <a class="nav-link" href="/">
+                            <div class="sb-nav-link-icon"><i class="bi bi-file-earmark-text"></i></div>
+                            Relatórios
+                        </a>
+
+                        <!-- Títulos do menu -->
+                        <div class="sb-sidenav-menu-heading">Cadastros</div>
+
+                        <!-- Módulo Bairros -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBairros"
+                            aria-expanded="false" aria-controls="collapseBairros">
+                            Bairros
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
 
+                        <!-- Submenu do módulo Bairros -->
+                       @*  <div class="collapse" id="collapseBairros" aria-labelledby="headingBairros" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/bairro">Cadastro dos Bairros</a>
+                            </nav>
+                        </div> *@
+                        
+                        <div class="collapse" id="collapseBairros" aria-labelledby="headingBairros" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/bairro">Manutenção dos Bairros</a>
+                            </nav>
+                        </div>
+                        
+                        <!-- Módulo Cidades -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCidades"
+                            aria-expanded="false" aria-controls="collapseCidades">
+                            Cidades
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
 
-                        <!-- Submenu do módulo Acadêmico -->
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                               
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Bairros
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Bairro -->
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Bairro -->
-                                        <a class="nav-link" href="/bairro">Manutenção dos Bairros</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Cidades
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Cidade -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Cidade -->
-                                        <a class="nav-link" href="/cidade/view_manutencao.vash">Manutenção das Cidades</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Epidemias
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Epidemia -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Epidemia -->
-                                        <a class="nav-link" href="/epidemia">Manutenção das Epidemias</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Estados
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Estado -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Estado -->
-                                        <a class="nav-link" href="/estado">Manutenção das Estados</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Ruas
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Logradouro -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Logradouro -->
-                                        <a class="nav-link" href="/logradouro">Manutenção das Ruas</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Ocorrencias
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item Ocorrencias -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de Ocorrencias -->
-                                        <a class="nav-link" href="/Ocorrencias">Manutenção das Ocorrencias</a>
-                                    </nav>
-                                </div>
-
-                                <!-- Item do submenu -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    UBS
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <!-- Submenu do item UBS -->
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <!-- Link para manutenção de UBS -->
-                                        <a class="nav-link" href="/UBS">Manutenção das UBS</a>
-                                    </nav>
-                                </div>
-
-
+                        <!-- Submenu do módulo Cidades -->
+                        <div class="collapse" id="collapseCidades" aria-labelledby="headingCidades" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/cidade">Manutenção das Cidades</a>
                             </nav>
                         </div>
 
+                        <!-- Módulo Epidemias -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEpidemias"
+                            aria-expanded="false" aria-controls="collapseEpidemias">
+                            Epidemias
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <!-- Submenu do módulo Epidemias -->
+                        <div class="collapse" id="collapseEpidemias" aria-labelledby="headingEpidemias" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/epidemia">Manutenção das Epidemias</a>
+                            </nav>
+                        </div>
+
+                        <!-- Módulo Estados -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEstados"
+                            aria-expanded="false" aria-controls="collapseEstados">
+                            Estados
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <!-- Submenu do módulo Estados -->
+                        <div class="collapse" id="collapseEstados" aria-labelledby="headingEstados" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/estado">Manutenção dos Estados</a>
+                            </nav>
+                        </div>
+
+                        <!-- Módulo Ruas -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRuas"
+                            aria-expanded="false" aria-controls="collapseRuas">
+                            Ruas
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <!-- Submenu do módulo Ruas -->
+                        <div class="collapse" id="collapseRuas" aria-labelledby="headingRuas" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/logradouro">Manutenção das Ruas</a>
+                            </nav>
+                        </div>
+
+                        <!-- Módulo Ocorrências -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOcorrencias"
+                            aria-expanded="false" aria-controls="collapseOcorrencias">
+                            Ocorrências
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <!-- Submenu do módulo Ocorrências -->
+                        <div class="collapse" id="collapseOcorrencias" aria-labelledby="headingOcorrencias" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/ocorrencias">Manutenção das Ocorrências</a>
+                            </nav>
+                        </div>
+
+                        <!-- Módulo UBS -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUBS"
+                            aria-expanded="false" aria-controls="collapseUBS">
+                            UBS
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <!-- Submenu do módulo UBS -->
+                        <div class="collapse" id="collapseUBS" aria-labelledby="headingUBS" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/UBS">Manutenção das UBS</a>
+                            </nav>
+                        </div>
                     </div>
                 </div>
+
                 <!-- Rodapé da navegação lateral -->
                 <div class="sb-sidenav-footer">
-                    <div class="small">Bem vindo:</div>
-                    <!-- Exibe o nome do usuário logado -->
-                    @model.userName
+                    <div class="small">Seja bem vindo: @model.userName !</div>
+                    
                 </div>
             </nav>
         </div>
