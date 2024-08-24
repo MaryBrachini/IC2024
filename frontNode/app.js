@@ -9,6 +9,7 @@ const session = require('express-session');
 
 require('dotenv').config();
 
+var testeRouter = require('./routes/rte_Teste'); // Atualizado
 var indexRouter = require('./routes/index');
 var bairroRouter = require('./routes/rte_Bairro');
 var epidemiaRouter = require('./routes/rte_Epidemia');
@@ -43,6 +44,7 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/teste', testeRouter); // Atualizado para "teste"
 app.use('/bairro', bairroRouter);
 app.use('/epidemia', epidemiaRouter);
 app.use('/estado', estadoRouter);

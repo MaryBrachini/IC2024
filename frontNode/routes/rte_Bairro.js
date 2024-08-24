@@ -12,7 +12,7 @@ function authenticationMiddleware(req, res, next) {
       res.redirect("/Login");   
     }
     next();   
-}; 
+};
 
 //* GET métodos */
 router.get('/', authenticationMiddleware, bairroApp.GetAllBairros);
@@ -23,6 +23,6 @@ router.get('/openCursosUpdate/:id', authenticationMiddleware, bairroApp.openBair
 router.post('/insertBairro', authenticationMiddleware, bairroApp.insertBairro);
 router.post('/deleteBairro', authenticationMiddleware, bairroApp.deleteBairro);
 router.post('/getDados', authenticationMiddleware, bairroApp.getDados);
-router.post('/updateCursos', authenticationMiddleware, bairroApp.updateBairro);
+router.post('/updateCursos', authenticationMiddleware, bairroApp.updateBairro); 
 
-module.exports = router;
+ module.exports = router;

@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    @html.include("header")
+    <!-- views/header.vash -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Login</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/datatables/datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/css_login.css">
 </head>
 <body class="text-center bg-img">
@@ -10,8 +18,8 @@
         <div class="row">
             <!-- Divisão para a imagem e mensagem de boas-vindas -->
             <div class="div-img col-6">
-                <h1 class="txt" style="font-size:50px;">BEM-VINDO !</h1>
-                <p class="txt">Faça o login para acessar ao nosso site !</p>
+                <h1 class="txt" style="font-size:50px;">BEM-VINDO!</h1>
+                <p class="txt">Faça o login para acessar ao nosso site!</p>
             </div>
 
             <!-- Divisão para o formulário de login -->
@@ -31,7 +39,7 @@
                         <!-- Campo de senha -->
                         <div class="form-floating">
                             <input type="password" class="form-control" id="password" name="password" required>
-                            <label for="password" class="form-label mt-2">Informe seu password</label>
+                            <label for="password" class="form-label mt-2">Informe sua senha</label>
                         </div>
 
                         <!-- Botão de submissão -->
@@ -39,15 +47,8 @@
                             <input class="w-100 btn btn-lg btn-primary" type="submit" value="Entrar" />
                         </div>
 
-                        <!-- Mensagem de erro -->
-                        @if(model.message) {
-                            <p>
-                                <label style="color:Red"> @model.message </label>
-                            </p>
-                        }
-
                         <!-- Rodapé -->
-                        <p class="mt-5 mb-3 text-body-secondary">&copy; Diteiros reservado IFSP</p>
+                        <p class="mt-5 mb-3 text-body-secondary">&copy; Direitos reservados IFSP</p>
                     </form>
                 </main>
             </div>

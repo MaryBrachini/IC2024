@@ -1,46 +1,53 @@
 const axios = require("axios");
 
-const GetAllBairros = (req, res) => {
-  (async () => {
-    const userName = req.session.userName;
-    const servidorUrl = process.env.SERVIDOR;
+const GetAllBairros = async (req, res) => {
+ 
+  const userName = req.session.userName;  
 
-    console.log("1 [ctlBairro.js|GetAllBairros] Nome de usuário:", userName);
-    console.log("2 [ctlBairro.js|GetAllBairros] URL do servidor:", servidorUrl + "/GetAllBairros");
+  console.log("1 [ctlBairro.js|GetAllBairros] Nome de usuário:", userName);
 
-    try {
-      const resp = await axios.get(servidorUrl + "/GetAllBairros", { timeout: 5000 });
-      console.log("3 [ctlBairro.js|GetAllBairros] Dados recebidos:", resp.data);
+  try {
+    resp = await axios.get(process.env.SERVIDOR + "/bairro/GetAllBairros", {timeout: 5000 });
+    res.send("try");
+    
+  } catch (erro) {
+    console.error("Erro na requisição:", erro.message);
+    res.send("catch");
+  }
+  };
 
-      // Verificar se resp.data.registro é um array
-      if (!Array.isArray(resp.data.registro)) {
-        resp.data.registro = []; // Define um array vazio se não for um array
-      }
+/* try {
+    const resp = await axios.get(url, { timeout: 5000 });
 
-      // Exibir os dados no console para depuração
-      console.log("4 [ctlBairro.js|GetAllBairros] Dados que serão passados para a view:", resp.data);
+    console.log("3 [ctlBairro.js|GetAllBairros] Dados recebidos:", resp.data);
 
-      if (!res.headersSent) {
-        res.render("bairro/view_manutencao", {
-          title: "Manutenção do bairro",
-          data: resp.data,
-          userName: userName,
-        });
-      }
-    } catch (erro) {
-      if (!res.headersSent) {
-        if (erro.code === 'ECONNABORTED') {
-          console.error("5 [ctlBairro.js|GetAllBairros] Erro: Tempo de requisição excedido.");
-          res.status(500).send("O tempo de resposta do servidor excedeu. Tente novamente mais tarde.");
-        } else {
-          console.error("6 [ctlBairro.js|GetAllBairros] Erro de requisição:", erro.message);
-          res.status(500).send("Erro ao processar a requisição para obter todos os bairros");
-        }
+    if (!Array.isArray(resp.data.registro)) {
+      resp.data.registro = [];
+      console.log("if");
+    }
+
+    console.log("4 [ctlBairro.js|GetAllBairros] Dados que serão passados para a view:", resp.data);
+
+    if (!res.headersSent) {
+      res.render("bairro/view_manutencao", {
+        title: "Manutenção do bairro",
+        data: resp.data,
+        userName: userName,
+      });
+    }
+  } catch (erro) {
+    if (!res.headersSent) {
+      if (erro.code === 'ECONNABORTED') {
+        console.error("5 [ctlBairro.js|GetAllBairros] Erro: Tempo de requisição excedido.");
+        res.status(500).send("O tempo de resposta do servidor excedeu. Tente novamente mais tarde.");
+      } else {
+        console.error("6 [ctlBairro.js|GetAllBairros] Erro de requisição:", erro.message);
+        res.status(500).send("Erro ao processar a requisição para obter todos os bairros");
       }
     }
-  })();
+  }
 };
-
+ */
 
 //@ Abre formulário de cadastro de bairro
 const openBairroInsert = (req, res) =>
