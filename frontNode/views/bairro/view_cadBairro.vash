@@ -51,7 +51,7 @@
               Remover
             </button>
 
-            <button type="button" class="btn btn-primary" onclick="window.location.href = '/bairro'" id="btnFechar">
+            <button type="button" class="btn btn-primary" onclick="window.location.href = '/bairros'" id="btnFechar">
               Fechar
             </button>
           </div>
@@ -102,7 +102,7 @@
 
     try {
       const resp = await axios.post(
-        "/bairro/getDados", {
+        "/bairros/getDados", {
           idBusca: idBuscaPar
         }, {
           headers: {
@@ -154,7 +154,7 @@
     }
 
     try {
-      resp = await axios.post("/bairro/insertBairro", formData, {
+      resp = await axios.post("/bairros/insertBairro", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -200,7 +200,7 @@
     }
 
     try {
-      resp = await axios.post("/bairro/updateBairro", formData, {
+      resp = await axios.post("/bairros/updateBairro", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -208,7 +208,7 @@
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
-        window.open("/bairro/openBairroUpdate/" + String($("#bairroid").val()), "_self");
+        window.open("/bairros/openBairroUpdate/" + String($("#bairroid").val()), "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }
@@ -222,7 +222,7 @@
   //@ Cancela a alteração
   //@ console.log("[view_cadBairro|btnCancelarAlteracao] Valor do id", $("#bairroid").val());    
   async function btnCancelarAlteracao() {
-    window.open("/bairro/openBairroUpdate/" + String($("#bairroid").val()), "_self");
+    window.open("/bairros/openBairroUpdate/" + String($("#bairroid").val()), "_self");
   }
 
   //@ Remove bairro
@@ -236,7 +236,7 @@
     const formData = new FormData(form);
 
     try {
-      resp = await axios.post("/bairro/deleteBairro", {
+      resp = await axios.post("/bairros/deleteBairro", {
         bairroid: formData.get("bairroid")
       }, {
         headers: {
@@ -246,7 +246,7 @@
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
-        window.open("/bairro", "_self");
+        window.open("/bairros", "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }

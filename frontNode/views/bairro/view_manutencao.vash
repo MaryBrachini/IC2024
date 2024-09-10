@@ -13,7 +13,7 @@
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/bairro/insertBairro'">Novo Bairro</button>
+                            onclick="window.location.href = '/bairros/insertBairro'">Novo Bairro</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -30,11 +30,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
+                               @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
                                     @model.data.registro.forEach(function(registro) {
                                         <tr>                                    
                                             <td>
-                                                <a href="/bairro/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
+                                                <a href="/bairros/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
                                                     <i class="fa fa-magnifying-glass"></i> Visualizar
                                                 </a>
                                             </td>
@@ -47,7 +47,7 @@
                                     <tr>
                                         <td colspan="4">Nenhum registro encontrado</td>
                                     </tr>
-                                }
+                                } 
                             </tbody>
                             <tfoot>
                                 <tr>

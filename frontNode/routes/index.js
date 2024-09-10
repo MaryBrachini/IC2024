@@ -13,7 +13,7 @@ function authenticationMiddleware(req, res, next) {
     next();
   } else {
     // Se não estiver logado, redirecione para a página de login
-    console.log("[app.js] Usuário não autenticado. Redirecionando para a página de login.");
+    console.log("[index.js] Usuário não autenticado. Redirecionando para a página de login.");
     res.redirect("/Login");
   }
 };

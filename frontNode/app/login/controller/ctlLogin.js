@@ -1,61 +1,68 @@
-const axios = require("axios");
-const { json } = require("express");
+const axios = require('axios');
 
-// Função para lidar com o login do usuário
 const Login = async (req, res) => {
-  let resp;
+  try {
+    if (req.method === "POST" && req.body.username) {
+      console.log("[ctlLogin.js] Valor Servidor:", process.env.SERVIDOR);
 
-  //req.session.destroy();
-  console.log("[ctlLogin|Login] valor de body:", req.body);
-  /* console.log("[ctlLogin.js] Valor Servidor:", process.env.SERVIDOR); */
+      // Envia a requisição ao servidor de autenticação
+      const resp = await axios.post(process.env.SERVIDOR + "/login", {
+        username: req.body.username,
+        password: req.body.password
+      });
 
-  // Verifica se a solicitação é do tipo POST e se o campo de nome de usuário não está vazio
-  if (req.method == "POST" && req.body.username !== "") {
-    
-    console.log("[ctlLogin.js] Valor Servidor:", process.env.SERVIDOR);
+      console.log("Resposta completa de login:", resp.data);
 
-    // Envia uma solicitação POST para o servidor de autenticação com as credenciais fornecidas
-    resp = await axios.post(process.env.SERVIDOR + "/login", {
-      username: req.body.username,
-      password: req.body.password
-    });
+      if (!resp.data.auth) {
+        return res.render("login/login", {
+          title: "Login",
+          message: resp.data.message
+        });
+      } else {
+        // Salva as informações na sessão
+        req.session.isLogged = true;
+        req.session.userName = req.body.username;
+        req.session.token = resp.data.token; // Armazena o token na sessão
+        console.log("Token armazenado na sessão:", req.session.token);
+        return res.redirect("/"); 
 
-    console.log("primeiro: "+JSON.stringify(resp.data));
-
-    // Verifica se a autenticação foi bem-sucedida com base na resposta do servidor
-    if (!resp.data.auth) {
-      console.log("segundo");
-      // Se a autenticação falhar, renderiza a página de login novamente com uma mensagem de erro
-      return res.render("login/login", {
-        title: "Login",
-        message: resp.data.message
-      }); 
-    } else {
-      console.log("terceiro");  
-       
-      // Se a solicitação não for do tipo POST ou se o campo de nome de usuário estiver vazio,
-      // renderiza a página de login novamente sem exibir uma mensagem de erro
-      session = req.session;
-      req.session.isLogged = true;
-      req.session.userName = req.body.username;
-      req.session.token = resp.data.token;
-      // Redireciona o usuário para a página inicial
-      return res.redirect("/"); 
+        // Redireciona para a URL original ou para a página inicial
+      /*   const redirectTo = req.session.redirectTo || '/';
+        delete req.session.redirectTo; // Remove a URL original após o redirecionamento
+        return res.redirect(redirectTo); */
+      }
     }
+
+    // Renderiza a página de login se não for POST ou se o username estiver vazio
+    return res.render("login/login", { title: "Login", message: "" });
+
+  } catch (error) {
+    console.error('[ctoLogin] **** Erro na autenticação:');
+    return res.render("login/login", {
+      title: "Login",
+      message: "Erro ao conectar com o servidor de autenticação."
+    });
   }
-  
-  // Corrija o objeto de renderização
-  return res.render("login/login", { title: "Login", message: "" });
-}
+};
 
 // Função para lidar com o logout do usuário
 function Logout(req, res) {
-  // Defina a variável de sessão corretamente
-  req.session.isLogged = false;
-  req.session.token = false;
-  // Redireciona o usuário de volta para a página de login
-  res.redirect("/Login");
+  if (res.headersSent) {
+    console.log("Resposta já enviada.");
+    return;
+  }
+
+  console.log("[LOGOUT ] *** Resposta já enviada.");
+
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Erro ao destruir a sessão:", err);
+      return res.redirect("/"); // Ou uma página de erro apropriada
+    }
+    res.redirect("/Login");
+  });
 }
+
 
 // Exporta as funções Login e Logout para uso em outras partes do aplicativo
 module.exports = {

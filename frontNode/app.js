@@ -9,7 +9,7 @@ const session = require('express-session');
 
 require('dotenv').config();
 
-var testeRouter = require('./routes/rte_Teste'); // Atualizado
+var testRouter = require('./routes/test');
 var indexRouter = require('./routes/index');
 var bairroRouter = require('./routes/rte_Bairro');
 var epidemiaRouter = require('./routes/rte_Epidemia');
@@ -27,10 +27,10 @@ app.set('view engine', 'vash');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); //Necessário para obter os valores das variáveis via POST
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use( bodyParser.urlencoded({ extended: false, }))
 
+// Configuração do middleware de sessão com armazenamento padrão em memória
 app.use(
   session({
     secret: "palavrasecreta",
@@ -40,12 +40,11 @@ app.use(
   })
 );
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/test', testRouter);
 app.use('/', indexRouter);
-app.use('/teste', testeRouter); // Atualizado para "teste"
-app.use('/bairro', bairroRouter);
+app.use('/bairros', bairroRouter);
 app.use('/epidemia', epidemiaRouter);
 app.use('/estado', estadoRouter);
 app.use('/cidade', cidadeRouter);
