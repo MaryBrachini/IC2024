@@ -6,6 +6,7 @@ const GetAllBairros = async (req, res) => {
   token = req.session.token
   console.log("[ctlBairros|GetAllBairros] TOKEN:", token);
 
+  userName = req.session.userName;
 
   try {
     const response = await axios.get('http://localhost:20100/acl/bairro/v1/GetAllBairros',     
@@ -16,11 +17,17 @@ const GetAllBairros = async (req, res) => {
         },
       }
     );
+
     const bairros = response.data;
+    console.log("[ctlBairro|response.data]", JSON.stringify(bairros));
 
-    console.log("[ctlBairro|response.data]",JSON.stringify(response.data));
-
-    res.status(200).json(bairros); 
+    // Renderiza a página com os dados obtidos
+    res.render("bairro/view_manutencao", {
+      title: "Manutenção de Bairros",
+      data: bairros,
+      userName: userName,
+    });
+   
     console.log("Resposta enviada com sucesso para bairros");
   } catch (error) {
     console.error('Erro ao buscar bairros:' );  //, error);
@@ -37,6 +44,7 @@ const GetAllBairros = async (req, res) => {
 // Função para abrir o formulário de cadastro de bairro
 const openBairroInsert = async (req, res) => {
   const userName = req.session.userName;
+  console.log("[ctlBairro.js|openBairroInsert]");
   try {
     if (req.method === "GET") {
       res.render("bairro/view_cadBairro", {
@@ -44,6 +52,7 @@ const openBairroInsert = async (req, res) => {
         oper: "c",
         userName: userName,
       });
+      console.log("[ctlBairro.js|try]");
     }
   } catch (error) {
     console.log("[ctlBairro.js|openBairroInsert] Erro não identificado", error);
@@ -55,13 +64,15 @@ const validateForm = (regFormPar) => {
   regFormPar.bairroId = regFormPar.bairroId ? parseInt(regFormPar.bairroId) : 0;
   regFormPar.removido = regFormPar.removido === "true";
   return regFormPar;
-};
+  };
 
 // Função para abrir o formulário de atualização de bairro
 const openBairroUpdate = async (req, res) => {
   const userName = req.session.userName;
+  console.log("[ctlBairro.js|openBairroUpdate]");
   try {
     if (req.method === "GET") {
+      console.log("[ctlBairro.js|openBairroUpdate] IF");
       const id = parseInt(req.params.id);
       res.render("bairro/view_cadBairro", {
         title: "Cadastro de bairro",
