@@ -31,7 +31,7 @@
                             </thead>
                             <tbody>
                                @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
-                                    @model.data.registro.forEach(function(registro) {
+                                @model.data.registro.forEach(function(registro) {
                                         <tr>                                    
                                             <td>
                                                 <a href="/bairros/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
