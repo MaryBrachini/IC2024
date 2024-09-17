@@ -1,21 +1,45 @@
 const axios = require("axios");
 
 //@ Abre o formulário de manutenção de estado
-const getAllEstado = (req, res) =>
-  (async () => {
-    userName = req.session.userName;
+const getAllEstado =async (req, res) => {
+
+  console.log("getAllEstado");
+
+  token = req.session.token
+  console.log("[ctlEstado|getAllEstado] TOKEN:", token);
+
+  userName = req.session.userName;
     try {
-      resp = await axios.get(process.env.SERVIDOR + "/GetAllEstado", {});
-      //console.log("[ctlLogin.js] Valor resp:", resp.data);
+      const resp = await axios.get('http://localhost:20100/acl/estado/v1/GetAllEstados',     
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      console.log("[ctlEstado|resp.data]", JSON.stringify(resp.data));
+  
+      // Renderiza a página com os dados obtidos
       res.render("estado/view_manutencao", {
         title: "Manutenção de estado",
         data: resp.data,
         userName: userName,
       });
-    } catch (erro) {
-      console.log("[ctlEstado.js|getAllEstado] Try Catch:Erro de requisição");
+      console.log("Resposta enviada com sucesso para estado");
+    
+    } catch (error) {
+      console.error('Erro ao buscar estado:' );  //, error);
+  
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao buscar estado' });
+        console.log("Resposta de erro enviada");
+      } else {
+        console.log("Erro ao buscar estado, mas a resposta já havia sido enviada");
+      }
     }
-  })();
+  };
 
 //@ Abre formulário de cadastro de estado
 const openEstadoInsert = (req, res) =>

@@ -9,7 +9,6 @@ const session = require('express-session');
 
 require('dotenv').config();
 
-var testRouter = require('./routes/test');
 var indexRouter = require('./routes/index');
 var bairroRouter = require('./routes/rte_Bairro');
 var epidemiaRouter = require('./routes/rte_Epidemia');
@@ -42,7 +41,6 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/test', testRouter);
 app.use('/', indexRouter);
 app.use('/bairros', bairroRouter);
 app.use('/epidemia', epidemiaRouter);

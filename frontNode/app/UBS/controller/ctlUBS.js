@@ -1,21 +1,47 @@
 const axios = require("axios");
-const moment = require("moment");
 
 //@ Abre o formulário de manutenção de UBS
-const getAllUBS = (req, res) =>
-  (async () => {
-    userName = req.session.userName;
-    try {
-      resp = await axios.get(process.env.SERVIDOR + "/getAllUBS", {});
-      res.render("UBS/view_manutencao", {
+const getAllUBS = async (req, res) => {
+
+  console.log("getAllUBS");
+
+  token = req.session.token
+  console.log("[ctlUBS|getAllUBS] TOKEN:", token);
+
+  userName = req.session.userName;
+
+  try {
+    const resp = await axios.get('http://localhost:20100/acl/ubs/v1/GetAllUBSs',     
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("[ctlUBS|resp.data]", JSON.stringify(resp.data));
+
+    // Renderiza a página com os dados obtidos
+    res.render("UBS/view_manutencao", {
         title: "Manutenção da Unidade Básica de Saúde",
         data: resp.data,
         userName: userName,
       });
-    } catch (erro) {
-      console.log("[ctlUBS.js|getAllUBS] Try Catch: Erro de requisição");
+   
+      console.log("Resposta enviada com sucesso para UBS");
+      
+    } catch (error) {
+      console.error('Erro ao buscar UBS:' );  //, error);
+  
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao buscar UBS' });
+        console.log("Resposta de erro enviada");
+      } else {
+        console.log("Erro ao buscar UBS, mas a resposta já havia sido enviada");
+      }
     }
-  })();
+  };
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de UBS
 const insertUBS = (req, res) =>

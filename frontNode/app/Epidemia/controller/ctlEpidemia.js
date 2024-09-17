@@ -1,21 +1,46 @@
 const axios = require("axios");
 
 //@ Abre o formulário de manutenção de epidemia
-const getAllEpidemia = (req, res) =>
-  (async () => {
+const getAllEpidemia = async (req, res) => {
+
+  console.log("getAllEpidemia");
+  token = req.session.token
+  console.log("[ctlEpidemia|getAllEpidemia] TOKEN:", token);
+
     userName = req.session.userName;
+
     try {
-      resp = await axios.get(process.env.SERVIDOR + "/GetAllEpidemia", {});
-      //console.log("[ctlLogin.js] Valor resp:", resp.data);
-      res.render("epidemia/view_manutencao", {
+    const resp = await axios.get('http://localhost:20100/acl/epidemia/v1/GetAllEpidemias',     
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("[ctlEpidemia|resp.data]", JSON.stringify(resp.data));
+
+        // Renderiza a página com os dados obtidos
+        res.render("epidemia/view_manutencao", {
         title: "Manutenção de Epidemias",
         data: resp.data,
         userName: userName,
       });
-    } catch (erro) {
-      console.log("[ctlEpidemia.js|getAllEpidemia] Try Catch: Erro de requisição");
+
+      console.log("Resposta enviada com sucesso para epidemia");
+
+    } catch (error) {
+      console.error('Erro ao buscar epidemia:' );  //, error);
+  
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao buscar epidemia' });
+        console.log("Resposta de erro enviada");
+      } else {
+        console.log("Erro ao buscar epidemia, mas a resposta já havia sido enviada");
+      }
     }
-  })();
+  };
 
 //@ Abre formulário de cadastro de epidemia
 const openEpidemiaInsert = (req, res) =>
@@ -99,8 +124,8 @@ const getDados = (req, res) =>
           },
         }
       );
-      if (resp.data.status == "ok") {
-        res.json({ status: "ok", registro: resp.data.registro[0] });
+      if (epidemia.status == "ok") {
+        res.json({ status: "ok", registro: epidemia.registro[0] });
       }
     } catch (error) { 
       console.log(

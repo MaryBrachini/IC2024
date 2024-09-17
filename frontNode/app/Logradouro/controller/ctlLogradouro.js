@@ -1,21 +1,47 @@
 const axios = require("axios");
-const moment = require("moment");
 
 //@ Abre o formulário de manutenção de logradouro
-const getAllLogradouro = (req, res) =>
-  (async () => {
-    userName = req.session.userName;
-    try {
-      resp = await axios.get(process.env.SERVIDOR + "/getAllLogradouro", {});
-      res.render("logradouro/view_manutencao", {
+const getAllLogradouro = async (req, res) => {
+
+  console.log("getAllLogradouro");
+
+  token = req.session.token
+  console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token);
+
+  userName = req.session.userName;
+
+  try {
+    const resp = await axios.get('http://localhost:20100/acl/logradouro/v1/GetAllLogradouros',     
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data));
+
+    // Renderiza a página com os dados obtidos
+    res.render("logradouro/view_manutencao", {
         title: "Manutenção do Logradouro",
         data: resp.data,
         userName: userName,
       });
-    } catch (erro) {
-      console.log("[ctlLogradouro.js|getAllLogradouro] Try Catch: Erro de requisição");
+   
+      console.log("Resposta enviada com sucesso para logradouro");
+      
+    } catch (error) {
+      console.error('Erro ao buscar logradouro:' );  //, error);
+  
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao buscar logradouro' });
+        console.log("Resposta de erro enviada");
+      } else {
+        console.log("Erro ao buscar logradouro, mas a resposta já havia sido enviada");
+      }
     }
-  })();
+  };
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de logradouro
 const insertLogradouro = (req, res) =>

@@ -1,21 +1,47 @@
 const axios = require("axios");
-const moment = require("moment");
 
 //@ Abre o formulário de manutenção de Ocorrencias
-const getAllOcorrencias = (req, res) =>
-  (async () => {
-    userName = req.session.userName;
-    try {
-      resp = await axios.get(process.env.SERVIDOR + "/getAllOcorrencias", {});
-      res.render("Ocorrencias/view_manutencao", {
+const getAllOcorrencias = async (req, res) => {
+
+  console.log("getAllOcorrencias");
+
+  token = req.session.token
+  console.log("[ctlOcorrencias|getAllOcorrencias] TOKEN:", token);
+
+  userName = req.session.userName;
+
+  try {
+    const resp = await axios.get('http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',     
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("[ctlOcorrencias|resp.data]", JSON.stringify(resp.data));
+
+    // Renderiza a página com os dados obtidos
+    res.render("Ocorrencias/view_manutencao", {
         title: "Manutenção das Ocorrencias",
         data: resp.data,
         userName: userName,
       });
-    } catch (erro) {
-      console.log("[ctlOcorrencias.js|getAllOcorrencias] Try Catch: Erro de requisição");
+   
+      console.log("Resposta enviada com sucesso para ocorrencias");
+      
+    } catch (error) {
+      console.error('Erro ao buscar ocorrencias:' );  //, error);
+  
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao buscar ocorrencias' });
+        console.log("Resposta de erro enviada");
+      } else {
+        console.log("Erro ao buscar ocorrencias, mas a resposta já havia sido enviada");
+      }
     }
-  })();
+  };
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de Ocorrencias
 const insertOcorrencias = (req, res) =>

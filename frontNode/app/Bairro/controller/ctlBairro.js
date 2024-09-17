@@ -2,14 +2,16 @@ const axios = require("axios");
 
 // Função para lidar com a obtenção de todos os bairros
 const GetAllBairros = async (req, res) => {
-  console.log("Handling request for /bairros");
+
+  console.log("GetAllBairros");
+
   token = req.session.token
   console.log("[ctlBairros|GetAllBairros] TOKEN:", token);
 
   userName = req.session.userName;
 
   try {
-    const response = await axios.get('http://localhost:20100/acl/bairro/v1/GetAllBairros',     
+    const resp = await axios.get('http://localhost:20100/acl/bairro/v1/GetAllBairros',     
       {
         headers: {
           "Content-Type": "application/json",
@@ -18,17 +20,17 @@ const GetAllBairros = async (req, res) => {
       }
     );
 
-    const bairros = response.data;
-    console.log("[ctlBairro|response.data]", JSON.stringify(bairros));
+    console.log("[ctlBairro|resp.data]", JSON.stringify(resp.data));
 
     // Renderiza a página com os dados obtidos
     res.render("bairro/view_manutencao", {
       title: "Manutenção de Bairros",
-      data: bairros,
+      data: resp.data,
       userName: userName,
     });
    
     console.log("Resposta enviada com sucesso para bairros");
+    
   } catch (error) {
     console.error('Erro ao buscar bairros:' );  //, error);
 
@@ -104,9 +106,9 @@ const getDados = async (req, res) => {
     );
 
     res.json({
-      status: resp.data.status,
-      registro: resp.data.status === "ok" ? resp.data.registro[0] || {} : undefined,
-      mensagem: resp.data.status !== "ok" ? "Erro ao obter dados do bairro." : undefined,
+      status: bairros.status,
+      registro: bairros.status === "ok" ? bairros.registro[0] || {} : undefined,
+      mensagem: bairros.status !== "ok" ? "Erro ao obter dados do bairro." : undefined,
     });
   } catch (error) {
     console.log("[ctlBairro.js|getDados] Erro não identificado", error);
@@ -133,8 +135,8 @@ const insertBairro = async (req, res) => {
       );
 
       res.json({
-        status: resp.data.status,
-        mensagem: resp.data.status === "ok" ? "Bairro inserido com sucesso!" : "Erro ao inserir bairro!",
+        status: bairros.status,
+        mensagem: bairros.status === "ok" ? "Bairro inserido com sucesso!" : "Erro ao inserir bairro!",
       });
     }
   } catch (error) {
@@ -161,8 +163,8 @@ const updateBairro = async (req, res) => {
       );
 
       res.json({
-        status: resp.data.status,
-        mensagem: resp.data.status === "ok" ? "Bairro atualizado com sucesso!" : "Erro ao atualizar bairro!",
+        status: bairros.status,
+        mensagem: bairros.status === "ok" ? "Bairro atualizado com sucesso!" : "Erro ao atualizar bairro!",
       });
     }
   } catch (error) {
@@ -190,8 +192,8 @@ const deleteBairro = async (req, res) => {
       );
 
       res.json({
-        status: resp.data.status,
-        mensagem: resp.data.status === "ok" ? "Bairro removido com sucesso!" : "Erro ao remover bairro!",
+        status: bairros.status,
+        mensagem: bairros.status === "ok" ? "Bairro removido com sucesso!" : "Erro ao remover bairro!",
       });
     }
   } catch (error) {
