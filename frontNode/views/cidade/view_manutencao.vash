@@ -1,5 +1,4 @@
 @html.extend('layout', function(model){
-
 @html.block('content', function(model){
 
 <main>
@@ -14,7 +13,7 @@
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/cidade/insertCidade'">Nova Cidade</button>
+                            onclick="window.location.href = 'acl/cidade/v1/InsertCidade'">Nova Cidade</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -31,42 +30,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                                @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
-                                    
-                                    <script>
-                                    console.log('model.data:', model.data);
-                                    console.log('model.data.registro:', model.data.registro);
-                                    console.log('model.data.registro is an array:', Array.isArray(model.data.registro));
-                                    </script>
-
-                                    @model.data.registro.forEach(function(registro) {
-                                        <tr>                                    
-                                            <td>
-                                                <a href="/acl/cidade/v1/viewCidade/@registro.cidadeID/v" class="btn btn-info btn-sm">
-                                                    <i class="fa fa-magnifying-glass"></i> Visualizar
-                                                </a>
-                                            </td>
-                                            <td>@registro.cidadeID</td>
-                                            <td>@registro.nomeCidade</td>
-                                            <td>@registro.estadoIDFK</td>
-                                        </tr>
-                                    <script>
-                                    })
-                                } else {
-                                    <tr>
-                                        <td colspan="4">Nenhum registro encontrado.</td>
+                                @model.data.forEach(function(registro) {
+                                    <tr>                                    
+                                        <td>
+                                            <a href="/acl/cidade/v1/viewCidade/@registro.Bairroid/v" class="btn btn-info btn-sm">
+                                                <i class="fa fa-magnifying-glass"></i> Visualizar
+                                            </a>
+                                        </td>
+                                        <td>@registro.Bairroid</td>
+                                        <td>@registro.Nomebairro</td>
+                                        <td>@registro.Codigobairro</td>
                                     </tr>
-                                }
+                                })
                             </tbody>
-                            <tfoot>
+                            @* <tfoot>
                                 <tr>
                                     <th>Ação</th>
                                     <th>ID</th>
                                     <th>Cidade</th>
                                     <th>Estado</th>
                                 </tr>
-                            </tfoot>
+                            </tfoot> *@
                         </table>
                     </div>
                 </div>
@@ -80,14 +64,13 @@
 })
 
 <script>
-    // Certifique-se de que a tabela esteja inicializada
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
-
-        console.log("DataTable",table.settings());
-
-        // Adicione os botões de ação no topo da tabela
-        table.buttons().container()
-            .appendTo($('.col-sm-12:eq(0)', table.table().container()));
+    var table = new DataTable('#example', {
+        dom: 'B<"top"fi>rt<"bottom"lp><"clear">',
+        buttons: [
+            'copy', 'csv', 'pdf'
+        ]
     });
+
+    table.buttons().container()
+        .appendTo($('.col-sm-12:eq(0)', table.table().container()));
 </script>

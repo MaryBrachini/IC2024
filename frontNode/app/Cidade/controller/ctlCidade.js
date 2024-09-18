@@ -19,12 +19,12 @@ const GetAllCidade = async (req, res) => {
       }
     );
   
-/*     console.log("[ctlCidade|resp.data]", JSON.stringify(resp.data));*/ 
+  console.log("[ctlCidade|resp.data]", JSON.stringify(resp.data));
 
     // Renderiza a página com os dados obtidos
     res.render("cidade/view_manutencao", {
       title: "Manutenção da Cidade",
-      data: resp.data,
+      data: resp.data.regReturn,
       userName: userName,
     });
   } catch (erro) {
