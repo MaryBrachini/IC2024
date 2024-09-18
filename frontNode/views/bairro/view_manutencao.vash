@@ -30,8 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               @if (model.data && model.data.registro && Array.isArray(model.data.registro)) {
-                                    @model.data.registro.forEach(function(registro) {
+                                @model.data.forEach(function(registro) {
                                         <tr>                                    
                                             <td>
                                                 <a href="/bairros/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
@@ -43,11 +42,6 @@
                                             <td>@registro.nome</td>
                                         </tr>
                                     })
-                                } else {
-                                    <tr>
-                                        <td colspan="4">Nenhum registro encontrado</td> <!-- Corrigido para 4 -->
-                                    </tr>
-                                } 
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -70,12 +64,13 @@
 })
 
 <script>
-    // Certifique-se de que a tabela esteja inicializada
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
-
-        // Adicione os botões de ação no topo da tabela
-        table.buttons().container()
-            .appendTo($('.col-sm-12:eq(0)', table.table().container()));
+    var table = new DataTable('#example', {
+        dom: 'B<"top"fi>rt<"bottom"lp><"clear">',
+        buttons: [
+            'copy', 'csv', 'pdf'
+        ]
     });
+
+    table.buttons().container()
+        .appendTo($('.col-sm-12:eq(0)', table.table().container()));
 </script>
