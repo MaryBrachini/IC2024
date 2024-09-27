@@ -1,74 +1,76 @@
 @html.extend('layout', function(model) {
+    @html.block('content', function(model) {
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">@model.title</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">@model.title</li>
+                </ol>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
 
-@html.block('content', function(model) {
-
-<main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="col-2 ms-1 mt-1 mb-2">
-                        <button type="button" class="btn btn-primary"
+                            <div class="col-2 ms-1 mt-1 mb-2">
+                            <button type="button" class="btn btn-primary" 
                             onclick="window.location.href = '/bairros/insertBairro'">Novo Bairro</button>
-                    </div>
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        Listagem de Bairros
-                    </div>
-                    <div class="card-body">
-                        <table id="example" class="stripe" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Código do Bairro</th>
-                                    <th>Nome</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @model.data.forEach(function(registro) {
-                                        <tr>                                    
-                                            <td>
-                                                <a href="/bairros/viewBairro/@registro.bairroid/v" class="btn btn-info btn-sm">
-                                                    <i class="fa fa-magnifying-glass"></i> Visualizar
-                                                </a> 
-                                            </td>
-                                            <td>@registro.bairroid</td>
-                                            <td>@registro.codigobairro</td>
-                                            <td>@registro.nome</td>
+                            </div>
+
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Listagem de Bairros
+                            </div>
+
+                            <div class="card-body">
+                                <table id="example" class="stripe" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Ação</th>
+                                            <th>ID</th>
+                                            <th>Código do Bairro</th>
+                                            <th>Nome</th>
                                         </tr>
-                                    })
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Código do Bairro</th>
-                                    <th>Nome</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                    </thead>
+                                   <tbody>
+                                        @{
+                                            model.data.forEach(function(registro) {
+                                                <tr>
+                                                    <td>
+                                                        <a href="/acl/bairro/v1/openBairroUpdate/@registro.Bairroid" 
+                                                        class="btn btn-info btn-sm" aria-label="Visualizar bairro @registro.bairroid">
+                                                            <i class="fa fa-magnifying-glass"></i> Visualizar
+                                                        </a>
+                                                    </td>
+                                                    <td>@registro.Bairroid</td>
+                                                    <td>@registro.Codigobairro</td>
+                                                    <td>@registro.Nomebairro</td>
+                                                </tr>
+                                            });
+                                        }
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th>Ação</th>
+                                            <th>ID</th>
+                                            <th>Código do Bairro</th>
+                                            <th>Nome</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</main>
-
-})
-
-})
+        </main>
+    });
+});
 
 <script>
     var table = new DataTable('#example', {
         dom: 'B<"top"fi>rt<"bottom"lp><"clear">',
-        buttons: [
-            'copy', 'csv', 'pdf'
-        ]
+        buttons: ['copy', 'csv', 'pdf'],
+        responsive: true
     });
 
     table.buttons().container()

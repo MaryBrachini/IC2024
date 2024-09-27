@@ -21,13 +21,13 @@ function authenticationMiddleware(req, res, next) {
 
 //* GET métodos */
 router.get('/', authenticationMiddleware, bairroApp.GetAllBairros);
-router.get('/openCursosInsert', authenticationMiddleware, bairroApp.openBairroInsert);
-router.get('/openCursosUpdate/:id', authenticationMiddleware, bairroApp.openBairroUpdate);
+router.get('/openBairroInsert', authenticationMiddleware, bairroApp.openBairroInsert);
+router.get('/openBairroUpdate/:id', authenticationMiddleware, bairroApp.openBairroUpdate);
 
 /* POST métodos */
 router.post('/insertBairro', authenticationMiddleware, bairroApp.insertBairro);
-router.post('/deleteBairro', authenticationMiddleware, bairroApp.deleteBairro);
 router.post('/getDados', authenticationMiddleware, bairroApp.getDados);
-router.post('/updateCursos', authenticationMiddleware, bairroApp.updateBairro); 
+router.post('/updateBairro', authenticationMiddleware, bairroApp.updateBairro); 
+router.post('/deleteBairro', authenticationMiddleware, bairroApp.deleteBairro);
 
 module.exports = router;

@@ -23,8 +23,8 @@ function authenticationMiddleware(req, res, next) {
 
 //* GET métodos */
 router.get('/', authenticationMiddleware, epidemiaApp.getAllEpidemia);
-router.get('/openCursosInsert', authenticationMiddleware, epidemiaApp.openEpidemiaInsert);
-router.get('/openCursosUpdate/:id', authenticationMiddleware, epidemiaApp.openEpidemiaUpdate);
+router.get('/openEpidemiaInsert', authenticationMiddleware, epidemiaApp.openEpidemiaInsert);
+router.get('/openEpidemiaUpdate/:id', authenticationMiddleware, epidemiaApp.openEpidemiaUpdate);
 
 /* POST métodos */
 router.post('/insertEpidemia', authenticationMiddleware, epidemiaApp.insertEpidemia);
