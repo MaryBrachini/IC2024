@@ -25,9 +25,9 @@ router.get('/openBairroInsert', authenticationMiddleware, bairroApp.openBairroIn
 router.get('/openBairroUpdate/:id', authenticationMiddleware, bairroApp.openBairroUpdate);
 
 /* POST métodos */
-router.post('/insertBairro', authenticationMiddleware, bairroApp.insertBairro);
+router.post('/InsertBairro', authenticationMiddleware, bairroApp.InsertBairro);
 router.post('/getDados', authenticationMiddleware, bairroApp.getDados);
-router.post('/updateBairro', authenticationMiddleware, bairroApp.updateBairro); 
+router.post('/UpdateBairro', authenticationMiddleware, bairroApp.UpdateBairro); 
 router.post('/deleteBairro', authenticationMiddleware, bairroApp.deleteBairro);
 
 module.exports = router;

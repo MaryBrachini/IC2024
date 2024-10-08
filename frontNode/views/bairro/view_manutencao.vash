@@ -12,7 +12,7 @@
 
                             <div class="col-2 ms-1 mt-1 mb-2">
                             <button type="button" class="btn btn-primary" 
-                            onclick="window.location.href = '/bairros/insertBairro'">Novo Bairro</button>
+                            onclick="window.location.href = '/bairros/openBairroInsert'">Novo Bairro</button>
                             </div>
 
                             <div class="card-header">
@@ -35,8 +35,8 @@
                                             model.data.forEach(function(registro) {
                                                 <tr>
                                                     <td>
-                                                        <a href="/acl/bairro/v1/openBairroUpdate/@registro.Bairroid" 
-                                                        class="btn btn-info btn-sm" aria-label="Visualizar bairro @registro.bairroid">
+                                                        <a href="/bairros/openBairroUpdate/@registro.Bairroid" 
+                                                        class="btn btn-info btn-sm" aria-label="Visualizar bairro @registro.Bairroid">
                                                             <i class="fa fa-magnifying-glass"></i> Visualizar
                                                         </a>
                                                     </td>

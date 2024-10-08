@@ -15,21 +15,22 @@
           <div class="col-sm-6 col-xxl-12">
             <form id="form">
               <div class="mb-1" style="display: none">
-                <input type="number" name="bairroid" class="form-control" id="bairroid" />
+                <input type="number" name="Bairroid" class="form-control" id="Bairroid"/>
               </div>
               <div class="mb-1 row ">
-                <label for="codigobairro" class="col-sm-2 col-xxl-1 col-form-label required">Código do bairro:</label>
+                <label for="Codigobairro" class="col-sm-2 col-xxl-1 col-form-label required">Código do bairro:</label>
                 <div class="col-sm-4 col-xxl-2">
-                  <input type="text" name="codigobairro" class="form-control-plaintext" id="codigobairro" maxlength="10" required readonly />
+                  <input type="text" name="Codigobairro" class="form-control-plaintext" id="Codigobairro" maxlength="10" required readonly />
                 </div>
 
-                <label for="nomebairro" class="col-sm-2 col-xxl-1 col-form-label required">Nome do Bairro:</label>
+                <label for="Nomebairro" class="col-sm-2 col-xxl-1 col-form-label required">Nome do Bairro:</label>
                 <div class="col-sm-4 col-xxl-3">
-                  <input type="text" name="nomebairro" class="form-control-plaintext" id="nomebairro" maxlength="50" required readonly />
+                  <input type="text" name="Nomebairro" class="form-control-plaintext" id="Nomebairro" maxlength="50" required readonly />
                 </div>
               </div>
             </form>
           </div>
+
           <div class="">
             <button type="button" class="btn btn-success me-2" onclick="btnSalvar()" id="btnSalvar" hidden>
               Salvar
@@ -93,15 +94,16 @@
     }
 
     //Coloca o Bairro no primeiro campo do formulário
-    $("#codigobairro").focus();
+    $("#Codigobairro").focus();
   }
 
-  //@ Busca os dados de acordo com o ID para serem alterados
+  //@ Busca dados para serem alterados
   async function getDados(idBuscaPar) {
     console.log("[getDados] idBusca", idBuscaPar);
 
     try {
-      const resp = await axios.post(
+      console.log("[view_cadBairro|getDados]TRY");
+      resp = await axios.post(
         "/bairros/getDados", {
           idBusca: idBuscaPar
         }, {
@@ -111,9 +113,14 @@
         }
       );
       if (resp.data.status == "ok") {
-        $("#bairroid").val(resp.data.registro.bairroid);
-        $("#codigobairro").val(resp.data.registro.codigobairro);
-        $("#nomebairro").val(resp.data.registro.nomebairro);
+        $("#Bairroid").val(resp.data.registro.Bairroid);
+        $("#Codigobairro").val(resp.data.registro.Codigobairro);
+        $("#Nomebairro").val(resp.data.registro.Nomebairro);
+        if (resp.data.registro.ativo) {
+          $("#ativo").prop("checked", true);
+        } else {
+          $("#ativo").prop("checked", false);
+        }
       } else {
         alert("Houve erro ao buscar os dados dos bairro!");
       }
@@ -146,15 +153,17 @@
 
   //@ Salva os dados
   async function btnSalvar() {
+
     const formData = new FormData(form);
 
     const validado = validaForm(formData);
     if (!validado) {
       return;
+      console.log("[view_cadBairro|btnSalvar] formulario invalido");
     }
 
     try {
-      resp = await axios.post("/bairros/insertBairro", formData, {
+      const resp = await axios.post("/bairros/InsertBairro", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -173,11 +182,11 @@
 
   //@ Habilita form para alteração
   function habilitaForm() {
-    $("#codigobairro").prop("class", "form-control");
-    $("#codigobairro").prop("readonly", false);
+    $("#Codigobairro").prop("class", "form-control");
+    $("#Codigobairro").prop("readonly", false);
 
-    $("#nomebairro").prop("class", "form-control");
-    $("#nomebairro").prop("readonly", false);
+    $("#Nomebairro").prop("class", "form-control");
+    $("#Nomebairro").prop("readonly", false);
   }
 
   //@ Habilita a alteração
@@ -191,7 +200,6 @@
   }
 
   //@ Salva a alteração
-  //@ console.log("[view_cadBairro|btnSalvarAlteracao] :", )
   async function btnSalvarAlteracao() {
     const formData = new FormData(form);
     const validado = validaForm(formData);
@@ -200,7 +208,7 @@
     }
 
     try {
-      resp = await axios.post("/bairros/updateBairro", formData, {
+      resp = await axios.post("/bairros/UpdateBairro", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -208,25 +216,21 @@
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
-        window.open("/bairros/openBairroUpdate/" + String($("#bairroid").val()), "_self");
+        window.open("/bairros/openBairroUpdate/" + String($("#Bairroid").val()), "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }
     } catch (error) {
       alert("[view_cadBairro|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
     }
-
-
   }
 
-  //@ Cancela a alteração
-  //@ console.log("[view_cadBairro|btnCancelarAlteracao] Valor do id", $("#bairroid").val());    
+  //@ Cancela a alteração 
   async function btnCancelarAlteracao() {
-    window.open("/bairros/openBairroUpdate/" + String($("#bairroid").val()), "_self");
+    window.open("/bairros/openBairroUpdate/" + String($("#Bairroid").val()), "_self");
   }
 
   //@ Remove bairro
-  //@ console.log("[view_cadBairro|btnSalvarAlteracao] :", )
   async function btnRemover() { 
 
     var confirma = confirm("Deseja realmente remover o registro?");
@@ -237,7 +241,7 @@
 
     try {
       resp = await axios.post("/bairros/deleteBairro", {
-        bairroid: formData.get("bairroid")
+        Bairroid: formData.get("Bairroid")
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -254,11 +258,6 @@
       alert("[view_cadBairro|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
     }
   }
-
-
-  $(function() {
-    $("#rendafamiliar").maskMoney();
-  });
 
   async function deleteUBS(unidBasicaSaudeIDPar) {
     resp = await axios.post(

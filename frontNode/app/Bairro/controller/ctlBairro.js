@@ -44,31 +44,36 @@ const GetAllBairros = async (req, res) => {
 };
 
 // Função para abrir o formulário de cadastro de bairro
-const openBairroInsert = async (req, res) => {
+const openBairroInsert = async(req, res) => {
 
-  const userName = req.session.userName;
-  console.log("[ctlBairro.js|openBairroInsert]");
+    /* console.log("[ctlBairro.js|openBairroInsert]"); */
 
-  try {
-    if (req.method === "GET") {
-      res.render("bairro/view_cadBairro", {
-        title: "Cadastro de bairro",
-        oper: "c",
-        userName: userName,
-      });
-      console.log("[ctlBairro.js|try]");
+    var oper = "";
+    userName = req.session.userName;
+    token = req.session.token;
+
+    try {
+      /* console.log("[ctlBairro.jsopenBairroInsert]try"); */
+      if (req.method == "GET") {
+        oper = "c";
+
+        res.render("bairro/view_cadBairro", {
+          title: "Cadastro de bairro",
+          oper: oper,
+          userName: userName,
+        });
+      }
+    } catch (erro) {
+      console.log("[ctlBairro.js|openBairroInsert] Erro não identificado", error);
     }
-  } catch (error) { 
-    console.log("[ctlBairro.js|openBairroInsert] Erro não identificado", error);
-  }
-};
+  };
 
 // Função para validar campos no formulário
 const validateForm = (regFormPar) => {
 
   console.log("[ctlBairro.js|validateForm]");
 
-  regFormPar.bairroid = regFormPar.bairroid ? parseInt(regFormPar.bairroid) : 0;
+  regFormPar.Bairroid = regFormPar.Bairroid ? parseInt(regFormPar.Bairroid) : 0;
   regFormPar.removido = regFormPar.removido === "true";
   return regFormPar;
   };
@@ -76,36 +81,34 @@ const validateForm = (regFormPar) => {
 // Função para abrir o formulário de atualização de bairro
 const openBairroUpdate = async (req, res) => {
 
-  const userName = req.session.userName;
+  var oper = "";
+  userName = req.session.userName;
+  token = req.session.token;
   const id = parseInt(req.params.id, 10);
 
   console.log("[ctlBairro.js|openBairroUpdate] ID:", id);
 
   try {
-      const bairro = await axios.post(process.env.SERVIDOR + "/acl/bairro/v1/GetBairrosByID",
-         { 
-          bairroid: id 
-         },
-          {
-          headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + req.session.token,
-          }
-      });
 
+    /* console.log("[ctlBairro.js|openBairroUpdate]try");*/
+
+    if (req.method == "GET") {
+      oper = "u";
+      const id = req.params.id;
+      parseInt(id);
       res.render("bairro/view_cadBairro", {
-          title: "Atualizar Bairro",
-          oper: "u",
-          bairro: bairro.data,
-          userName: userName
+        title: "Atualizar Bairro",
+        oper: oper,
+        idBusca: id,
+        userName: userName,
       });
+    }
 
-  } catch (error) {
+  } catch (erro) {
       console.log("[ctlBairro.js|openBairroUpdate] Erro:", error);
       res.status(500).send("Erro ao obter dados do bairro para atualização.");
   }
 };
-
 
 // Função para recuperar os dados do bairro e mostrar
 const getDados = async (req, res) => {
@@ -114,11 +117,16 @@ const getDados = async (req, res) => {
   console.log("[ctlBairro.js|getDados] valor id :", idBusca);
 
   try {
-    console.log("[ctlBairro.js|getDados]Try");
+    /* console.log("[ctlBairro.js|getDados]Try"); */
+
+    // Validar se o ID é um número válido
+    if (isNaN(idBusca)) {
+      return res.status(400).json({ status: "error", message: "ID inválido fornecido." });
+  }
 
     const resp = await axios.post(
-      process.env.SERVIDOR + "/acl/bairro/v1/GetBairrosByID",
-      { bairroid: idBusca },
+      "http://localhost:20100/acl/bairro/v1/GetBairrosByID",
+      { Bairroid: idBusca },
       {
         headers: {
           "Content-Type": "application/json",
@@ -127,29 +135,38 @@ const getDados = async (req, res) => {
       }
     );
 
-    res.json({
-      status: resp.data.status,
-      registro: resp.data.status === "ok" ? resp.data.registro[0] || {} : undefined,
-      mensagem: resp.data.status !== "ok" ? "Erro ao obter dados do bairro." : undefined,
-    });
-  } catch (error) {
-    console.log("[ctlBairro.js|getDados]Catch, Erro não identificado", error);
-    res.status(500).send("Erro ao processar a requisição para obter dados do bairro");
+    // Verificando se a resposta foi bem-sucedida
+    if (resp.data.status === "success" && resp.data.msg === "ok") {
+      console.log("[ctlBairro.js|getDados] Dados recebidos com sucesso.");
+      res.status(200).json({ status: "ok", registro: resp.data.regReturn });
+  } else {
+      console.error("[ctlBairro.js|getDados] Erro ao obter dados:", resp.data);
+      res.status(404).json({ status: "error", message: "Dados do bairro não encontrados." });
   }
+} catch (error) {
+  console.log("[ctlBairro.js|getDados] Catch, Erro não identificado", error.response ? error.response.data : error.message);
+  res.status(500).send("Erro ao processar a requisição para obter dados do bairro");
+}
 };
 
 // Função para realizar a cadastrar um bairro
-const insertBairro = async (req, res) => {
+const InsertBairro = async (req, res) => {
 
   const token = req.session.token;
-  console.log("[ctlBairro.js|insertBairro]");
+  console.log("[ctlBairro.js|InsertBairro]");
 
   try {
-    if (req.method === "POST") {
+      if (req.method === "POST") {
+
+      /* console.log("[ctlBairro.js|InsertBairro]IF"); */
+
       const regPost = validateForm(req.body);
-      regPost.bairroid = 0;
+      regPost.Bairroid = 0;
+
+      console.log("[ctlBairro.js|InsertBairro] Dados a serem enviados:", regPost); // Log dos dados
+
       const resp = await axios.post(
-        process.env.SERVIDOR + "/InsertBairro",
+        "http://localhost:20100/acl/bairro/v1/InsertBairro",
         regPost,
         {
           headers: {
@@ -159,27 +176,36 @@ const insertBairro = async (req, res) => {
         }
       );
 
-      res.json({
-        status: bairros.status,
-        mensagem: bairros.status === "ok" ? "Bairro inserido com sucesso!" : "Erro ao inserir bairro!",
-      });
-    }
-  } catch (error) {
-    console.log("[ctlBairro.js|insertBairro] Erro não identificado", error);
+      if (resp.data.status === "success") {
+        res.json({ status: "success", mensagem: "Bairro inserido com sucesso!" });
+      } else {
+        console.log("[ctlBairro.js|InsertBairro] Erro ao inserir bairro:", resp.data);
+        res.json({ status: "erro", mensagem: "Erro ao inserir bairro!" });
+      }
+      
+    }    
+  }  catch (error) {
+    console.log("[ctlBairro.js|InsertBairro] Erro não identificado", error.response ? error.response.data : error.message);
     res.status(500).send("Erro ao processar a requisição para inserir o bairro");
   }
 };
 
 // Função para realizar a atualização de um bairro
-const updateBairro = async (req, res) => {
+const UpdateBairro = async (req, res) => {
 
-  const token = req.session.token;
-  console.log("[ctlBairro.js|updateBairro]");
+  token = req.session.token;
+  console.log("[ctlBairro.js|UpdateBairro]");
+
   try {
+    console.log("[ctlBairro.js|UpdateBairro]try");
+
     if (req.method === "POST") {
+
+      console.log("[ctlBairro.js|UpdateBairro]if");
+
       const regPost = validateForm(req.body);
       const resp = await axios.post(
-        process.env.SERVIDOR + "/UpdateBairro",
+        "http://localhost:20100/acl/bairro/v1/UpdateBairro",
         regPost,
         {
           headers: {
@@ -190,12 +216,12 @@ const updateBairro = async (req, res) => {
       );
 
       res.json({
-        status: bairros.status,
-        mensagem: bairros.status === "ok" ? "Bairro atualizado com sucesso!" : "Erro ao atualizar bairro!",
+        status: resp.data.status,
+        mensagem: resp.data.status === "ok" ? "Bairro atualizado com sucesso!" : "Erro ao atualizar bairro!",
       });
     }
   } catch (error) {
-    console.log("[ctlBairro.js|updateBairro] Erro não identificado.", error);
+    console.log("[ctlBairro.js|UpdateBairro] Erro não identificado.");
     res.status(500).send("Erro ao processar a requisição para atualizar o bairro");
   }
 };
@@ -208,10 +234,10 @@ const deleteBairro = async (req, res) => {
   try {
     if (req.method === "POST") {
       const regPost = validateForm(req.body);
-      regPost.bairroid = parseInt(regPost.bairroid);
+      regPost.Bairroid = parseInt(regPost.Bairroid);
       const resp = await axios.post(
         process.env.SERVIDOR + "/DeleteBairro",
-        { bairroid: regPost.bairroid },
+        { Bairroid: regPost.Bairroid },
         {
           headers: {
             "Content-Type": "application/json",
@@ -221,8 +247,8 @@ const deleteBairro = async (req, res) => {
       );
 
       res.json({
-        status: bairros.status,
-        mensagem: bairros.status === "ok" ? "Bairro removido com sucesso!" : "Erro ao remover bairro!",
+        status: resp.data.status,
+        mensagem: resp.data.status === "ok" ? "Bairro removido com sucesso!" : "Erro ao remover bairro!",
       });
     }
   } catch (error) {
@@ -236,7 +262,7 @@ module.exports = {
   openBairroInsert,
   openBairroUpdate,
   getDados,
-  insertBairro,
-  updateBairro,
+  InsertBairro,
+  UpdateBairro,
   deleteBairro,
 };
