@@ -219,7 +219,7 @@ import streamlit as st
 ```
 ### 4- Para executar os arquivos
 ```
-streamlit run app.py
+streamlit run mapa_app.py
 ```
 
 Caso precise da biblioteca pandas a versão ideal para streamlit 0.84
