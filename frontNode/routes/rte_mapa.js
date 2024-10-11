@@ -19,7 +19,7 @@ function authenticationMiddleware(req, res, next) {
 
 router.get('/', authenticationMiddleware, (req, res) => {
     const model = {
-        title: 'Mapa de Suspeitos'
+        title: 'Mapa de Ocorrências'
     };
     res.render('mapa/view_mapa', model);
 });

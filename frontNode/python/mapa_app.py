@@ -1,52 +1,94 @@
 import streamlit as st
 from streamlit_folium import folium_static
 import folium
+import psycopg2
+from datetime import datetime, timedelta
 
-# Configurar a página do Streamlit para modo amplo (wide)
-st.set_page_config(layout="wide")
-
-# Aplicar estilo CSS para remover o espaço ao redor do mapa
+# Aplicar estilo CSS para remover o espaço ao redor do mapa e ajustar a largura do seletor
 st.markdown(
-    """
-    <style>
+     """
+     <style>
     .main .block-container {
-        padding-top: 0;
-        padding-right: 0;
-        padding-left: 0;
-        padding-bottom: 0;
+        padding: 0;  /* Remove todo o padding */
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* Centraliza horizontalmente */
+        width: 100%; /* Garante que o contêiner ocupe 100% da largura */
+    }
+    .stSelectbox {
+        width: 150px;  /* Ajustar largura do seletor */
+        font-size: 14px; /* Ajustar tamanho da fonte */
+        margin-bottom: 20px; /* Espaço abaixo do seletor */
     }
     iframe {
-        height: 95vh;  /* Define a altura do mapa para 95% da altura da janela */
-        width: 100%;  /* O mapa vai ocupar 100% da largura */
+        height: 75vh;  /* Define a altura do mapa para 75% da altura da janela */
+        width: 100vw;  /* O mapa vai ocupar 100% da largura da janela */
+        border: none; /* Remove a borda do iframe */
+        overflow: hidden; /* Remove a barra de rolagem */
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Lista de coordenadas das localizações
-locations = [
-    [-20.41535, -49.98621], [-20.41958, -49.98586], [-20.43072, -49.97739],
-    [-20.42079, -49.96233], [-20.42777, -49.95989], [-20.3913, -49.9772],
-    [-20.43947, -49.99455], [-20.41863, -49.96548], [-20.40675, -49.96171],
-    [-20.41801, -49.97098], [-20.39141, -49.96792], [-20.38903, -49.96967],
-    [-20.43402, -49.97984], [-20.43678, -49.98015], [-20.41262, -49.98295],
-    [-20.41229, -49.98559], [-20.43308, -49.96921], [-20.42559, -49.97096],
-    [-20.3936, -49.97761]
-]
+# Função para retornar o intervalo de tempo baseado na escolha do usuário
+def get_time_filter(option):
+    today = datetime.today()
+    if option == "Últimos 15 dias":
+        return today - timedelta(days=15)
+    elif option == "Últimos 30 dias":
+        return today - timedelta(days=30)
+    elif option == "Últimos 6 meses":
+        return today - timedelta(days=180)
+    elif option == "Último ano":
+        return today - timedelta(days=365)
+    return None
 
-# Criar um mapa centrado em uma localização específica
-mymap = folium.Map(location=[-20.41535, -49.98621], zoom_start=15)
+# Conectar ao banco de dados
+def get_data_from_db(time_filter):
+    conn = psycopg2.connect(
+        dbname="vdadosdev",
+        user="vdadmin",
+        password="p0stdb@!",
+        host="localhost"
+    )
+    cur = conn.cursor()
+    
+    query = """
+        SELECT latitude, longitude
+        FROM vdaocorrencia
+        WHERE dataocorrencia >= %s
+    """
+    cur.execute(query, (time_filter,))
+    data = cur.fetchall()
+    
+    cur.close()
+    conn.close()
+    
+    return data
 
-# Adicionar marcadores para cada localização na lista
-for location in locations:
+# Opções de filtro de tempo
+time_options = ["Últimos 15 dias", "Últimos 30 dias", "Últimos 6 meses", "Último ano"]
+selected_option = st.selectbox("Selecione o período de tempo:", time_options)
+
+# Obter o filtro de tempo
+time_filter = get_time_filter(selected_option)
+
+# Obter os dados filtrados do banco de dados
+data = get_data_from_db(time_filter)
+
+# Criar o mapa centrado em uma localização padrão
+mymap = folium.Map(location=[-20.41535, -49.98621], zoom_start=12)
+
+# Adicionar marcadores ao mapa com base nos dados do banco de dados
+for location in data:
     folium.CircleMarker(
         location=location,
-        radius=10,  # Tamanho do raio da bolha
-        color='blue',  # Cor da borda da bolha
+        radius=10,
+        color='blue',
         fill=True,
-        fill_color='blue'  # Cor de preenchimento da bolha
+        fill_color='blue'
     ).add_to(mymap)
 
-# Exibir o mapa usando o streamlit-folium com o mapa ajustado
+# Exibir o mapa no Streamlit
 folium_static(mymap)

@@ -17,7 +17,7 @@ function authenticationMiddleware(req, res, next) {
 router.get('/mapa', authenticationMiddleware, (req, res) => {
     // Define o modelo de dados a ser passado para a view
     const model = {
-        title: 'Mapa de Suspeitos'
+        title: 'Mapa de Ocorrências'
     };
 
     // Renderiza a view 'view_mapa.vash' passando o modelo
