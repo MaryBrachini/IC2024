@@ -219,7 +219,7 @@ import streamlit as st
 ```
 ### 4- Para executar os arquivos
 ```
-streamlit run app.py
+streamlit run mapa_app.py
 ```
 
 Caso precise da biblioteca pandas a versão ideal para streamlit 0.84
@@ -228,12 +228,17 @@ pip install pandas==1.2.4
 ```
 Caso precise da biblioteca numpy a versão ideal para streamlit 0.84
 ```
-pip install pandas==1.22
+pip install numpy==1.22
 ```
 
 ### 5- Instalar o folium
 ```
 pip install streamlit-folium==0.1.0 folium==0.11.0
+```
+
+### 6- Instalar o psycopg2
+```
+pip install psycopg2
 ```
 
 </details>
