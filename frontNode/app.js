@@ -18,6 +18,9 @@ var logradouroRouter = require('./routes/rte_Logradouro');
 var ubsRouter = require('./routes/rte_UBS');
 var ocorrenciasRouter = require('./routes/rte_Ocorrencias');
 
+
+var mapaRouter = require('./routes/rte_mapa');
+
 var app = express();
 
 // view engine setup
@@ -49,6 +52,7 @@ app.use('/cidade', cidadeRouter);
 app.use('/logradouro', logradouroRouter);
 app.use('/UBS', ubsRouter);
 app.use('/Ocorrencias', ocorrenciasRouter);
+app.use('/mapa', mapaRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

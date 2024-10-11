@@ -200,11 +200,13 @@
   }
 
   //@ Salva a alteração
-  async function btnSalvarAlteracao() {
+ const btnSalvarAlteracao = async () => {
     const formData = new FormData(form);
     const validado = validaForm(formData);
+
     if (!validado) {
       return;
+      console.log("[view_cadBairro|btnSalvarAlteracao]invalido");
     }
 
     try {
@@ -214,14 +216,16 @@
         },
       });
 
-      if (resp.data.status == "ok") {
+    console.log("[view_cadBairro|btnSalvarAlteracao]try");
+      if (resp.data.status == "success") {
         alert(resp.data.mensagem);
         window.open("/bairros/openBairroUpdate/" + String($("#Bairroid").val()), "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }
     } catch (error) {
-      alert("[view_cadBairro|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+       console.log("[view_cadBairro|btnSalvarAlteracao] Erro: ", error.response ? error.response.data : error.message);
+    alert("[view_cadBairro|btnSalvarAlteracao] Ocorreu um erro inesperado!" + (error.response ? error.response.data : error.message));
     }
   }
 

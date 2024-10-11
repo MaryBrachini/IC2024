@@ -117,7 +117,7 @@ const getDados = async (req, res) => {
   console.log("[ctlBairro.js|getDados] valor id :", idBusca);
 
   try {
-    /* console.log("[ctlBairro.js|getDados]Try"); */
+   /*  console.log("[ctlBairro.js|getDados]Try");  */
 
     // Validar se o ID é um número válido
     if (isNaN(idBusca)) {
@@ -134,6 +134,8 @@ const getDados = async (req, res) => {
         },
       }
     );
+
+    /* console.log("[ctlBairro.js|getDados]sla"); */
 
     // Verificando se a resposta foi bem-sucedida
     if (resp.data.status === "success" && resp.data.msg === "ok") {
@@ -192,18 +194,17 @@ const InsertBairro = async (req, res) => {
 
 // Função para realizar a atualização de um bairro
 const UpdateBairro = async (req, res) => {
-
-  token = req.session.token;
-  console.log("[ctlBairro.js|UpdateBairro]");
+  const token = req.session.token;
 
   try {
-    console.log("[ctlBairro.js|UpdateBairro]try");
+    console.log("[ctlBairro.js|UpdateBairro]TRY");
 
     if (req.method === "POST") {
 
-      console.log("[ctlBairro.js|UpdateBairro]if");
-
       const regPost = validateForm(req.body);
+
+      console.log("[ctlBairro.js|UpdateBairro] Dados a serem enviados:", regPost);
+
       const resp = await axios.post(
         "http://localhost:20100/acl/bairro/v1/UpdateBairro",
         regPost,
@@ -215,16 +216,24 @@ const UpdateBairro = async (req, res) => {
         }
       );
 
-      res.json({
-        status: resp.data.status,
-        mensagem: resp.data.status === "ok" ? "Bairro atualizado com sucesso!" : "Erro ao atualizar bairro!",
-      });
+      console.log("[ctlBairro.js|UpdateBairro]sla");
+
+      console.log("[ctlBairro.js|UpdateBairro] Resposta do servidor:", resp.data);
+
+      if (resp.data.status === "success") {
+        res.json({ status: "success", mensagem: "Bairro atualizado com sucesso!" });
+      } else {
+        console.error("[ctlBairro.js|UpdateBairro] Resposta inesperada do servidor:", resp.data);
+        res.json({ status: "erro", mensagem: "Erro ao atualizar bairro!" });
+      }
     }
   } catch (error) {
-    console.log("[ctlBairro.js|UpdateBairro] Erro não identificado.");
-    res.status(500).send("Erro ao processar a requisição para atualizar o bairro");
+    console.log("[ctlBairro.js|UpdateBairro] Erro não identificado:", error.response ? error.response.data : error.message);
+    res.status(500).json({ status: "erro", mensagem: "Erro ao processar a requisição para atualizar o bairro" });
   }
 };
+
+
 
 // Função para realizar a remoção soft de um bairro
 const deleteBairro = async (req, res) => {
@@ -232,11 +241,14 @@ const deleteBairro = async (req, res) => {
   const token = req.session.token;
   console.log("[ctlBairro.js|deleteBairro]");
   try {
+
+    console.log("[ctlBairro.js|deleteBairro] try");
+
     if (req.method === "POST") {
       const regPost = validateForm(req.body);
       regPost.Bairroid = parseInt(regPost.Bairroid);
       const resp = await axios.post(
-        process.env.SERVIDOR + "/DeleteBairro",
+        "http://localhost:20100/acl/bairro/v1/DeleteBairro",
         { Bairroid: regPost.Bairroid },
         {
           headers: {
@@ -246,13 +258,18 @@ const deleteBairro = async (req, res) => {
         }
       );
 
-      res.json({
-        status: resp.data.status,
-        mensagem: resp.data.status === "ok" ? "Bairro removido com sucesso!" : "Erro ao remover bairro!",
-      });
+      console.log("[ctlBairro.js|deleteBairro]sla foi");
+
+      if (resp.data.status === "success") {
+        res.json({ status: "success", mensagem: "Bairro atualizado com sucesso!" });
+      } else {
+        console.error("[ctlBairro.js|UpdateBairro] Resposta inesperada do servidor:", resp.data);
+        res.json({ status: "erro", mensagem: "Erro ao atualizar bairro!" });
+      }
+
     }
   } catch (error) {
-    console.log("[ctlBairro.js|deleteBairro] Erro não identificado", error);
+    console.log("[ctlBairro.js|UpdateBairro] Erro não identificado:", error.response ? error.response.data : error.message);
     res.status(500).send("Erro ao processar a requisição para remover o bairro");
   }
 };

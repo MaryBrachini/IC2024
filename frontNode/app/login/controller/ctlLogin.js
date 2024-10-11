@@ -3,7 +3,7 @@ const axios = require('axios');
 const Login = async (req, res) => {
   try {
     if (req.method === "POST" && req.body.username) {
-      console.log("[ctlLogin.js] Valor Servidor:", process.env.SERVIDOR);
+     /*  console.log("[ctlLogin.js] Valor Servidor:", process.env.SERVIDOR); */
 
       // Envia a requisição ao servidor de autenticação
       const resp = await axios.post(process.env.SERVIDOR + "/login", {
@@ -11,7 +11,7 @@ const Login = async (req, res) => {
         password: req.body.password
       });
 
-      console.log("Resposta completa de login:", resp.data);
+     /*  console.log("Resposta completa de login:", resp.data); */
 
       if (!resp.data.auth) {
         return res.render("login/login", {
@@ -23,13 +23,8 @@ const Login = async (req, res) => {
         req.session.isLogged = true;
         req.session.userName = req.body.username;
         req.session.token = resp.data.token; // Armazena o token na sessão
-        console.log("Token armazenado na sessão:", req.session.token);
-        return res.redirect("/"); 
-
-        // Redireciona para a URL original ou para a página inicial
-      /*   const redirectTo = req.session.redirectTo || '/';
-        delete req.session.redirectTo; // Remove a URL original após o redirecionamento
-        return res.redirect(redirectTo); */
+        /* console.log("Token armazenado na sessão:", req.session.token); */
+        return res.redirect("/");
       }
     }
 
