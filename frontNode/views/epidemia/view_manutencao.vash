@@ -12,10 +12,12 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
+
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/epidemia/insertEpidemia'">Nova Epidemia</button>
+                            onclick="window.location.href = '/epidemia/openEpidemiaInsert'">Nova Epidemia</button>
                     </div>
+                    
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Listagem de Epidemias
@@ -34,12 +36,13 @@
                                         <tr>                                    
                                             <td>
                                                 <!-- Link de visualização comentado, descomente se necessário -->
-                                                <a href="/epidemia/viewEpidemia/@registro.epidemiaid/v" class="btn btn-info btn-sm">
+                                                <a href="/epidemia/openEpidemiaUpdate/@registro.Epidemiaid"
+                                                 class="btn btn-info btn-sm"  aria-label="Visualizar epidemia @registro.Epidemiaid">
                                                     <i class="fa fa-magnifying-glass"></i> Visualizar
                                                 </a> 
                                             </td>
-                                            <td>@registro.epidemiaid</td>
-                                            <td>@registro.nome</td>
+                                            <td>@registro.Epidemiaid</td>
+                                            <td>@registro.Nomeepidemia</td>
                                         </tr>
                                     })
                             </tbody>
@@ -65,9 +68,8 @@
 <script>
     var table = new DataTable('#example', {
         dom: 'B<"top"fi>rt<"bottom"lp><"clear">',
-        buttons: [
-            'copy', 'csv', 'pdf'
-        ]
+        buttons: ['copy', 'csv', 'pdf'],
+        responsive: true
     });
 
     table.buttons().container()

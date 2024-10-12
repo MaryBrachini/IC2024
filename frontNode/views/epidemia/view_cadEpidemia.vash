@@ -14,12 +14,12 @@
           <div class="col-sm-6 col-xxl-12">
             <form id="form">
               <div class="mb-1" style="display: none">
-                <input type="number" name="epidemiaid" class="form-control" id="epidemiaid" />
+                <input type="number" name="Epidemiaid" class="form-control" id="Epidemiaid" />
               </div>
 
-                <label for="nomeepidemia" class="col-sm-2 col-xxl-1 col-form-label required">Nome Epidemia:</label>
+                <label for="Nomeepidemia" class="col-sm-2 col-xxl-1 col-form-label required">Nome Epidemia:</label>
                 <div class="col-sm-4 col-xxl-3">
-                  <input type="text" name="nomeepidemia" class="form-control-plaintext" id="nomeepidemia" maxlength="30" required readonly />
+                  <input type="text" name="Nomeepidemia" class="form-control-plaintext" id="Nomeepidemia" maxlength="30" required readonly />
                 </div>
               </div>
 
@@ -92,7 +92,7 @@
     }
 
     //Coloca o epidemia no primeiro campo do formulário
-    $("#nomeepidemia").focus();
+    $("#Nomeepidemia").focus();
   }
 
   //@ Busca os dados de acordo com o ID para serem alterados
@@ -110,8 +110,8 @@
         }
       );
       if (resp.data.status == "ok") {
-        $("#epidemiaid").val(resp.data.registro.epidemiaid);
-        $("#nomeepidemia").val(resp.data.registro.nomeepidemia);
+        $("#Epidemiaid").val(resp.data.registro.Epidemiaid);
+        $("#Nomeepidemia").val(resp.data.registro.Nomeepidemia);
         if (resp.data.registro.removido) {
           $("#removido").prop("checked", true);
         } else {
@@ -137,18 +137,12 @@
         String(input.val()).length == 0
       ) {
         alert("Campo obrigatório");
-        //console.log('Type: ' + input.attr('type') + ' ID: ' + input.attr('id') + ' Name: ' + input.attr('name') + ' Value: ' + input.val() + ' Obrigatori: ' + input.prop("required"));
         $(input).focus();
         validado = false;
         return false;
       }
     });
 
-    if (formDataPar.get("removido") == "on") {
-      formDataPar.set("removido", true);
-    } else {
-      formDataPar.set("removido", false);
-    }
     formDataPar.set("removido", false);
 
     return validado;
@@ -161,6 +155,7 @@
     const validado = validaForm(formData);
     if (!validado) {
       return;
+      console.log("[view_cadEpidemia|btnSalvar] formulario invalido");
     }
 
     try {
@@ -183,8 +178,8 @@
 
   //@ Habilita form para alteração
   function habilitaForm() {
-    $("#nomeepidemia").prop("class", "form-control");
-    $("#nomeepidemia").prop("readonly", false);
+    $("#Nomeepidemia").prop("class", "form-control");
+    $("#Nomeepidemia").prop("readonly", false);
 
     $("#removido").prop("disabled", false);
   }
@@ -200,7 +195,6 @@
   }
 
   //@ Salva a alteração
-  //@ console.log("[view_cadEpidemia|btnSalvarAlteracao] :", )
   async function btnSalvarAlteracao() {
     const formData = new FormData(form);
     const validado = validaForm(formData);
@@ -217,7 +211,7 @@
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
-        window.open("/epidemia/openEpidemiaUpdate/" + String($("#epidemiaid").val()), "_self");
+        window.open("/epidemia/openEpidemiaUpdate/" + String($("#Epidemiaid").val()), "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }
@@ -229,9 +223,9 @@
   }
 
   //@ Cancela a alteração
-  //@ console.log("[view_cadEpidemia|btnCancelarAlteracao] Valor do id", $("#epidemiaid").val());    
+  //@ console.log("[view_cadEpidemia|btnCancelarAlteracao] Valor do id", $("#Epidemiaid").val());    
   async function btnCancelarAlteracao() {
-    window.open("/epidemia/openEpidemiaUpdate/" + String($("#epidemiaid").val()), "_self");
+    window.open("/epidemia/openEpidemiaUpdate/" + String($("#Epidemiaid").val()), "_self");
   }
 
   //@ Remove epidemia
@@ -246,7 +240,7 @@
 
     try {
       resp = await axios.post("/epidemia/deleteEpidemia", {
-        epidemiaid: formData.get("epidemiaid")
+        Epidemiaid: formData.get("Epidemiaid")
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -269,7 +263,7 @@
     $("#rendafamiliar").maskMoney();
   });
 
-  async function deleteOcorrencias(epidemiaidPar) {
+  async function deleteOcorrencias(EpidemiaidPar) {
     resp = await axios.post(
       "/ocorrencias/DeleteOcorrencias", {
         id: $("#id").val(),

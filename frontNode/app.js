@@ -9,6 +9,7 @@ const session = require('express-session');
 
 require('dotenv').config();
 
+//Cadastros 
 var indexRouter = require('./routes/index');
 var bairroRouter = require('./routes/rte_Bairro');
 var epidemiaRouter = require('./routes/rte_Epidemia');
@@ -17,8 +18,7 @@ var cidadeRouter = require('./routes/rte_Cidade');
 var logradouroRouter = require('./routes/rte_Logradouro');
 var ubsRouter = require('./routes/rte_UBS');
 var ocorrenciasRouter = require('./routes/rte_Ocorrencias');
-
-
+//Mapa
 var mapaRouter = require('./routes/rte_mapa');
 
 var app = express();

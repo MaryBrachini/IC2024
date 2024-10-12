@@ -14,7 +14,7 @@
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/estado/insertEstado'">Novo Estado</button>
+                            onclick="window.location.href = '/estado/openEstadoInsert'">Novo Estado</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -34,13 +34,13 @@
                                 @model.data.forEach(function(registro) {
                                         <tr>                                    
                                             <td>
-                                                <a href="/estado/viewEstado/@registro.estadoid/v" class="btn btn-info btn-sm">
+                                                <a href="/estado/openEstadoInsert" class="btn btn-info btn-sm">
                                                     <i class="fa fa-magnifying-glass"></i> Visualizar
                                                 </a>
                                             </td>
-                                            <td>@registro.estadoid</td>
-                                            <td>@registro.uf</td>
-                                            <td>@registro.nomeestado</td>
+                                            <td>@registro.Estadoid</td>
+                                            <td>@registro.Uf</td>
+                                            <td>@registro.Nomeestado</td>
                                         </tr>
                                 })
                             </tbody>

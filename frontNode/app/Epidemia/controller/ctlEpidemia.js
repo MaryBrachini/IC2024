@@ -19,12 +19,12 @@ const getAllEpidemia = async (req, res) => {
       }
     );
 
-    console.log("[ctlEpidemia|resp.data]", JSON.stringify(resp.data));
+    console.log("[ctlEpidemia|resp.data]", JSON.stringify(resp.data.regReturn));
 
         // Renderiza a página com os dados obtidos
         res.render("epidemia/view_manutencao", {
         title: "Manutenção de Epidemias",
-        data: resp.data,
+        data: resp.data.regReturn,
         userName: userName,
       });
 
@@ -43,48 +43,58 @@ const getAllEpidemia = async (req, res) => {
   };
 
 //@ Abre formulário de cadastro de epidemia
-const openEpidemiaInsert = (req, res) =>
-  (async () => {
+const openEpidemiaInsert = async(req, res) => {
+
     var oper = "";
     userName = req.session.userName;
     token = req.session.token;
+
     try {
+       console.log("[ctlEpidemia|openEpidemiaInsert]try");
+
       if (req.method == "GET") {
         oper = "c";
+        
         res.render("epidemia/view_cadEpidemia", {
           title: "Cadastro de epidemia",
           oper: oper,
           userName: userName,
         });
+
+        console.log("[ctlEpidemia|openEpidemiaInsert] Página renderizada com sucesso.");
+
+      } else {
+        console.log("[ctlEpidemia|openEpidemiaInsert] Método HTTP não suportado: " + req.method);
+        res.status(405).send("Método não permitido.");
       }
     } catch (erro) {
-      console.log(
-        "[ctlEpidemia.js|insertEpidemia] Try Catch: Erro não identificado",
-        erro
-      );
+      console.error("[ctlEpidemia|openEpidemiaInsert] Erro capturado:", erro);
+    res.status(500).send({ error: "Erro no servidor: " + erro.message });
     }
-  })();
+  };
 
 //@ Função para validar campos no formulário
 function validateForm(regFormPar) {
-  if (regFormPar.epidemiaid == "") {
-    regFormPar.epidemiaid = 0;
-  } else {
-    regFormPar.epidemiaid = parseInt(regFormPar.epidemiaid);
-  }
 
-  regFormPar.removido = regFormPar.removido === "true"; //converte para true ou false um check componet
+  console.log("[ctlBairro.js|validateForm]");
 
+  regFormPar.epidemiaid = regFormPar.epidemiaid ? parseInt(regFormPar.epidemiaid) : 0;
+  regFormPar.removido = regFormPar.removido === "true";
   return regFormPar;
 }
 
 //@ Abre formulário de cadastro de epidemia
-const openEpidemiaUpdate = (req, res) =>
-  (async () => {
+const openEpidemiaUpdate = async (req, res) => {
+
     var oper = "";
     userName = req.session.userName;
     token = req.session.token;
+    const id = parseInt(req.params.id, 10);
+
     try {
+
+      console.log("[ctlEpidemia.js|openEpidemiaUpdate]try");
+
       if (req.method == "GET") {
         oper = "u";
         const id = req.params.id;
@@ -97,55 +107,69 @@ const openEpidemiaUpdate = (req, res) =>
         });
       }
     } catch (erro) {
-      console.log(
-        "[ctlEpidemia.js|insertEpidemia] Try Catch: Erro não identificado",
-        erro
-      );
-    }
-  })();
+      console.log("[ctlEpidemia.js|openEpidemiaUpdate] Erro:", error);
+      res.status(500).send("Erro ao obter dados do epidemia para atualização.");
+  }
+  };
 
 
 //@ Recupera os dados das epidemia
-const getDados = (req, res) =>
-  (async () => {
-    const idBusca = req.body.idBusca;    
-    parseInt(idBusca);
-    console.log("[ctlEpidemia.js|getDados] valor id :", idBusca);
+const getDados  = async (req, res) => {
+
+  const idBusca = parseInt(req.body.idBusca, 10);
+  console.log("[ctlEpidemia.js|getDados] valor id :", idBusca);
+
     try {
+      console.log("[ctlEpidemia.js|getDados]Try");
+
+      if (isNaN(idBusca)) {
+        return res.status(400).json({ status: "error", message: "ID inválido fornecido." });
+    }
       resp = await axios.post(
-        process.env.SERVIDOR + "/GetEpidemiaByID",
+      "http://localhost:20100/acl/epidemia/v1/GetEpidemiaByID",
         {
           epidemiaid: idBusca,
         },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + req.session.token,
           },
         }
       );
-      if (epidemia.status == "ok") {
-        res.json({ status: "ok", registro: epidemia.registro[0] });
-      }
-    } catch (error) { 
-      console.log(
-        "[ctlEpidemia.js|getDados] Try Catch: Erro não identificado",
-        erro
-      );
+     
+       // Verificando se a resposta foi bem-sucedida
+      if (resp.data.status === "success" && resp.data.msg === "ok") {
+        console.log("[ctlEpidemia.js|getDados] Dados recebidos com sucesso.");
+        res.status(200).json({ status: "ok", registro: resp.data.regReturn });
+    } else {
+        console.error("[ctlEpidemia.js|getDados] Erro ao obter dados:", resp.data);
+        res.status(404).json({ status: "error", message: "Dados da epidemia não encontrados." });
     }
-    
-  })();
+
+    } catch (error) { 
+      console.log("[ctlEpidemia.js|getDados] Catch, Erro não identificado", error.response ? error.response.data : error.message);
+      res.status(500).send("Erro ao processar a requisição para obter dados da epidemia");
+    }
+  };
 
 //@ Realiza inserção de epidemia
-const insertEpidemia = (req, res) =>
-  (async () => {
+const insertEpidemia = async (req, res) => {
+
     token = req.session.token;
+    console.log("[ctlBairro.js|insertEpidemia]");
+
     try {
+    /* console.log("[ctlEpidemia.js|insertEpidemia]try"); */
+
       if (req.method == "POST") {
+         /* console.log("[ctlEpidemia.js|insertEpidemia]IF"); */
+
         const regPost = validateForm(req.body);
         regPost.epidemiaid = 0;
+
         const resp = await axios.post(
-          process.env.SERVIDOR + "/InsertEpidemia",
+          "http://localhost:20100/acl/epidemia/v1/InsertEpidemia",
           regPost,
           {
             headers: {
@@ -167,7 +191,7 @@ const insertEpidemia = (req, res) =>
         erro
       );
     }
-  })();
+  };
 
  
   
