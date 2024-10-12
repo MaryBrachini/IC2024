@@ -45,6 +45,8 @@ const getAllEpidemia = async (req, res) => {
 //@ Abre formulário de cadastro de epidemia
 const openEpidemiaInsert = async(req, res) => {
 
+  console.log("[ctlEpidemia|openEpidemiaInsert]");
+
     var oper = "";
     userName = req.session.userName;
     token = req.session.token;

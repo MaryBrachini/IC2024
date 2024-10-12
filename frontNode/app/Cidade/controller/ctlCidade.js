@@ -2,12 +2,12 @@ const axios = require("axios");
 
 //@ Abre o formulário de manutenção de cidade
 const GetAllCidade = async (req, res) => {
-  /* console.log("[ctlCidade|GetAllCidade]"); */
+
+  console.log("[ctlCidade|GetAllCidade]");
   
   const token = req.session.token;
-  /* console.log("[ctlCidade|GetAllCidade] TOKEN:", token); */
-
   const userName = req.session.userName;
+  /* console.log("[ctlCidade|GetAllCidade] TOKEN:", token); */
 
   try {
     const resp = await axios.get('http://localhost:20100/acl/cidade/v1/GetAllCidades',     
@@ -19,7 +19,7 @@ const GetAllCidade = async (req, res) => {
       }
     );
   
-  console.log("[ctlCidade|resp.data]", JSON.stringify(resp.data));
+  console.log("[ctlCidade|resp.data]", JSON.stringify(resp.data.regReturn));
 
     // Renderiza a página com os dados obtidos
     res.render("cidade/view_manutencao", {
@@ -67,18 +67,14 @@ const GetAllCidade = async (req, res) => {
   }; */
 
 //@ Função para validar campos no formulário
-/* function validateForm(regFormPar) {
-  if (regFormPar.cidadeID == "") {
-    regFormPar.cidadeID = 0;
-  } else {
-    regFormPar.cidadeID = parseInt(regFormPar.cidadeID);
+function validateForm(regFormPar) {
+
+  if (regFormPar.datanascimento == "") {
+    regFormPar.datanascimento = null;
   }
 
-  regFormPar.ativo = regFormPar.ativo === "true"; //converte para true ou false um check component
-  regFormPar.deleted = regFormPar.deleted === "true"; //converte para true ou false um check component
-
   return regFormPar;
-}; */
+}
 
 //@ Abre formulário de cadastro de cidades para edição
 /* const openCidadeUpdate = (req, res) =>
@@ -122,7 +118,7 @@ const GetAllCidade = async (req, res) => {
       const resp = await axios.post(
         process.env.SERVIDOR + "/acl/cidade/v1/GetCidadeByID",
         {
-          cidadeID: idBusca,
+          CidadeID: idBusca,
         },
         {
           headers: {
@@ -146,23 +142,31 @@ const GetAllCidade = async (req, res) => {
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de cidade
 const insertCidade = async (req, res) => {
+
   let oper = "";
   let registro = {};
   let Estado = {};
+
   const userName = req.session.userName;
   const token = req.session.token;
 
   try {
+
+    console.log("[ctlCidade|insertCidade]TRY");
+
     if (req.method == "GET") {
       oper = "c";
       Estado = await axios.get(
-        process.env.SERVIDOR + "/acl/cidade/v1/InsertCidade",
+        "http://localhost:20100/acl/cidade/v1/InsertCidade",
         {}
       );
+
+      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", regPost);
+
       registro = {
-        cidadeID: 0,
-        nomeCidade: "",
-        estadoid: "",
+        CidadeID: 0,
+        NomeCidade: "",
+        EstadoIDFK: "",
         removido: false,
       };
       res.render("cidade/view_cadCidade", {
@@ -172,15 +176,18 @@ const insertCidade = async (req, res) => {
         oper: oper,
         userName: userName,
       });
+
     } else {
+
       oper = "c";
       const cidadeREG = validateForm(req.body);
+
       const resp = await axios.post(
-        process.env.SERVIDOR + "/acl/cidade/v1/InsertCidade",
+       "http://localhost:20100/acl/cidade/v1/InsertCidade",
         {
-          cidadeID: 0,
-          nomeCidade: cidadeREG.nomeCidade,
-          estadoid: cidadeREG.estadoid,
+          CidadeID: 0,
+          NomeCidade: cidadeREG.NomeCidade,
+          EstadoIDFK: cidadeREG.EstadoIDFK,
           removido: false,
         },
         {
@@ -193,18 +200,20 @@ const insertCidade = async (req, res) => {
 
       if (resp.data.status == "ok") {
         registro = {
-          cidadeID: 0,
-          nomeCidade: "",
-          estadoid: "",
+          CidadeID: 0,
+          NomeCidade: "",
+          EstadoIDFK: "",
           removido: false,
         };
       } else {
         registro = cidadeREG;
       }
+
       Estado = await axios.get(
-        process.env.SERVIDOR + "/acl/cidade/v1/GetAllEstado",
+        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
         {}
       );
+
       oper = "c";
       res.render("cidade/view_cadCidade", {
         title: "Cadastro de cidade",
@@ -243,9 +252,10 @@ const viewCidade = async (req, res) => {
       console.log("[ctlCidade|viewCidade] ID:", id);
       console.log("[ctlCidade|viewCidade] Oper:", oper);
 
-      const resp = await axios.post(`${process.env.SERVIDOR}/acl/cidade/v1/GetCidadeByID`,
+      const resp = await axios.post(
+        "http://localhost:20100/acl/cidade/v1/GetCidadeByID",
         { 
-          cidadeID: id
+          CidadeID: id
         },
         {
           headers: {
@@ -281,11 +291,11 @@ const viewCidade = async (req, res) => {
       console.log("[ctlCidade|viewCidade] Cidade data to update:", cidadeREG);
 
       const resp = await axios.post(
-        `${process.env.SERVIDOR}/acl/cidade/v1/UpdateCidade`,
+        "http://localhost:20100/acl/cidade/v1/UpdateCidade",
         {
-          cidadeID: id,
-          nomeCidade: cidadeREG.nomeCidade,
-          estadoid: cidadeREG.estadoid,
+          CidadeID: id,
+          NomeCidade: cidadeREG.NomeCidade,
+          EstadoIDFK: cidadeREG.EstadoIDFK,
           removido: false,
         },
         {
@@ -314,6 +324,7 @@ const viewCidade = async (req, res) => {
 
 //@ Deleta a cidade
 const DeleteCidade = async (req, res) => {
+
   let oper = "";
   const userName = req.session.userName;
   const token = req.session.token;
@@ -323,9 +334,9 @@ const DeleteCidade = async (req, res) => {
     const id = parseInt(req.body.id);
 
     const resp = await axios.post(
-      process.env.SERVIDOR + "/acl/cidade/v1/DeleteCidade",
+      "http://localhost:20100/acl/cidade/v1/DeleteCidade",
       {
-        cidadeID: id,
+        CidadeID: id,
       },
       {
         headers: {
@@ -345,46 +356,9 @@ const DeleteCidade = async (req, res) => {
   }
 };
 
-//@ Atualiza cidade
-/* const updateCidade = async (req, res) => {
-const token = req.session.token;
-  
-  try {
-    if (req.method === "POST") {
-        const regPost = validateForm(req.body);
-      const resp = await axios.post(
-        process.env.SERVIDOR_DW3 + "/UpdateCidade",
-        regPost,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      if (resp.data.status == "ok") {
-        res.json({ status: "ok", mensagem: "Cidade atualizada com sucesso!" });
-      } else {
-        res.json({ status: "erro", mensagem: "Erro ao atualizar cidade!" });
-      }
-    }
-  } catch (erro) {
-    console.log(
-      "[ctlCidade.js|updateCidade] Try Catch: Erro não identificado.",
-      erro
-    );
-  }
-}; */
-
 module.exports = {
   GetAllCidade,
   viewCidade,
   insertCidade,
-  DeleteCidade,
-  /* openCidadeInsert, */
-  /* openCidadeUpdate, */
-  /* validateForm, */
-  /* getDados,  */
-  /* updateCidade */
+  DeleteCidade
 };

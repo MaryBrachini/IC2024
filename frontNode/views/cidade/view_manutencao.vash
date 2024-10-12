@@ -5,15 +5,12 @@
 
     <div class="container-fluid px-4">
         <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = 'acl/cidade/v1/InsertCidade'">Nova Cidade</button>
+                            onclick="window.location.href = '/cidade/InsertCidade'">Nova Cidade</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -33,24 +30,16 @@
                                 @model.data.forEach(function(registro) {
                                     <tr>                                    
                                         <td>
-                                            <a href="/acl/cidade/v1/viewCidade/@registro.Bairroid/v" class="btn btn-info btn-sm">
+                                            <a href="/cidade/v1/viewCidade/@registro.CidadeID" class="btn btn-info btn-sm">
                                                 <i class="fa fa-magnifying-glass"></i> Visualizar
                                             </a>
                                         </td>
-                                        <td>@registro.Bairroid</td>
-                                        <td>@registro.Nomebairro</td>
-                                        <td>@registro.Codigobairro</td>
+                                        <td>@registro.CidadeID</td>
+                                        <td>@registro.NomeCidade</td>
+                                        <td>@registro.EstadoIDFK</td>
                                     </tr>
                                 })
                             </tbody>
-                            @* <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Cidade</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </tfoot> *@
                         </table>
                     </div>
                 </div>

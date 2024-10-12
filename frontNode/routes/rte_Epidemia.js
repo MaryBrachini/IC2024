@@ -1,9 +1,8 @@
 var express = require('express');
 var epidemiaApp = require("../app/Epidemia/controller/ctlEpidemia")
 
-////var login = require("../controllers/login/login")
+
 var router = express.Router();
-//const passport = require('passport');
 
 // Função necessária para evitar que usuários não autenticados acessem o sistema.
 function authenticationMiddleware(req, res, next) {
