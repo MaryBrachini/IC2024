@@ -1,69 +1,56 @@
 @html.extend('layout', function(model){
-
-@html.block('content', function(model){
+  @html.block('content', function(model){
 
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="col-2 ms-1 mt-1 mb-2">
-                        <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/UBS/insertUBS'">Nova UBS</button>
-                    </div>
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        Listagem das Unidades Básicas de Saúde
-                    </div>
-                    <div class="card-body">
-                        <table id="example" class="stripe" style="width:100%">
-                            <thead>
+
+        <div class="col-xl-12">
+            <div class="card mb-4">
+
+                <div class="col-2 ms-1 mt-1 mb-2">
+                    <button type="button" class="btn btn-primary"
+                        onclick="window.location.href = '/UBS/insertUBS'">Nova UBS</button>
+                </div>
+
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Listagem das Unidades Básicas de Saúde
+                </div>
+                <div class="card-body">
+                    <table id="example" class="stripe" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Ação</th>
+                                <th>ID</th>
+                                <th>UBS</th>
+                                <th>Código</th>
+                                <th>Cidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @model.data.forEach(function(registro) {
                                 <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>UBS</th>
-                                    <th>Código</th>
-                                    <th>Cidade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @model.data.forEach(function(registro) {
-                                <tr>                                    
                                     <td>
-                                        <a href="/UBS/viewUBS/@registro.unidBasicaSaudeID/v" class="btn btn-info btn-sm">
+                                        <a href="/UBS/v1/viewUBS/@registro.UnidBasicaSaudeID" class="btn btn-info btn-sm">
                                             <i class="fa fa-magnifying-glass"></i> Visualizar
                                         </a>
                                     </td>
-                                    <td>@registro.unidBasicaSaudeID</td>
-                                    <td>@registro.nomeUBS</td>
-                                    <td>@registro.codigoUBS</td>
-                                    <td>@registro.bairroIDFK</td>
+                                    <td>@registro.UnidBasicaSaudeID</td>
+                                    <td>@registro.NomeUBS</td>
+                                    <td>@registro.CodigoUBS</td>
+                                    <td>@registro.BairroIDFK</td>
                                 </tr>
-                                })
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>UBS</th>
-                                    <th>Código</th>
-                                    <th>Cidade</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                            })
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-})
-
+  })
 })
 
 <script>

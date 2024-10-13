@@ -5,9 +5,9 @@ const getAllLogradouro = async (req, res) => {
 
   console.log("getAllLogradouro");
 
-  token = req.session.token
+  const token = req.session.token
   /* console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token); */
-  userName = req.session.userName;
+  const userName = req.session.userName;
 
   try {
     console.log("[ctlLogradouro|getAllLogradouro]TRY");

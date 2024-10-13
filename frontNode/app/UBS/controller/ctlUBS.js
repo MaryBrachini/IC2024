@@ -3,15 +3,15 @@ const axios = require("axios");
 //@ Abre o formulário de manutenção de UBS
 const getAllUBS = async (req, res) => {
 
-  console.log("getAllUBS");
+  console.log("[ctlUBS|getAllUBS]");
 
-  token = req.session.token
-  console.log("[ctlUBS|getAllUBS] TOKEN:", token);
-
-  userName = req.session.userName;
+  const token = req.session.token;
+  const userName = req.session.userName;
+  /* console.log("[ctlUBS|getAllUBS] TOKEN:", token); */
 
   try {
-    const resp = await axios.get('http://localhost:20100/acl/ubs/v1/GetAllUBSs',     
+    const resp = await axios.get(
+      'http://localhost:20100/acl/ubs/v1/GetAllUBSs',     
       {
         headers: {
           "Content-Type": "application/json",
@@ -20,19 +20,19 @@ const getAllUBS = async (req, res) => {
       }
     );
 
-    console.log("[ctlUBS|resp.data]", JSON.stringify(resp.data));
+    console.log("[ctlUBS|resp.data]", JSON.stringify(resp.data.regReturn));
 
     // Renderiza a página com os dados obtidos
     res.render("UBS/view_manutencao", {
         title: "Manutenção da Unidade Básica de Saúde",
-        data: resp.data,
+        data: resp.data.regReturn,
         userName: userName,
       });
    
       console.log("Resposta enviada com sucesso para UBS");
       
     } catch (error) {
-      console.error('Erro ao buscar UBS:' );  //, error);
+      console.error('Erro ao buscar UBS:' );
   
       if (!res.headersSent) {
         res.status(500).json({ error: 'Erro ao buscar UBS' });
@@ -44,25 +44,30 @@ const getAllUBS = async (req, res) => {
   };
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de UBS
-const insertUBS = (req, res) =>
-  (async () => {
+const insertUBS = async (req, res) => {
+
     var oper = "";
     var registro = {};
     var Bairro = {};
     userName = req.session.userName;
     token = req.session.token;
+
+    if (!token) {
+      return res.status(401).json({ error: 'Usuário não autenticado' });
+    }
+
     try {
       if (req.method == "GET") {
         oper = "c";
         Bairro = await axios.get(
-          process.env.SERVIDOR + "/GetAllBairros",
+          "http://localhost:20100/acl/ubs/v1/GetAllUBSs",
           {}
         );
         registro = {
-          unidBasicaSaudeID: 0,
-          nomeUBS: "",
-          codigoUBS: "",
-          bairroIDFK: "",
+          UnidBasicaSaudeID: 0,
+          NomeUBS: "",
+          CodigoUBS: "",
+          BairroIDFK: "",
           removido: false,
         };
         res.render("UBS/view_cadUBS", {
@@ -74,14 +79,14 @@ const insertUBS = (req, res) =>
         });
       } else {
         oper = "c";
-        const UBSREG = validateForm(req.body);
+        const ubsREG = validateForm(req.body);
         resp = await axios.post(
           process.env.SERVIDOR + "/insertUBS",
           {
-            unidBasicaSaudeID: 0,
-            nomeUBS: ubsREG.nomeUBS,
-            codigoUBS: ubsREG.codigoUBS,
-            bairroIDFK: ubsREG.bairroIDFK,
+            UnidBasicaSaudeID: 0,
+            NomeUBS: ubsREG.NomeUBS,
+            CodigoUBS: ubsREG.CodigoUBS,
+            BairroIDFK: ubsREG.BairroIDFK,
             removido: false,
           },
           {
@@ -94,10 +99,10 @@ const insertUBS = (req, res) =>
 
         if (resp.data.status == "ok") {
           registro = {
-            unidBasicaSaudeID: 0,
-            nomeUBS: "",
-            codigoUBS:"",
-            bairroIDFK: "",
+            UnidBasicaSaudeID: 0,
+            NomeUBS: "",
+            CodigoUBS:"",
+            BairroIDFK: "",
             removido: false,
           };
         } else {
@@ -119,7 +124,7 @@ const insertUBS = (req, res) =>
     } catch (erro) {
       console.log("[ctlUBS.js|insertUBS] Try Catch: Erro não identificado", erro);
     }
-  })();
+  };
 
 //@ Abre o formulário de cadastro de UBS para futura edição
 const viewUBS = (req, res) =>
@@ -136,7 +141,7 @@ const viewUBS = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/getUBSByID",
           {
-            unidBasicaSaudeID: id,
+            UnidBasicaSaudeID: id,
           },
           {
             headers: {
@@ -162,10 +167,10 @@ const viewUBS = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/updateUBS",
           {
-            unidBasicaSaudeID: id,
-            nomeUBS: ubsREG.nomeUBS,
-            codigoUBS:ubsREG.codigoUBS,
-            bairroIDFK: ubsREG.bairroIDFK,
+            UnidBasicaSaudeID: id,
+            NomeUBS: ubsREG.NomeUBS,
+            CodigoUBS:ubsREG.CodigoUBS,
+            BairroIDFK: ubsREG.BairroIDFK,
             removido: false,
           },
           {
@@ -201,7 +206,7 @@ const DeleteUBS = (req, res) =>
       resp = await axios.post(
         process.env.SERVIDOR + "/DeleteUBS",
         {
-          unidBasicaSaudeID: id,
+          UnidBasicaSaudeID: id,
         },
         {
           headers: {
