@@ -6,12 +6,14 @@ const getAllLogradouro = async (req, res) => {
   console.log("getAllLogradouro");
 
   token = req.session.token
-  console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token);
-
+  /* console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token); */
   userName = req.session.userName;
 
   try {
-    const resp = await axios.get('http://localhost:20100/acl/logradouro/v1/GetAllLogradouros',     
+    console.log("[ctlLogradouro|getAllLogradouro]TRY");
+
+    const resp = await axios.get(
+      'http://localhost:20100/acl/logradouro/v1/GetAllLogradouros',     
       {
         headers: {
           "Content-Type": "application/json",
@@ -20,12 +22,12 @@ const getAllLogradouro = async (req, res) => {
       }
     );
 
-    console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data));
+    console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data.regReturn));
 
     // Renderiza a página com os dados obtidos
     res.render("logradouro/view_manutencao", {
         title: "Manutenção do Logradouro",
-        data: resp.data,
+        data: resp.data.regReturn,
         userName: userName,
       });
    
@@ -43,6 +45,16 @@ const getAllLogradouro = async (req, res) => {
     }
   };
 
+//@ Função para validar campos no formulário
+function validateForm(regFormPar) {  
+
+  console.log("[ctlLogradouro.js|validateForm]");
+
+  regFormPar.Logradouroid = regFormPar.Logradouroid ? parseInt(regFormPar.Logradouroid) : 0;
+  regFormPar.removido = regFormPar.removido === "true";
+  return regFormPar;
+}
+
 //@ Abre e faz operações de CRUD no formulário de cadastro de logradouro
 const insertLogradouro = (req, res) =>
   (async () => {
@@ -59,9 +71,9 @@ const insertLogradouro = (req, res) =>
           {}
         );
         registro = {
-          logradouroid: 0,
-          nomelogradouro: "",
-          cidadeidfk: "",
+          Logradouroid: 0,
+          Nomelogradouro: "",
+          CidadeIDFK: "",
           removido: false,
         };
         res.render("logradouro/view_cadLogradouro", {
@@ -77,9 +89,9 @@ const insertLogradouro = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/insertLogradouro",
           {
-            logradouroid: 0,
-            nomelogradouro: logradouroREG.nomelogradouro,
-            cidadeidfk: logradouroREG.cidadeidfk,
+            Logradouroid: 0,
+            Nomelogradouro: logradouroREG.Nomelogradouro,
+            CidadeIDFK: logradouroREG.CidadeIDFK,
             removido: false,
           },
           {
@@ -92,9 +104,9 @@ const insertLogradouro = (req, res) =>
 
         if (resp.data.status == "ok") {
           registro = {
-            logradouroid: 0,
-            nomelogradouro: "",
-            cidadeidfk: "",
+            Logradouroid: 0,
+            Nomelogradouro: "",
+            CidadeIDFK: "",
             removido: false,
           };
         } else {
@@ -133,7 +145,7 @@ const viewLogradouro = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/getLogradouroByID",
           {
-            logradouroid: id,
+            Logradouroid: id,
           },
           {
             headers: {
@@ -159,9 +171,9 @@ const viewLogradouro = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/updateLogradouro",
           {
-            logradouroid: id,
-            nomelogradouro: logradouroREG.nomelogradouro,
-            cidadeidfk: logradouroREG.cidadeidfk,
+            Logradouroid: id,
+            Nomelogradouro: logradouroREG.Nomelogradouro,
+            CidadeIDFK: logradouroREG.CidadeIDFK,
             removido: false,
           },
           {
@@ -197,7 +209,7 @@ const DeleteLogradouro = (req, res) =>
       resp = await axios.post(
         process.env.SERVIDOR + "/DeleteLogradouro",
         {
-          logradouroid: id,
+          Logradouroid: id,
         },
         {
           headers: {

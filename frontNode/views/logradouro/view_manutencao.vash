@@ -1,24 +1,20 @@
 @html.extend('layout', function(model){
-
 @html.block('content', function(model){
 
 <main>
 
     <div class="container-fluid px-4">
         <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
-                            onclick="window.location.href = '/logradouro/insertLogradouro'">Nova Rua</button>
+                            onclick="window.location.href = '/logradouro/insertLogradouro'">Novo Logradouro</button>
                     </div>
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Listagem de Ruas
+                        Listagem de Logradouro
                     </div>
                     <div class="card-body">
                         <table id="example" class="stripe" style="width:100%">
@@ -26,31 +22,27 @@
                                 <tr>
                                     <th>Ação</th>
                                     <th>ID</th>
-                                    <th>Rua</th>
+                                    <th>Nome do Logradouro</th>
                                     <th>cidade</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @model.data.forEach(function(registro) {
-                                <tr>                                    
-                                    <td>
-                                        <a href="/logradouro/viewLogradouro/@registro.logradouroid/v" class="btn btn-info btn-sm">
-                                            <i class="fa fa-magnifying-glass"></i> Visualizar
-                                        </a>
-                                    </td>
-                                    <td>@registro.logradouroid</td>
-                                    <td>@registro.nomelogradouro</td>
-                                    <td>@registro.cidadeidfk</td>
-                                </tr>
+                            @{
+                                model.data.forEach(function(registro) {
+                                    <tr>
+                                        <td>
+                                            <a href="/bairros/openBairroUpdate/@registro.Logradouroid" 
+                                                class="btn btn-info btn-sm" aria-label="Visualizar bairro @registro.Logradouroid">
+                                                <i class="fa fa-magnifying-glass"></i> Visualizar
+                                            </a>
+                                        </td>
+                                        <td>@registro.Logradouroid</td>
+                                        <td>@registro.Nomelogradouro</td>
+                                         <td>@registro.CidadeIDFK</td>
+                                     </tr>
+                                });
+                            }
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Rua</th>
-                                    <th>cidade</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

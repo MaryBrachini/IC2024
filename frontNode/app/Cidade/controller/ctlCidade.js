@@ -39,33 +39,6 @@ const GetAllCidade = async (req, res) => {
   }
 };
 
-//@ Abre formulário de cadastro de cidades
-/* const openCidadeInsert = async(req, res) =>{
-
-  console.log("[ctlCidade|openCidadeInsert]");
-  
-
-    var oper = "";
-    const userName = req.session.userName;
-    const token = req.session.token;
-
-    try {
-      if (req.method == "GET") {
-        oper = "c";
-        res.render("cidade/view_cadCidade", {
-          title: "Cadastro de cidade",
-          oper: oper,
-          userName: userName,
-        });
-      }
-    } catch (erro) {
-      console.log(
-        "[ctlCidade.js|openCidadeInsert] Try Catch: Erro não identificado",
-        erro
-      );
-    }
-  }; */
-
 //@ Função para validar campos no formulário
 function validateForm(regFormPar) {
 
@@ -76,76 +49,11 @@ function validateForm(regFormPar) {
   return regFormPar;
 }
 
-//@ Abre formulário de cadastro de cidades para edição
-/* const openCidadeUpdate = (req, res) =>
-  (async () => {
-    var oper = "";
-    const userName = req.session.userName;
-    const token = req.session.token;
-    try {
-      if (req.method == "GET") {
-        oper = "u";
-        const id = req.params.id;
-        parseInt(id);
-        res.render("cidade/view_cadCidade", {
-          title: "Cadastro de cidade",
-          oper: oper,
-          idBusca: id,
-          userName: userName,
-        });
-      }
-    } catch (erro) {
-      console.log(
-        "[ctlCidade.js|openCidadeUpdate] Try Catch: Erro não identificado",
-        erro
-      );
-    }
-  })(); */
-
-//@ Recupera os dados das cidades
-/* const getDados = async(req, res) =>{
-
-  console.log("[ctlCidade.js|getDados]");
-
-    const idBusca = req.body.idBusca;    
-    parseInt(idBusca);
-    console.log("[ctlCidade.js|getDados] valor id :", idBusca);
-    const token = req.session.token;
-  
-    try {
-      console.log("[ctlCidade.js|getDados]TRY");
-
-      const resp = await axios.post(
-        process.env.SERVIDOR + "/acl/cidade/v1/GetCidadeByID",
-        {
-          CidadeID: idBusca,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      
-      if (resp.data.status == "ok") {
-        console.log("[ctlCidade.js|getDados]IF");
-        res.json({ status: "ok", registro: resp.data.registro[0] });
-      }
-    } catch (error) { 
-      console.log(
-        "[ctlCidade.js|getDados] Try Catch: Erro não identificado",
-        error
-      );
-    }
-  }; */
-
 //@ Abre e faz operações de CRUD no formulário de cadastro de cidade
 const insertCidade = async (req, res) => {
 
   let oper = "";
   let registro = {};
-  let Estado = {};
 
   const userName = req.session.userName;
   const token = req.session.token;
@@ -155,13 +63,14 @@ const insertCidade = async (req, res) => {
     console.log("[ctlCidade|insertCidade]TRY");
 
     if (req.method == "GET") {
+
+    console.log("[ctlCidade|insertCidade]IF");
+
       oper = "c";
-      Estado = await axios.get(
+      const resp = await axios.get(
         "http://localhost:20100/acl/cidade/v1/InsertCidade",
         {}
       );
-
-      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", regPost);
 
       registro = {
         CidadeID: 0,
@@ -172,10 +81,11 @@ const insertCidade = async (req, res) => {
       res.render("cidade/view_cadCidade", {
         title: "Cadastro de cidade",
         data: registro,
-        Estado: Estado.data.registro,
+        resp: resp.data.registro,
         oper: oper,
         userName: userName,
       });
+      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", resp.data.registro);
 
     } else {
 
@@ -209,7 +119,7 @@ const insertCidade = async (req, res) => {
         registro = cidadeREG;
       }
 
-      Estado = await axios.get(
+      resp = await axios.get(
         "http://localhost:20100/acl/cidade/v1/GetAllCidades",
         {}
       );
@@ -218,13 +128,14 @@ const insertCidade = async (req, res) => {
       res.render("cidade/view_cadCidade", {
         title: "Cadastro de cidade",
         data: registro,
-        Estado: Estado.data.registro,
+        resp: resp.data.registro,
         oper: oper,
         userName: userName,
       });
     }
   } catch (erro) {
-    console.log("[ctlCidade|insertCidade] Try Catch: Erro não identificado", erro);
+    console.log("[ctlCidade|insertCidade]Erro não identificado", error.response ? error.response.data : error.message);
+    res.status(500).send("Erro ao processar a requisição para inserir o cidade");
   }
 };
 

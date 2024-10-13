@@ -128,14 +128,14 @@
                         <!-- Módulo Ruas -->
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRuas"
                             aria-expanded="false" aria-controls="collapseRuas">
-                            Ruas
+                            Logradouros
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
 
                         <!-- Submenu do módulo Ruas -->
                         <div class="collapse" id="collapseRuas" aria-labelledby="headingRuas" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="/logradouro">Manutenção das Ruas</a>
+                                <a class="nav-link" href="/logradouro">Manutenção dos Logradouros</a>
                             </nav>
                         </div>
 
