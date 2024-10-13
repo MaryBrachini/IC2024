@@ -4,92 +4,53 @@
 
 <main>
     <div class="container-fluid px-4">
+
         <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
+        
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
+
                     <div class="col-2 ms-1 mt-1 mb-2">
                         <button type="button" class="btn btn-primary"
                             onclick="window.location.href = '/Ocorrencias/insertOcorrencias'">Novo Suspeito</button>
                     </div>
+
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Listagem das Ocorrências
                     </div>
+
                     <div class="card-body">
                         <table id="example" class="stripe" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Ação</th>
                                     <th>ID</th>
-                                    <th>Nome do Suspeito</th>
-                                    <th>Data de Cadastro</th>
                                     <th>Data da Ocorrência</th>
                                     <th>Epidemia ID</th>
                                     <th>Unidade Básica de Saúde ID</th>
-                                    <th>Logradouro ID</th>
-                                    <th>Número</th>
+                                    <th>Logradouro ID</th>                                    
                                     <th>Bairro ID</th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
-                                    <th>Local de Trabalho</th>
-                                    <th>Logradouro do Local de Trabalho ID</th>
-                                    <th>Número do Local de Trabalho</th>
-                                    <th>Latitude do Local de Trabalho</th>
-                                    <th>Longitude do Local de Trabalho</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @model.data.forEach(function(registro) {
                                 <tr>                                    
                                     <td>
-                                        <a href="/Ocorrencias/viewOcorrencias/@registro.ocorrenciaid/v" class="btn btn-info btn-sm">
+                                        <a href="/Ocorrencias/viewOcorrencias/@registro.Ocorrenciaid" class="btn btn-info btn-sm">
                                             <i class="fa fa-magnifying-glass"></i> Visualizar
                                         </a>
                                     </td>
-                                    <td>@registro.ocorrenciaid</td>
-                                    <td>@registro.nomeSuspeito</td>
-                                    <td>@registro.datacadastro</td>
-                                    <td>@registro.dataocorrencia</td>
-                                    <td>@registro.epidemiaidfk</td>
-                                    <td>@registro.unidBasicaSaudeIDFK</td>
-                                    <td>@registro.logradouroidfk</td>
-                                    <td>@registro.numero</td>
-                                    <td>@registro.bairroidfk</td>
-                                    <td>@registro.latitude</td>
-                                    <td>@registro.longitude</td>
-                                    <td>@registro.localTrabalho</td>
-                                    <td>@registro.logradouroLocalTrabalhoIDFK</td>
-                                    <td>@registro.numeroLocalTrabalho</td>
-                                    <td>@registro.latitudeLocalTrabalho</td>
-                                    <td>@registro.longitudeLocalTrabalho</td>
+                                    <td>@registro.Ocorrenciaid</td>
+                                    <td>@registro.Dataocorrencia</td>
+                                    <td>@registro.Epidemiaidfk</td>
+                                    <td>@registro.UnidBasicaSaudeIDFK</td>
+                                    <td>@registro.Logradouroidfk</td>                                   
+                                    <td>@registro.Bairroidfk</td>                                    
                                 </tr>
                                 })
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Nome do Suspeito</th>
-                                    <th>Data de Cadastro</th>
-                                    <th>Data da Ocorrência</th>
-                                    <th>Epidemia ID</th>
-                                    <th>Unidade Básica de Saúde ID</th>
-                                    <th>Logradouro ID</th>
-                                    <th>Número</th>
-                                    <th>Bairro ID</th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
-                                    <th>Local de Trabalho</th>
-                                    <th>Logradouro do Local de Trabalho ID</th>
-                                    <th>Número do Local de Trabalho</th>
-                                    <th>Latitude do Local de Trabalho</th>
-                                    <th>Longitude do Local de Trabalho</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

@@ -3,15 +3,15 @@ const axios = require("axios");
 //@ Abre o formulário de manutenção de Ocorrencias
 const getAllOcorrencias = async (req, res) => {
 
-  console.log("getAllOcorrencias");
+  console.log("[getAllOcorrencias]");
 
   token = req.session.token
-  console.log("[ctlOcorrencias|getAllOcorrencias] TOKEN:", token);
-
   userName = req.session.userName;
+  /* console.log("[ctlOcorrencias|getAllOcorrencias] TOKEN:", token); */
 
   try {
-    const resp = await axios.get('http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',     
+    const resp = await axios.get(
+      'http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',     
       {
         headers: {
           "Content-Type": "application/json",
@@ -20,19 +20,19 @@ const getAllOcorrencias = async (req, res) => {
       }
     );
 
-    console.log("[ctlOcorrencias|resp.data]", JSON.stringify(resp.data));
+    console.log("[ctlOcorrencias|resp.data]", JSON.stringify(resp.data.regReturn));
 
     // Renderiza a página com os dados obtidos
     res.render("Ocorrencias/view_manutencao", {
-        title: "Manutenção das Ocorrencias",
-        data: resp.data,
+        title: "Manutenção das Ocorrências",
+        data: resp.data.regReturn,
         userName: userName,
       });
    
       console.log("Resposta enviada com sucesso para ocorrencias");
       
     } catch (error) {
-      console.error('Erro ao buscar ocorrencias:' );  //, error);
+      console.error('Erro ao buscar ocorrencias:' );
   
       if (!res.headersSent) {
         res.status(500).json({ error: 'Erro ao buscar ocorrencias' });
@@ -74,23 +74,23 @@ const insertOcorrencias = (req, res) =>
           process.env.SERVIDOR + "/GetAllUnidBasicaSaude",{}
         );
         registro = {
-          ocorrenciaid: 0,
-          nomeSuspeito: "",
-          datacadastro: "",
-          dataocorrencia: "",
-          numero: "",
-          latitude: "",
-          longitude: "",
-          localTrabalho: "",
-          numeroLocalTrabalho: "",
-          latitudeLocalTrabalho: "",
-          longitudeLocalTrabalho: "",
-          unidBasicaSaudeIDFK: "",
-          bairroidfk: "",
-          logradouroLocalTrabalhoIDFK: "",
-          logradouroidfk: "",
-          epidemiaidfk: "",
-          removido: false,
+          Ocorrenciaid: 0,
+          NomeSuspeito: "",
+          Datacadastro: "",
+          Dataocorrencia: "",
+          Numero: "",
+          Latitude: "",
+          Longitude: "",
+          Localtrabalho: "",
+          Numerolocaltrabalho: "",
+          Latitudelocaltrabalho: "",
+          Longitudelocaltrabalho: "",
+          UnidBasicaSaudeIDFK: "",
+          Bairroidfk: "",
+          LogradourolocaltrabalhoIDFK: "",
+          Logradouroidfk: "",
+          Epidemiaidfk: "",
+          Removido: false,
         };
         res.render("Ocorrencias/view_cadOcorrencias", {
           title: "Cadastro da Unidade Básica de Saúde",
@@ -109,24 +109,24 @@ const insertOcorrencias = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/insertOcorrencias",
           {
-            ocorrenciaid: 0,
-            nomeSuspeito: ubsREG.nomeSuspeito,
-            datacadastro: ubsREG.datacadastro,
-            dataocorrencia: ubsREG.dataocorrencia,
-            numero: ubsREG.numero,
-            latitude: ubsREG.latitude,
-            longitude: ubsREG.longitude,
-            localTrabalho: ubsREG.localTrabalho,
-            numeroLocalTrabalho: ubsREG.numeroLocalTrabalho,
-            latitudeLocalTrabalho: ubsREG.latitudeLocalTrabalho,
-            longitudeLocalTrabalho: ubsREG.longitudeLocalTrabalho,
-            unidBasicaSaudeIDFK: ubsREG.unidBasicaSaudeIDFK,
-            bairroidfk: ubsREG.bairroidfk,
-            logradouroLocalTrabalhoIDFK: ubsREG.logradouroLocalTrabalhoIDFK,
-            logradouroidfk: ubsREG.logradouroidfk,
-            epidemiaidfk: ubsREG.epidemiaidfk,
-            unidBasicaSaudeIDFK: ubsREG.unidBasicaSaudeIDFK,
-            removido: false,
+            Ocorrenciaid: 0,
+            NomeSuspeito: ubsREG.NomeSuspeito,
+            Datacadastro: ubsREG.Datacadastro,
+            Dataocorrencia: ubsREG.Dataocorrencia,
+            Numero: ubsREG.Numero,
+            Latitude: ubsREG.Latitude,
+            Longitude: ubsREG.Longitude,
+            Localtrabalho: ubsREG.Localtrabalho,
+            Numerolocaltrabalho: ubsREG.Numerolocaltrabalho,
+            Latitudelocaltrabalho: ubsREG.Latitudelocaltrabalho,
+            Longitudelocaltrabalho: ubsREG.Longitudelocaltrabalho,
+            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
+            Bairroidfk: ubsREG.Bairroidfk,
+            LogradourolocaltrabalhoIDFK: ubsREG.LogradourolocaltrabalhoIDFK,
+            Logradouroidfk: ubsREG.Logradouroidfk,
+            Epidemiaidfk: ubsREG.Epidemiaidfk,
+            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
+            Removido: false,
           },
           {
             headers: {
@@ -138,23 +138,23 @@ const insertOcorrencias = (req, res) =>
 
         if (resp.data.status == "ok") {
           registro = {
-            ocorrenciaid: 0,
-            nomeSuspeito: "",
-            datacadastro: "",
-            dataocorrencia: "",
-            numero: "",
-            latitude: "",
-            longitude: "",
-            localTrabalho: "",
-            numeroLocalTrabalho: "",
-            latitudeLocalTrabalho: "",
-            longitudeLocalTrabalho: "",
-            unidBasicaSaudeIDFK: "",
-            bairroidfk: "",
-            logradouroLocalTrabalhoIDFK: "",
-            logradouroidfk: "",
-            epidemiaidfk: "",
-            removido: false,
+            Ocorrenciaid: 0,
+            NomeSuspeito: "",
+            Datacadastro: "",
+            Dataocorrencia: "",
+            Numero: "",
+            Latitude: "",
+            Longitude: "",
+            Localtrabalho: "",
+            Numerolocaltrabalho: "",
+            Latitudelocaltrabalho: "",
+            Longitudelocaltrabalho: "",
+            UnidBasicaSaudeIDFK: "",
+            Bairroidfk: "",
+            LogradourolocaltrabalhoIDFK: "",
+            Logradouroidfk: "",
+            Epidemiaidfk: "",
+            Removido: false,
           };
         } else {
           registro = ubsREG;
@@ -196,7 +196,7 @@ const viewOcorrencias = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/getOcorrenciasByID",
           {
-            ocorrenciaid: id,
+            Ocorrenciaid: id,
           },
           {
             headers: {
@@ -222,24 +222,24 @@ const viewOcorrencias = (req, res) =>
         resp = await axios.post(
           process.env.SERVIDOR + "/updateOcorrencias",
           {
-            ocorrenciaid: id,
-            nomeSuspeito: ubsREG.nomeSuspeito,
-            datacadastro: ubsREG.datacadastro,
-            dataocorrencia: ubsREG.dataocorrencia,
-            numero: ubsREG.numero,
-            latitude: ubsREG.latitude,
-            longitude: ubsREG.longitude,
-            localTrabalho: ubsREG.localTrabalho,
-            numeroLocalTrabalho: ubsREG.numeroLocalTrabalho,
-            latitudeLocalTrabalho: ubsREG.latitudeLocalTrabalho,
-            longitudeLocalTrabalho: ubsREG.longitudeLocalTrabalho,
-            unidBasicaSaudeIDFK: ubsREG.unidBasicaSaudeIDFK,
-            bairroidfk: ubsREG.bairroidfk,
-            logradouroLocalTrabalhoIDFK: ubsREG.logradouroLocalTrabalhoIDFK,
-            logradouroidfk: ubsREG.logradouroidfk,
-            epidemiaidfk: ubsREG.epidemiaidfk,
-            unidBasicaSaudeIDFK: ubsREG.unidBasicaSaudeIDFK,
-            removido: false,
+            Ocorrenciaid: id,
+            NomeSuspeito: ubsREG.NomeSuspeito,
+            Datacadastro: ubsREG.Datacadastro,
+            Dataocorrencia: ubsREG.Dataocorrencia,
+            Numero: ubsREG.Numero,
+            Latitude: ubsREG.Latitude,
+            Longitude: ubsREG.Longitude,
+            Localtrabalho: ubsREG.Localtrabalho,
+            Numerolocaltrabalho: ubsREG.Numerolocaltrabalho,
+            Latitudelocaltrabalho: ubsREG.Latitudelocaltrabalho,
+            Longitudelocaltrabalho: ubsREG.Longitudelocaltrabalho,
+            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
+            Bairroidfk: ubsREG.Bairroidfk,
+            LogradourolocaltrabalhoIDFK: ubsREG.LogradourolocaltrabalhoIDFK,
+            Logradouroidfk: ubsREG.Logradouroidfk,
+            Epidemiaidfk: ubsREG.Epidemiaidfk,
+            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
+            Removido: false,
           },
           {
             headers: {
@@ -274,7 +274,7 @@ const DeleteOcorrencias = (req, res) =>
       resp = await axios.post(
         process.env.SERVIDOR + "/DeleteOcorrencias",
         {
-          ocorrenciaid: id,
+          Ocorrenciaid: id,
         },
         {
           headers: {
