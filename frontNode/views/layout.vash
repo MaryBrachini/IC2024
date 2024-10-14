@@ -62,7 +62,7 @@
                         </a>
 
                         <!--Terceiro Item do menu -->
-                        <a class="nav-link" href="/">
+                        <a class="nav-link" href="/relatorio">
                             <div class="sb-nav-link-icon"><i class="bi bi-file-earmark-text"></i></div>
                             Relatórios
                         </a>

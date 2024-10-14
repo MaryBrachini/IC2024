@@ -28,7 +28,7 @@
                     <form class="form-signin" action="Login" method="POST">
 
                         <!-- Imagem do usuário -->
-                        <img class="mb-4" src="img/user.png" alt="" width="100" height="100">
+                        <img class="mb-4" src="../images/user.png" alt="" width="100" height="100">
 
                         <!-- Campo de usuário -->
                         <div class="form-floating">

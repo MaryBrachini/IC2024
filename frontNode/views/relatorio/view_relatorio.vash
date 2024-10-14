@@ -1,0 +1,60 @@
+@html.extend('layout', function(model){
+
+@html.block('content', function(model){
+
+<main>
+    <div class="container-fluid px-4">
+
+        <h1 class="mt-4">@model.title</h1>
+
+        <div class="row mb-4">
+            <div class="col-xl-12">
+                <h4>Quantidades de Ocorrências</h4>
+                <ul>
+                    <li>Últimos 15 dias: @model.totalOcorrencias.last15Days</li>
+                    <li>Último mês: @model.totalOcorrencias.lastMonth</li>
+                    <li>Últimos 6 meses: @model.totalOcorrencias.last6Months</li>
+                    <li>Último ano: @model.totalOcorrencias.lastYear</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Relatório de Ocorrências
+                    </div>
+                    <div class="card-body">
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Data da Ocorrência</th>
+                                    <th>Epidemia ID</th>
+                                    <th>Unidade Básica de Saúde ID</th>
+                                    <th>Logradouro ID</th>
+                                    <th>Bairro ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @model.data.forEach(function(registro) {
+                                <tr>
+                                    <td>@registro.Dataocorrencia</td>
+                                    <td>@registro.Epidemiaidfk</td>
+                                    <td>@registro.UnidBasicaSaudeIDFK</td>
+                                    <td>@registro.Logradouroidfk</td>
+                                    <td>@registro.Bairroidfk</td>
+                                </tr>
+                                })
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+})
+})

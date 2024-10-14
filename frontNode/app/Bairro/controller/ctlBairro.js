@@ -233,23 +233,32 @@ const UpdateBairro = async (req, res) => {
   }
 };
 
-
-
 // Função para realizar a remoção soft de um bairro
 const deleteBairro = async (req, res) => {
 
+  /* console.log("[ctlBairro.js|deleteBairro] Iniciando..."); */
+
   const token = req.session.token;
-  console.log("[ctlBairro.js|deleteBairro]");
+  /* console.log("[ctlBairro.js|deleteBairro] Token:", token); */
+
   try {
 
-    console.log("[ctlBairro.js|deleteBairro] try");
+    /* console.log("[ctlBairro.js|deleteBairro] try"); */
 
     if (req.method === "POST") {
+
       const regPost = validateForm(req.body);
       regPost.Bairroid = parseInt(regPost.Bairroid);
+      console.log("[ctlBairro.js|deleteBairro] Dados a serem enviados:", { 
+        Bairroid: regPost.Bairroid 
+      });
+      
+
       const resp = await axios.post(
         "http://localhost:20100/acl/bairro/v1/DeleteBairro",
-        { Bairroid: regPost.Bairroid },
+        { 
+          Bairroid: regPost.Bairroid 
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -258,19 +267,33 @@ const deleteBairro = async (req, res) => {
         }
       );
 
-      console.log("[ctlBairro.js|deleteBairro]sla foi");
+      console.log("[ctlBairro.js|deleteBairro] await axios.post");
 
-      if (resp.data.status === "success") {
-        res.json({ status: "success", mensagem: "Bairro atualizado com sucesso!" });
+      if (resp.data.status === "ok") {
+        res.json({ status: "ok", mensagem: "Bairro removido com sucesso!" });
       } else {
-        console.error("[ctlBairro.js|UpdateBairro] Resposta inesperada do servidor:", resp.data);
-        res.json({ status: "erro", mensagem: "Erro ao atualizar bairro!" });
+        res.json({ status: "erro", mensagem: "Erro ao remover o bairro. Tente novamente!" });
       }
 
+    } else {
+      res.status(405).json({ status: "erro", mensagem: "Método não permitido." });
     }
+
   } catch (error) {
-    console.log("[ctlBairro.js|UpdateBairro] Erro não identificado:", error.response ? error.response.data : error.message);
-    res.status(500).send("Erro ao processar a requisição para remover o bairro");
+    if (error.response) {
+      // A resposta foi recebida, mas com um erro do servidor
+      console.error("[ctlBairro.js|deleteBairro] Erro no servidor:", error.response.data);
+      res.status(500).json({ status: "erro",
+        mensagem: "Erro ao processar a requisição para salvar o bairro", detalhes: error.response.data });
+    } else if (error.request) {
+      // A requisição foi feita, mas nenhuma resposta foi recebida
+      console.error("[ctlBairro.js|deleteBairro] Nenhuma resposta recebida:", error.request);
+      res.status(500).json({ status: "erro", mensagem: "Nenhuma resposta do servidor" });
+    } else {
+      // Algo aconteceu ao configurar a requisição que acionou um erro
+      console.error("[ctlBairro.js|deleteBairro] Erro ao configurar a requisição:", error.message);
+      res.status(500).json({ status: "erro", mensagem: "Erro ao configurar a requisição" });
+    }
   }
 };
 

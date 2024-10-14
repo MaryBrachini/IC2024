@@ -237,20 +237,33 @@
   //@ Remove bairro
   async function btnRemover() { 
 
+    console.log("[view_cadBairro|btnSalvarAlteracao]");
+
     var confirma = confirm("Deseja realmente remover o registro?");
     if (!confirma) {
-      return; //@ Se o usuário selecionar Cancela, o registro não é removido.
+      return; //@ Se o usuário Cancelar, não é removido.
     }
     const formData = new FormData(form);
 
+    console.log("[view_cadBairro|btnRemover] ID do bairro:", formData.get("Bairroid"));
+
     try {
-      resp = await axios.post("/bairros/deleteBairro", {
+
+      console.log("[view_cadBairro|btnSalvarAlteracao]try");
+
+      const resp = await axios.post(
+        "/bairros/deleteBairro", 
+        {
         Bairroid: formData.get("Bairroid")
-      }, {
-        headers: {
-          "Content-Type": "application/json",
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("[view_cadBairro|btnSalvarAlteracao]await axios.post");
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
@@ -259,7 +272,8 @@
         alert("Houve um erro: " + resp.data.mensagem);
       }
     } catch (error) {
-      alert("[view_cadBairro|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
+      console.error("[view_cadBairro|btnRemover] Erro:", error.response ? error.response.data : error.message);
+    alert("[view_cadBairro|btnRemover] Ocorreu um erro inesperado! " + (error.response ? error.response.data : error.message));
     }
   }
 

@@ -1,6 +1,6 @@
 body {
     align-items: center;
-    background-image: url('images/background.gif');
+    background-image: url('../images/background.gif');
     backdrop-filter: blur(10px);
     background-position: center;
     background-repeat: no-repeat;
@@ -33,7 +33,7 @@ body::before {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url('img/background.gif');
+    background-image: url('../images/background.gif');
     padding-top: 10%;
     border-radius: 15px 0px 0px 15px;
 }
