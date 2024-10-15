@@ -5,8 +5,10 @@
 <body class="sb-nav-fixed">
 
     <!-- Barra de navegação superior -->
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background-color: #2D5DA8;">
+
         <!-- Marca da barra de navegação -->
+        
         <!-- Botão de alternância da barra lateral -->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -40,7 +42,7 @@
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <!-- Navegação lateral -->
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" style="background-color: #1B3764;" id="sidenavAccordion">
 
                 <!-- Menu da navegação lateral -->
                 <div class="sb-sidenav-menu">
@@ -57,13 +59,25 @@
 
                         <!--Segundo Item do menu -->
                         <a class="nav-link" href="/mapa">
-                            <div class="sb-nav-link-icon"><i class="bi bi-map"></i></div>
+                            <div class="sb-nav-link-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                            class="bi bi-map" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 
+                                0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5
+                                0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+                            </svg>
+                            </div>
                             Mapas
                         </a>
 
                         <!--Terceiro Item do menu -->
                         <a class="nav-link" href="/relatorio">
-                            <div class="sb-nav-link-icon"><i class="bi bi-file-earmark-text"></i></div>
+                            <div class="sb-nav-link-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                                <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                                <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                            </svg>
+                            </div>
                             Relatórios
                         </a>
 
@@ -170,7 +184,7 @@
                 </div>
 
                 <!-- Rodapé da navegação lateral -->
-                <div class="sb-sidenav-footer">
+                <div class="sb-sidenav-footer" style="background-color: #244A87;">
                     <div class="small">Seja bem vindo: @model.userName !</div>
                     
                 </div>

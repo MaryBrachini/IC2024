@@ -74,7 +74,7 @@ const validateForm = (regFormPar) => {
   console.log("[ctlBairro.js|validateForm]");
 
   regFormPar.Bairroid = regFormPar.Bairroid ? parseInt(regFormPar.Bairroid) : 0;
-  regFormPar.removido = regFormPar.removido === "true";
+  regFormPar.Removido = regFormPar.Removido === "true";
   return regFormPar;
   };
 
@@ -270,7 +270,7 @@ const deleteBairro = async (req, res) => {
       console.log("[ctlBairro.js|deleteBairro] await axios.post");
 
       if (resp.data.status === "ok") {
-        res.json({ status: "ok", mensagem: "Bairro removido com sucesso!" });
+        res.json({ status: "ok", mensagem: "Bairro Removido com sucesso!" });
       } else {
         res.json({ status: "erro", mensagem: "Erro ao remover o bairro. Tente novamente!" });
       }

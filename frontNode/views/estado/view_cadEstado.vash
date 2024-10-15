@@ -138,7 +138,7 @@
       }
     });
 
-    formDataPar.set("removido", false);
+    formDataPar.set("Removido", false);
 
     return validado;
   }
@@ -225,7 +225,7 @@
 
     var confirma = confirm("Deseja realmente remover o registro?");
     if (!confirma) {
-      return; //@ Se o usuário selecionar Cancela, o registro não é removido.
+      return; //@ Se o usuário selecionar Cancela, o registro não é Removido.
     }
     const formData = new FormData(form);
 
@@ -265,7 +265,7 @@
     );
 
     if (resp.data.status == "ok") {
-      alert("Estado removido com sucesso!");
+      alert("Estado Removido com sucesso!");
       window.open("/estado", "_self");
     } else {
       alert("Houve erro ao remover os dados dos estado!");

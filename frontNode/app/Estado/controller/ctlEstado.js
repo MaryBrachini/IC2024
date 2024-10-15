@@ -71,7 +71,7 @@ function validateForm(regFormPar) {
   console.log("[ctlEstado.js|validateForm]");
 
   regFormPar.estadoid = regFormPar.estadoid ? parseInt(regFormPar.estadoid) : 0;
-  regFormPar.removido = regFormPar.removido === "true";
+  regFormPar.Removido = regFormPar.Removido === "true";
 
   return regFormPar;
 }
@@ -239,7 +239,7 @@ const deleteEstado  = async (req, res) => {
       );
 
       if (resp.data.status == "ok") {
-        res.json({ status: "ok", mensagem: "Estado removido com sucesso!" });
+        res.json({ status: "ok", mensagem: "Estado Removido com sucesso!" });
       } else {
         res.json({ status: "erro", mensagem: "Erro ao remover estado!" });
       }

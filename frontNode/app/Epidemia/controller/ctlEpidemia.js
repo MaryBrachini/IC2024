@@ -80,8 +80,8 @@ function validateForm(regFormPar) {
 
   console.log("[ctlBairro.js|validateForm]");
 
-  regFormPar.epidemiaid = regFormPar.epidemiaid ? parseInt(regFormPar.epidemiaid) : 0;
-  regFormPar.removido = regFormPar.removido === "true";
+  regFormPar.EpidemiaID = regFormPar.EpidemiaID ? parseInt(regFormPar.EpidemiaID) : 0;
+  regFormPar.Removido = regFormPar.Removido === "true";
   return regFormPar;
 }
 
@@ -130,7 +130,7 @@ const getDados  = async (req, res) => {
       resp = await axios.post(
       "http://localhost:20100/acl/epidemia/v1/GetEpidemiaByID",
         {
-          epidemiaid: idBusca,
+          EpidemiaID: idBusca,
         },
         {
           headers: {
@@ -168,7 +168,9 @@ const insertEpidemia = async (req, res) => {
          /* console.log("[ctlEpidemia.js|insertEpidemia]IF"); */
 
         const regPost = validateForm(req.body);
-        regPost.epidemiaid = 0;
+        regPost.EpidemiaID = 0;
+
+        console.log("[ctlBairro.js|InsertBairro] Dados a serem enviados:", regPost);
 
         const resp = await axios.post(
           "http://localhost:20100/acl/epidemia/v1/InsertEpidemia",
@@ -181,6 +183,8 @@ const insertEpidemia = async (req, res) => {
           }
         );
 
+        console.log("[ctlEpidemia.js|insertEpidemia]await axios.post");
+
         if (resp.data.status == "ok") {
           res.json({ status: "ok", mensagem: "Epidemia inserida com sucesso!" });
         } else {
@@ -189,8 +193,7 @@ const insertEpidemia = async (req, res) => {
       }
     } catch (erro) {
       console.log(
-        "[ctlEpidemia.js|insertEpidemia] Try Catch: Erro não identificado",
-        erro
+        "[ctlEpidemia.js|insertEpidemia] Try Catch: Erro não identificado"
       );
     }
   };
@@ -238,11 +241,11 @@ const deleteEpidemia = (req, res) =>
   try {
     if (req.method == "POST") {
       const regPost = validateForm(req.body);
-      regPost.epidemiaid = parseInt(regPost.epidemiaid);
+      regPost.EpidemiaID = parseInt(regPost.EpidemiaID);
       const resp = await axios.post(
         process.env.SERVIDOR + "/DeleteEpidemia",
         {
-          epidemiaid: regPost.epidemiaid,
+          EpidemiaID: regPost.EpidemiaID,
         },        
         {
           headers: {

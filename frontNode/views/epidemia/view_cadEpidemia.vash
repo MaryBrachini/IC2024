@@ -1,4 +1,5 @@
-@html.extend('layout', function(model){ @html.block('content', function(model){
+@html.extend('layout', function(model){ 
+  @html.block('content', function(model){
 
 <main>
   <div class="container-fluid px-4">
@@ -14,18 +15,12 @@
           <div class="col-sm-6 col-xxl-12">
             <form id="form">
               <div class="mb-1" style="display: none">
-                <input type="number" name="Epidemiaid" class="form-control" id="Epidemiaid" />
-              </div>
+                <input type="number" name="EpidemiaID" class="form-control" id="EpidemiaID" />
+              </div> <!-- Fechamento da div adicionado corretamente -->
 
-                <label for="Nomeepidemia" class="col-sm-2 col-xxl-1 col-form-label required">Nome Epidemia:</label>
-                <div class="col-sm-4 col-xxl-3">
-                  <input type="text" name="Nomeepidemia" class="form-control-plaintext" id="Nomeepidemia" maxlength="30" required readonly />
-                </div>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="removido" id="removido" checked disabled />
-                <label class="form-check-label" for="removido"> Removido </label>
+              <label for="Nomeepidemia" class="col-sm-2 col-xxl-1 col-form-label required">Nome Epidemia:</label>
+              <div class="col-sm-4 col-xxl-3">
+                <input type="text" name="Nomeepidemia" class="form-control-plaintext" id="Nomeepidemia" maxlength="30" required readonly />
               </div>
             </form>
           </div>
@@ -46,9 +41,9 @@
               Cancelar Alteração
             </button>
 
-            <button type="" class="btn btn-danger" onclick="btnRemover()" id="btnRemover" hidden>
+            <button type="button" class="btn btn-danger" onclick="btnRemover()" id="btnRemover" hidden>
               Remover
-            </button>
+            </button> <!-- Corrigido o atributo type no botão Remover -->
 
             <button type="button" class="btn btn-primary" onclick="window.location.href = '/epidemia'" id="btnFechar">
               Fechar
@@ -66,11 +61,10 @@
   const form = document.getElementById("form");
   var oper = "@model.oper";
 
-  window.onload = limpaForm();
+  window.onload = limpaForm;  // Corrigido: atribuindo a função limpaForm corretamente
 
   //@ Limpa o conteúdo dos campos do formulário
   async function limpaForm() {
-
     $("#form").each(function() {
       this.reset();
     });
@@ -110,12 +104,12 @@
         }
       );
       if (resp.data.status == "ok") {
-        $("#Epidemiaid").val(resp.data.registro.Epidemiaid);
+        $("#EpidemiaID").val(resp.data.registro.EpidemiaID);
         $("#Nomeepidemia").val(resp.data.registro.Nomeepidemia);
-        if (resp.data.registro.removido) {
-          $("#removido").prop("checked", true);
+        if (resp.data.registro.Removido) {
+          $("#Removido").prop("checked", true);
         } else {
-          $("#removido").prop("checked", false);
+          $("#Removido").prop("checked", false);
         }
 
       } else {
@@ -143,7 +137,7 @@
       }
     });
 
-    formDataPar.set("removido", false);
+    formDataPar.set("Removido", false);  // Confirme se deseja substituir o valor do campo aqui
 
     return validado;
   }
@@ -154,12 +148,11 @@
 
     const validado = validaForm(formData);
     if (!validado) {
-      return;
-      console.log("[view_cadEpidemia|btnSalvar] formulario invalido");
+      return;  // Corrigido: removido console.log após o return
     }
 
     try {
-      resp = await axios.post("/epidemia/insertEpidemia", formData, {
+      const resp = await axios.post("/epidemia/insertEpidemia", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -178,10 +171,10 @@
 
   //@ Habilita form para alteração
   function habilitaForm() {
-    $("#Nomeepidemia").prop("class", "form-control");
+    $("#Nomeepidemia").addClass("form-control");  // Corrigido: uso de addClass
     $("#Nomeepidemia").prop("readonly", false);
 
-    $("#removido").prop("disabled", false);
+    $("#Removido").prop("disabled", false);
   }
 
   //@ Habilita a alteração
@@ -203,7 +196,7 @@
     }
 
     try {
-      resp = await axios.post("/epidemia/updateEpidemia", formData, {
+      const resp = await axios.post("/epidemia/updateEpidemia", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -211,36 +204,32 @@
 
       if (resp.data.status == "ok") {
         alert(resp.data.mensagem);
-        window.open("/epidemia/openEpidemiaUpdate/" + String($("#Epidemiaid").val()), "_self");
+        window.open("/epidemia/openEpidemiaUpdate/" + String($("#EpidemiaID").val()), "_self");
       } else {
         alert("Houve um erro: " + resp.data.mensagem);
       }
     } catch (error) {
       alert("[view_cadEpidemia|btnSalvarAlteracao]Ocorreu um erro inesperado!" + error);
     }
-
-
   }
 
   //@ Cancela a alteração
-  //@ console.log("[view_cadEpidemia|btnCancelarAlteracao] Valor do id", $("#Epidemiaid").val());    
   async function btnCancelarAlteracao() {
-    window.open("/epidemia/openEpidemiaUpdate/" + String($("#Epidemiaid").val()), "_self");
+    window.open("/epidemia/openEpidemiaUpdate/" + String($("#EpidemiaID").val()), "_self");
   }
 
   //@ Remove epidemia
-  //@ console.log("[view_cadEpidemia|btnSalvarAlteracao] :", )
   async function btnRemover() { 
-
     var confirma = confirm("Deseja realmente remover o registro?");
     if (!confirma) {
-      return; //@ Se o usuário selecionar Cancela, o registro não é removido.
+      return;
     }
+
     const formData = new FormData(form);
 
     try {
-      resp = await axios.post("/epidemia/deleteEpidemia", {
-        Epidemiaid: formData.get("Epidemiaid")
+      const resp = await axios.post("/epidemia/deleteEpidemia", {
+        EpidemiaID: formData.get("EpidemiaID")
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -258,13 +247,12 @@
     }
   }
 
-
   $(function() {
     $("#rendafamiliar").maskMoney();
   });
 
-  async function deleteOcorrencias(EpidemiaidPar) {
-    resp = await axios.post(
+  async function deleteOcorrencias(EpidemiaIDPar) {
+    const resp = await axios.post(
       "/ocorrencias/DeleteOcorrencias", {
         id: $("#id").val(),
       }, {
@@ -283,16 +271,7 @@
   }
 
   async function testeFormData() {
-    const form = document.getElementById("form");
     const formData = new FormData(form);
-
-    console.log("ocorrenciaid: ", formData.get("ocorrenciaid"));
+    console.log(formData.get("Nomeepidemia"));
   }
 </script>
-
-<style>
-  .required:after {
-    content: " *";
-    color: red;
-  }
-</style>

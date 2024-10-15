@@ -89,7 +89,7 @@ const insertOcorrencias = (req, res) =>
           Bairroidfk: "",
           LogradourolocaltrabalhoIDFK: "",
           Logradouroidfk: "",
-          Epidemiaidfk: "",
+          EpidemiaIDfk: "",
           Removido: false,
         };
         res.render("Ocorrencias/view_cadOcorrencias", {
@@ -124,7 +124,7 @@ const insertOcorrencias = (req, res) =>
             Bairroidfk: ubsREG.Bairroidfk,
             LogradourolocaltrabalhoIDFK: ubsREG.LogradourolocaltrabalhoIDFK,
             Logradouroidfk: ubsREG.Logradouroidfk,
-            Epidemiaidfk: ubsREG.Epidemiaidfk,
+            EpidemiaIDfk: ubsREG.EpidemiaIDfk,
             UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
             Removido: false,
           },
@@ -153,7 +153,7 @@ const insertOcorrencias = (req, res) =>
             Bairroidfk: "",
             LogradourolocaltrabalhoIDFK: "",
             Logradouroidfk: "",
-            Epidemiaidfk: "",
+            EpidemiaIDfk: "",
             Removido: false,
           };
         } else {
@@ -237,7 +237,7 @@ const viewOcorrencias = (req, res) =>
             Bairroidfk: ubsREG.Bairroidfk,
             LogradourolocaltrabalhoIDFK: ubsREG.LogradourolocaltrabalhoIDFK,
             Logradouroidfk: ubsREG.Logradouroidfk,
-            Epidemiaidfk: ubsREG.Epidemiaidfk,
+            EpidemiaIDfk: ubsREG.EpidemiaIDfk,
             UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
             Removido: false,
           },

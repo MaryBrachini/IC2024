@@ -68,7 +68,7 @@ const insertUBS = async (req, res) => {
           NomeUBS: "",
           CodigoUBS: "",
           BairroIDFK: "",
-          removido: false,
+          Removido: false,
         };
         res.render("UBS/view_cadUBS", {
           title: "Cadastro da Unidade Básica de Saúde",
@@ -87,7 +87,7 @@ const insertUBS = async (req, res) => {
             NomeUBS: ubsREG.NomeUBS,
             CodigoUBS: ubsREG.CodigoUBS,
             BairroIDFK: ubsREG.BairroIDFK,
-            removido: false,
+            Removido: false,
           },
           {
             headers: {
@@ -103,7 +103,7 @@ const insertUBS = async (req, res) => {
             NomeUBS: "",
             CodigoUBS:"",
             BairroIDFK: "",
-            removido: false,
+            Removido: false,
           };
         } else {
           registro = ubsREG;
@@ -171,7 +171,7 @@ const viewUBS = (req, res) =>
             NomeUBS: ubsREG.NomeUBS,
             CodigoUBS:ubsREG.CodigoUBS,
             BairroIDFK: ubsREG.BairroIDFK,
-            removido: false,
+            Removido: false,
           },
           {
             headers: {

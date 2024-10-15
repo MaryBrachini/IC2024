@@ -42,13 +42,13 @@
 
                             <div class="mb-1">
                                 <label for="" class="form-label">Epidemia</label>
-                                <select class="form-select" aria-label="Default select example" id="epidemiaidfk"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="epidemiaidfk">
+                                <select class="form-select" aria-label="Default select example" id="EpidemiaIDfk"
+                                    @(model.oper=='v' ? 'disabled' : '' ) name="EpidemiaIDfk">
                                     @model.Epidemia.forEach(function(item){
-                                    @if(model.data.epidemiaidfk === item.epidemiaidfk) {
-                                    <option value="@item.epidemiaidfk" selected>@item.nomeepidemia</option>
+                                    @if(model.data.EpidemiaIDfk === item.EpidemiaIDfk) {
+                                    <option value="@item.EpidemiaIDfk" selected>@item.nomeepidemia</option>
                                     } else {
-                                    <option value="@item.epidemiaidfk">@item.nomeepidemia</option>
+                                    <option value="@item.EpidemiaIDfk">@item.nomeepidemia</option>
                                     }
                                     });
                                 </select>
@@ -197,7 +197,7 @@
             nomeSuspeito: $("#").val(),
             datacadastro: $("#").val(),
             dataocorrencia: $("#").val(),
-            epidemiaidfk: $("#").val(),
+            EpidemiaIDfk: $("#").val(),
             logradouroidfk: $("#logradouroidfk").val(),
             numero: $("#numero").val(),
             bairroidfk: $("#bairroidfk").val(),

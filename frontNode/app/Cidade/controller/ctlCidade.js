@@ -76,7 +76,7 @@ const insertCidade = async (req, res) => {
         CidadeID: 0,
         NomeCidade: "",
         EstadoIDFK: "",
-        removido: false,
+        Removido: false,
       };
       res.render("cidade/view_cadCidade", {
         title: "Cadastro de cidade",
@@ -98,7 +98,7 @@ const insertCidade = async (req, res) => {
           CidadeID: 0,
           NomeCidade: cidadeREG.NomeCidade,
           EstadoIDFK: cidadeREG.EstadoIDFK,
-          removido: false,
+          Removido: false,
         },
         {
           headers: {
@@ -113,7 +113,7 @@ const insertCidade = async (req, res) => {
           CidadeID: 0,
           NomeCidade: "",
           EstadoIDFK: "",
-          removido: false,
+          Removido: false,
         };
       } else {
         registro = cidadeREG;
@@ -207,7 +207,7 @@ const viewCidade = async (req, res) => {
           CidadeID: id,
           NomeCidade: cidadeREG.NomeCidade,
           EstadoIDFK: cidadeREG.EstadoIDFK,
-          removido: false,
+          Removido: false,
         },
         {
           headers: {

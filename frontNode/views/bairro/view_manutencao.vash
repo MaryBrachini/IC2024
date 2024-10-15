@@ -3,9 +3,7 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">@model.title</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">@model.title</li>
-                </ol>
+
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card mb-4">
@@ -13,11 +11,6 @@
                             <div class="col-2 ms-1 mt-1 mb-2">
                             <button type="button" class="btn btn-primary" 
                             onclick="window.location.href = '/bairros/openBairroInsert'">Novo Bairro</button>
-                            </div>
-
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Listagem de Bairros
                             </div>
 
                             <div class="card-body">
@@ -47,15 +40,6 @@
                                             });
                                         }
                                     </tbody>
-
-                                    <tfoot>
-                                        <tr>
-                                            <th>Ação</th>
-                                            <th>ID</th>
-                                            <th>Código do Bairro</th>
-                                            <th>Nome</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>

@@ -41,7 +41,7 @@
                                 @model.data.forEach(function(registro) {
                                 <tr>
                                     <td>@registro.Dataocorrencia</td>
-                                    <td>@registro.Epidemiaidfk</td>
+                                    <td>@registro.EpidemiaIDfk</td>
                                     <td>@registro.UnidBasicaSaudeIDFK</td>
                                     <td>@registro.Logradouroidfk</td>
                                     <td>@registro.Bairroidfk</td>

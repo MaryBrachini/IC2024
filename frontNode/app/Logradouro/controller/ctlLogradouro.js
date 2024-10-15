@@ -51,7 +51,7 @@ function validateForm(regFormPar) {
   console.log("[ctlLogradouro.js|validateForm]");
 
   regFormPar.Logradouroid = regFormPar.Logradouroid ? parseInt(regFormPar.Logradouroid) : 0;
-  regFormPar.removido = regFormPar.removido === "true";
+  regFormPar.Removido = regFormPar.Removido === "true";
   return regFormPar;
 }
 
@@ -74,7 +74,7 @@ const insertLogradouro = (req, res) =>
           Logradouroid: 0,
           Nomelogradouro: "",
           CidadeIDFK: "",
-          removido: false,
+          Removido: false,
         };
         res.render("logradouro/view_cadLogradouro", {
           title: "Cadastro de logradouro",
@@ -92,7 +92,7 @@ const insertLogradouro = (req, res) =>
             Logradouroid: 0,
             Nomelogradouro: logradouroREG.Nomelogradouro,
             CidadeIDFK: logradouroREG.CidadeIDFK,
-            removido: false,
+            Removido: false,
           },
           {
             headers: {
@@ -107,7 +107,7 @@ const insertLogradouro = (req, res) =>
             Logradouroid: 0,
             Nomelogradouro: "",
             CidadeIDFK: "",
-            removido: false,
+            Removido: false,
           };
         } else {
           registro = logradouroREG;
@@ -174,7 +174,7 @@ const viewLogradouro = (req, res) =>
             Logradouroid: id,
             Nomelogradouro: logradouroREG.Nomelogradouro,
             CidadeIDFK: logradouroREG.CidadeIDFK,
-            removido: false,
+            Removido: false,
           },
           {
             headers: {
