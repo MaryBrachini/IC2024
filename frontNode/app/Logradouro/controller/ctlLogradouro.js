@@ -67,7 +67,7 @@ const insertLogradouro = (req, res) =>
       if (req.method == "GET") {
         oper = "c";
         Cidade = await axios.get(
-          process.env.SERVIDOR + "/GetAllCidade",
+        "http://localhost:20100/acl/logradouro/v1/GetAllLogradouros",
           {}
         );
         registro = {
@@ -87,7 +87,7 @@ const insertLogradouro = (req, res) =>
         oper = "c";
         const logradouroREG = validateForm(req.body);
         resp = await axios.post(
-          process.env.SERVIDOR + "/insertLogradouro",
+          "http://localhost:20100/acl/logradouro/v1/InsertLogradouro",
           {
             Logradouroid: 0,
             Nomelogradouro: logradouroREG.Nomelogradouro,
@@ -113,7 +113,7 @@ const insertLogradouro = (req, res) =>
           registro = logradouroREG;
         }
         Cidade = await axios.get(
-          process.env.SERVIDOR + "/GetAllCidade",
+          "http://localhost:20100/acl/cidade/v1/GetAllCidade",
           {}
         );
         oper = "c";

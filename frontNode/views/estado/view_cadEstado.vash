@@ -17,9 +17,9 @@
                 <input type="number" name="estadoid" class="form-control" id="estadoid" />
               </div>
               <div class="mb-1 row ">
-                <label for="nomeestado" class="col-sm-2 col-xxl-1 col-form-label required">Nome do Estado:</label>
+                <label for="Nomeestado" class="col-sm-2 col-xxl-1 col-form-label required">Nome do Estado:</label>
                 <div class="col-sm-4 col-xxl-2">
-                  <input type="text" name="nomeestado" class="form-control-plaintext" id="nomeestado" maxlength="30" required readonly />
+                  <input type="text" name="Nomeestado" class="form-control-plaintext" id="Nomeestado" maxlength="30" required readonly />
                 </div>
 
                 <label for="uf" class="col-sm-2 col-xxl-1 col-form-label required">UF:</label>
@@ -92,7 +92,7 @@
     }
 
     //Coloca o estado no primeiro campo do formulário
-    $("#nomeestado").focus();
+    $("#Nomeestado").focus();
   }
 
   //@ Busca os dados de acordo com o ID para serem alterados
@@ -111,7 +111,7 @@
       );
       if (resp.data.status == "ok") {
         $("#estadoid").val(resp.data.registro.estadoid);
-        $("#nomeestado").val(resp.data.registro.nomeestado);
+        $("#Nomeestado").val(resp.data.registro.Nomeestado);
         $("#uf").val(resp.data.registro.uf);
       } else {
         alert("Houve erro ao buscar os dados dos estado!");
@@ -172,8 +172,8 @@
 
   //@ Habilita form para alteração
   function habilitaForm() {
-    $("#nomeestado").prop("class", "form-control");
-    $("#nomeestado").prop("readonly", false);
+    $("#Nomeestado").prop("class", "form-control");
+    $("#Nomeestado").prop("readonly", false);
 
     $("#uf").prop("class", "form-control");
     $("#uf").prop("readonly", false);

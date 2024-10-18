@@ -35,8 +35,8 @@
                                         <tr>                                    
                                             <td>
                                                 <!-- Link de visualização comentado, descomente se necessário -->
-                                                <a href="/epidemia/openEpidemiaUpdate/@registro.Epidemiaid"
-                                                 class="btn btn-info btn-sm"  aria-label="Visualizar epidemia @registro.Epidemiaid">
+                                                <a href="/epidemia/openEpidemiaUpdate/@registro.EpidemiaID"
+                                                 class="btn btn-info btn-sm"  aria-label="Visualizar epidemia @registro.EpidemiaID">
                                                     <i class="fa fa-magnifying-glass"></i> Visualizar
                                                 </a> 
                                             </td>

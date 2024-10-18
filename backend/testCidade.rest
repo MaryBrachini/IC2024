@@ -22,7 +22,7 @@ Content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "nomeCidade": "Votuporanga",
+    "nomeCidade": "teste",
     "estadoIDFK": 2
 }
 

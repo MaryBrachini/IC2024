@@ -34,9 +34,9 @@
                                     @(model.oper=='v' ? 'disabled' : '' ) name="cidadeidfk">
                                     @model.cidade.forEach(function(item){
                                     @if(model.data.cidadeidfk === item.cidadeidfk) {
-                                    <option value="@item.cidadeidfk" selected>@item.nomeCidade</option>
+                                    <option value="@item.cidadeidfk" selected>@item.NomeCidade</option>
                                     } else {
-                                    <option value="@item.cidadeidfk">@item.nomeCidade</option>
+                                    <option value="@item.cidadeidfk">@item.NomeCidade</option>
                                     }
                                     });
                                 </select>

@@ -52,45 +52,72 @@ function validateForm(regFormPar) {
 //@ Abre e faz operações de CRUD no formulário de cadastro de cidade
 const insertCidade = async (req, res) => {
 
-  let oper = "";
-  let registro = {};
+  var  oper = "";
+  var  registro = {};
+
+  console.log("[ctlCidade|insertCidade]registro: ",registro);
 
   const userName = req.session.userName;
   const token = req.session.token;
 
-  try {
-
+  /* console.log("[ctlCidade|insertCidade] TOKEN:", token); */
+  
     console.log("[ctlCidade|insertCidade]TRY");
 
     if (req.method == "GET") {
-
-    console.log("[ctlCidade|insertCidade]IF");
-
       oper = "c";
+    
+      console.log("[ctlCidade|insertCidade]IF");
+    
       const resp = await axios.get(
-        "http://localhost:20100/acl/cidade/v1/InsertCidade",
-        {}
+        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
       );
-
+    
+      console.log("[ctlCidade|insertCidade] Valor da resposta:", resp.data);
+    
+      // Verifique se 'regReturn' está disponível na resposta
+      if (resp.data && resp.data.regReturn) {
+        console.log("[ctlCidade|insertCidade] Cidades disponíveis:", resp.data.regReturn);
+      } else {
+        console.log("[ctlCidade|insertCidade] 'regReturn' não está presente na resposta.");
+      }
+    
       registro = {
         CidadeID: 0,
         NomeCidade: "",
         EstadoIDFK: "",
         Removido: false,
       };
+    
       res.render("cidade/view_cadCidade", {
         title: "Cadastro de cidade",
         data: registro,
-        resp: resp.data.registro,
+        resp: resp.data.regReturn, 
         oper: oper,
         userName: userName,
       });
-      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", resp.data.registro);
+    
+      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", resp.data.regReturn);    
 
     } else {
-
+      try {
       oper = "c";
       const cidadeREG = validateForm(req.body);
+
+      console.log("[ctlCidade|insertCidade]else");
+
+      if (!token) {
+        console.error("[ctlCidade|insertCidade] Token JWT ausente");
+        return res.status(401).send("Autenticação necessária");
+      }      
+
+      console.log("[ctlCidade|GetAllCidade] TOKEN:", token);
 
       const resp = await axios.post(
        "http://localhost:20100/acl/cidade/v1/InsertCidade",
@@ -103,10 +130,12 @@ const insertCidade = async (req, res) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            "Authorization": "Bearer " + token,
           },
         }
       );
+
+      console.log("[ctlCidade|insertCidade]else v1/InsertCidade");
 
       if (resp.data.status == "ok") {
         registro = {
@@ -119,10 +148,19 @@ const insertCidade = async (req, res) => {
         registro = cidadeREG;
       }
 
+      console.log("[ctlCidade|insertCidade]resp.data.status == ok",registro);
+
       resp = await axios.get(
         "http://localhost:20100/acl/cidade/v1/GetAllCidades",
-        {}
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
       );
+
+      console.log("[ctlCidade|insertCidade]else v1/GetAllCidades");
 
       oper = "c";
       res.render("cidade/view_cadCidade", {
@@ -132,11 +170,13 @@ const insertCidade = async (req, res) => {
         oper: oper,
         userName: userName,
       });
-    }
-  } catch (erro) {
-    console.log("[ctlCidade|insertCidade]Erro não identificado", error.response ? error.response.data : error.message);
+
+      console.log("[ctlCidade|insertCidade]else fim");
+     } catch (erro) {
+    console.log("[ctlCidade|insertCidade]Erro não identificado", erro.response ? erro.response.data : erro.message);
     res.status(500).send("Erro ao processar a requisição para inserir o cidade");
   }
+}
 };
 
 //@ Abre o formulário de cadastro de cidade para futura edição

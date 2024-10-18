@@ -30,7 +30,7 @@
                                 @model.data.forEach(function(registro) {
                                     <tr>                                    
                                         <td>
-                                            <a href="/cidade/v1/viewCidade/@registro.CidadeID" class="btn btn-info btn-sm">
+                                            <a href="/cidade/viewCidade/@registro.CidadeID" class="btn btn-info btn-sm">
                                                 <i class="fa fa-magnifying-glass"></i> Visualizar
                                             </a>
                                         </td>

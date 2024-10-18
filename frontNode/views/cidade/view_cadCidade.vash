@@ -7,9 +7,6 @@
 
     <div class="container-fluid px-4">
         <h1 class="mt-2">@model.title</h1>
-        <ol class="breadcrumb mb-2">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
         <div class="row">
             <div class="col-xl-12">
 
@@ -24,23 +21,28 @@
                                 <input type="text" name="cidadeID" value="@model.data.cidadeID" class="form-control" id="id">
                             </div>
                             <div class="mb-1">
-                                <label for="nomeCidade" class="form-label">Nome da Cidade</label>
-                                <input type="text" name="nomeCidade" value="@model.data.nomeCidade" class="form-control" id="nomeCidade"
+                                <label for="NomeCidade" class="form-label">Nome da Cidade</label>
+                                <input type="text" name="NomeCidade" value="@model.data.NomeCidade" class="form-control" id="NomeCidade"
                                     @(model.oper=='v' ? 'disabled' : '' )>
                             </div>
 
                             <div class="mb-1">
                                 <label for="" class="form-label">Estado</label>
-                                <select class="form-select" aria-label="Default select example" id="estadoIDFK"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="estadoIDFK">
-                                    @model.estado.forEach(function(item){
-                                    @if(model.data.estadoIDFK === item.estadoIDFK) {
-                                    <option value="@item.estadoIDFK" selected>@item.nomeestado</option>
+                                <select class="form-select" aria-label="Default select example" id="EstadoIDFK"
+                                    name="EstadoIDFK" @(model.oper=='v' ? 'disabled' : '' )>                            
+                                @if (model.estado && Array.isArray(model.estado)) {
+                                @model.estado.forEach(function(registro){
+                                    @if(model.data.EstadoIDFK === registro.EstadoIDFK) {
+                                    <option value="@registro.EstadoIDFK" selected>@registro.Nomeestado</option>
                                     } else {
-                                    <option value="@item.estadoIDFK">@item.nomeestado</option>
+                                    <option value="@registro.EstadoIDFK">@registro.Nomeestado</option>
                                     }
-                                    });
-                                </select>
+                                    })
+                                });
+                                } else {
+                                <option disabled>Nenhum estado disponível</option>
+                                }
+                                </select>                                
                             </div>
 
                             @if (model.oper=="c") {
@@ -75,7 +77,6 @@
 </main>
 
 })
-
 })
 
 <script>
@@ -83,8 +84,8 @@
         // event.preventDefault();        
         resp = await axios.post("/cidade/viewCidade", {
             cidadeID: $("cidadeID").val(),
-            nomeCidade: $("#nomeCidade").val(),
-            estadoIDFK: $("#estadoIDFK").val(),
+            NomeCidade: $("#NomeCidade").val(),
+            EstadoIDFK: $("#EstadoIDFK").val(),
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -98,7 +99,7 @@
         }
     }
 
-    async function deleteCidade(nomeCidadePar) {
+    async function deleteCidade(NomeCidadePar) {
         resp = await axios.post("/cidade/DeleteCidade", {
             cidadeID: $("cidadeID").val(),
         }, {
@@ -117,6 +118,8 @@
 
     async function testeFormData() {
         const form = document.getElementById("form");
-        const formData = new FormData(form);                 
+        const formData = new FormData(form);  
+
+        console.log("Cidade Id: ", formData.get("cidadeID"));                
     }
 </script>
