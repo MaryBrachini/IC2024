@@ -56,79 +56,128 @@ function validateForm(regFormPar) {
 }
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de logradouro
-const insertLogradouro = (req, res) =>
-  (async () => {
-    var oper = "";
-    var registro = {};
-    var Cidade = {};
-    userName = req.session.userName;
-    token = req.session.token;
-    try {
-      if (req.method == "GET") {
-        oper = "c";
-        Cidade = await axios.get(
-        "http://localhost:20100/acl/logradouro/v1/GetAllLogradouros",
-          {}
-        );
+const insertLogradouro = async (req, res) => {
+  var oper = "";
+  var registro = {};
+  var resp = {};
+
+  console.log("[ctlLogradouro|insertLogradouro] Iniciando...");
+
+  const userName = req.session.userName;
+  const token = req.session.token;
+
+  try {
+    if (req.method == "GET") {
+      oper = "c";
+
+      const cidade = await axios.get(
+        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("[ctlLogradouro|insertLogradouro] cidade.data:", cidade.data);
+
+      if (cidade.data && cidade.data.regReturn) {
         registro = {
           Logradouroid: 0,
           Nomelogradouro: "",
           CidadeIDFK: "",
           Removido: false,
         };
+
         res.render("logradouro/view_cadLogradouro", {
           title: "Cadastro de logradouro",
           data: registro,
-          Cidade: Cidade.data.registro,
+          resp: cidade.data.regReturn,
           oper: oper,
           userName: userName,
         });
       } else {
-        oper = "c";
-        const logradouroREG = validateForm(req.body);
-        resp = await axios.post(
-          "http://localhost:20100/acl/logradouro/v1/InsertLogradouro",
-          {
-            Logradouroid: 0,
-            Nomelogradouro: logradouroREG.Nomelogradouro,
-            CidadeIDFK: logradouroREG.CidadeIDFK,
-            Removido: false,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+      }
+    } else {
+      // Se a requisição for POST
+      oper = "c";
+      const logradouroREG = validateForm(req.body);
 
-        if (resp.data.status == "ok") {
-          registro = {
-            Logradouroid: 0,
-            Nomelogradouro: "",
-            CidadeIDFK: "",
-            Removido: false,
-          };
-        } else {
-          registro = logradouroREG;
+      console.log("[ctlLogradouro|insertLogradouro] req.body:", req.body);
+      console.log("[ctlLogradouro|insertLogradouro] req.body.CidadeIDFK:", req.body.CidadeIDFK);
+
+      // Validação para garantir que CidadeIDFK é um número válido
+      if (!logradouroREG.CidadeIDFK || isNaN(logradouroREG.CidadeIDFK)) {
+        throw new Error("CidadeIDFK inválido: o valor fornecido não é um número.");
+      }
+
+      const cidadeIDFKInt = parseInt(logradouroREG.CidadeIDFK, 10);
+
+      // Tenta inserir o logradouro
+      resp = await axios.post(
+        "http://localhost:20100/acl/logradouro/v1/InsertLogradouro",
+        {
+          Logradouroid: 0,
+          Nomelogradouro: logradouroREG.Nomelogradouro,
+          CidadeIDFK: cidadeIDFKInt,
+          Removido: false,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
         }
-        Cidade = await axios.get(
-          "http://localhost:20100/acl/cidade/v1/GetAllCidade",
-          {}
-        );
-        oper = "c";
+      );
+
+      console.log("[ctlLogradouro|insertLogradouro] resp:", resp.data);
+
+      if (resp.data.status === "ok") {
+        console.log("Logradouro cadastrado com sucesso.");
+        registro = {
+          Logradouroid: 0,
+          Nomelogradouro: "",
+          CidadeIDFK: "",
+          Removido: false,
+        };
+      } else {
+        registro = logradouroREG;
+      }
+
+      const cidade = await axios.get(
+        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      if (cidade.data && cidade.data.regReturn) {
         res.render("logradouro/view_cadLogradouro", {
           title: "Cadastro de logradouro",
           data: registro,
-          Cidade: Cidade.data.registro,
+          resp: cidade.data.regReturn,
           oper: oper,
           userName: userName,
+          message: "Logradouro cadastrado com sucesso!",
+          messageType: "success",
         });
+      } else {
+        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
       }
-    } catch (erro) {
-      console.log("[ctlLogradouro.js|insertLogradouro] Try Catch: Erro não identificado", erro);
     }
-  })();
+  } catch (erro) {
+    console.log("[ctlLogradouro|insertLogradouro] Erro não identificado", erro.response ? erro.response.data : erro.message);
+    res.status(500).send("Erro ao processar a requisição para inserir o logradouro");
+  }
+};
+
+
+
 
 //@ Abre o formulário de cadastro de logradouro para futura edição
 const viewLogradouro = (req, res) =>

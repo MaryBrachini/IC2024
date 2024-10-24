@@ -6,9 +6,7 @@
 
     <div class="container-fluid px-4">
         <h1 class="mt-2">@model.title</h1>
-        <ol class="breadcrumb mb-2">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
+
         <div class="row">
             <div class="col-xl-12">
 
@@ -18,29 +16,33 @@
 
                 <div class="card-body">
                     <div class="col-xl-5">
-                        <form  id="form">
+                        <form id="form">
                             <div class="mb-1" style="display: none">
-                                <input type="text" name="logradouroid" value="@model.data.logradouroid" class="form-control" id="id">
+                                <input type="text" name="Logradouroid" value="@model.data.Logradouroid" class="form-control" id="id">
                             </div>
                             <div class="mb-1">
-                                <label for="nomelogradouro" class="form-label">Nome da Rua</label>
-                                <input type="text" name="nomelogradouro" value="@model.data.nomelogradouro" class="form-control" id="nomelogradouro"
+                                <label for="Nomelogradouro" class="form-label">Nome Logradouro</label>
+                                <input type="text" name="Nomelogradouro" value="@model.data.Nomelogradouro" class="form-control" id="Nomelogradouro"
                                     @(model.oper=='v' ? 'disabled' : '' )>
                             </div>
 
                             <div class="mb-1">
-                                <label for="" class="form-label">Cidade</label>
-                                <select class="form-select" aria-label="Default select example" id="cidadeidfk"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="cidadeidfk">
-                                    @model.cidade.forEach(function(item){
-                                    @if(model.data.cidadeidfk === item.cidadeidfk) {
-                                    <option value="@item.cidadeidfk" selected>@item.NomeCidade</option>
-                                    } else {
-                                    <option value="@item.cidadeidfk">@item.NomeCidade</option>
-                                    }
-                                    });
-                                </select>
+                                <label for="CidadeIDFK" class="form-label">Cidade</label>
+                                        <select class="form-select" aria-label="Default select example" id="CidadeIDFK" @(model.oper == 'v' ? 'disabled' : '') name="CidadeIDFK">
+                                            @if (model.resp && Array.isArray(model.resp)) {
+                                                @model.resp.forEach(function(registro) {
+                                                    @if(model.data.CidadeIDFK === registro.CidadeIDFK) {
+                                                        <option value="@registro.CidadeIDFK" selected>@registro.NomeCidade</option>
+                                                    } else {
+                                                        <option value="@registro.CidadeIDFK">@registro.NomeCidade</option>
+                                                    }
+                                                });
+                                            } else {
+                                                <option disabled>Nenhuma cidade disponível</option>
+                                            }
+                                        </select>
                             </div>
+
 
                             @if (model.oper=="c") {
                             <button type="submit" class="btn btn-success me-2" onclick=""
@@ -56,14 +58,14 @@
 
                             @if (model.oper=="v") {
                             <button type="button" class="btn btn-warning me-2 mb-3"
-                                onclick="window.open('/cidade/viewLogradouro/' + $('logradouroid').val() + '/vu', '_self')">Alterar</button>
+                                onclick="window.open('/logradouro/viewLogradouro/' + $('Logradouroid').val() + '/vu', '_self')">Alterar</button>
                             }
 
                             @if (model.oper=="v") {
                             <button type="" class="btn btn-danger mb-3" onclick="deleteLogradouro()">Remover</button>
                             }
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/cidade'">Fechar
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/logradouro'">Fechar
                             sem salvar</button>                        
                     </div>
                 </div>
@@ -80,26 +82,25 @@
 <script>
     async function alteraRegistro() {
         // event.preventDefault();        
-        resp = await axios.post("/cidade/viewLogradouro", {
-            logradouroid: $("logradouroid").val(),
-            nomelogradouro: $("#nomelogradouro").val(),
-            cidadeidfk: $("#cidadeidfk").val(),
+        resp = await axios.post("/logradouro/viewLogradouro", {
+            Logradouroid: $("Logradouroid").val(),
+            Nomelogradouro: $("#Nomelogradouro").val(),
+            CidadeIDFK: $("#CidadeIDFK").val(),
         }, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        //console.log("[view_cadLogradouro.vash|alteraRegistro] valor resp:", resp.data.status);
         if (resp.data.status == "ok") {
             alert("Rua alterada com sucesso!");
         } else {
-            alert("Houve erro ao alterar os dados das cidade!");
+            alert("Houve erro ao alterar os dados da cidade!");
         }
     }
 
-    async function deleteLogradouro(nomelogradouroPar) {
-        resp = await axios.post("/cidade/DeleteLogradouro", {
-            logradouroid: $("logradouroid").val(),
+    async function deleteLogradouro() {
+        resp = await axios.post("/logradouro/DeleteLogradouro", {
+            Logradouroid: $("Logradouroid").val(),
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -108,9 +109,9 @@
 
         if (resp.data.status == "ok") {
             alert("Rua removida com sucesso!");
-            window.open("/cidade", "_self");
+            window.open("/logradouro", "_self");
         } else {
-            alert("Houve erro ao remover os dados das cidade!");
+            alert("Houve erro ao remover os dados da cidade!");
         }
     }
 

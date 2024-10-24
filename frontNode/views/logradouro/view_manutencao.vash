@@ -23,7 +23,7 @@
                                     <th>Ação</th>
                                     <th>ID</th>
                                     <th>Nome do Logradouro</th>
-                                    <th>cidade</th>
+                                    <th>Cidade</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,14 +31,14 @@
                                 model.data.forEach(function(registro) {
                                     <tr>
                                         <td>
-                                            <a href="/bairros/openBairroUpdate/@registro.Logradouroid" 
-                                                class="btn btn-info btn-sm" aria-label="Visualizar bairro @registro.Logradouroid">
+                                            <a href="/logradouro/viewLogradouro/@registro.Logradouroid" 
+                                                class="btn btn-info btn-sm" aria-label="Visualizar logradouro @registro.Logradouroid">
                                                 <i class="fa fa-magnifying-glass"></i> Visualizar
                                             </a>
                                         </td>
                                         <td>@registro.Logradouroid</td>
                                         <td>@registro.Nomelogradouro</td>
-                                         <td>@registro.CidadeIDFK</td>
+                                        <td>@registro.CidadeIDFK</td>
                                      </tr>
                                 });
                             }
