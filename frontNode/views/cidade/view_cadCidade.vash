@@ -29,17 +29,18 @@
                             <div class="mb-1">
                                 <label for="" class="form-label">Estado</label>
                                 <select class="form-select" aria-label="Default select example" id="EstadoIDFK"
-                                    name="EstadoIDFK" @(model.oper=='v' ? 'disabled' : '' )>                            
-                                @if (model.estado && Array.isArray(model.estado)) {
-                                @model.estado.forEach(function(registro){
-                                    @if(model.data.EstadoIDFK === registro.EstadoIDFK) {
-                                    <option value="@registro.EstadoIDFK" selected>@registro.Nomeestado</option>
-                                    } else {
-                                    <option value="@registro.EstadoIDFK">@registro.Nomeestado</option>
-                                    }
+                                    name="EstadoIDFK" @(model.oper=='v' ? 'disabled' : '' )>    
+
+                                @if (model.resp && Array.isArray(model.resp)) {
+                                    @model.resp.forEach(function(registro){
+                                        @if(model.data.EstadoIDFK === registro.EstadoIDFK) {
+                                        <option value="@registro.Estadoid" selected>@registro.EstadoIDFK</option>
+                                        } else {
+                                        <option value="@registro.Estadoid">@registro.Estadoid</option>
+                                        }
                                     })
-                                });
-                                } else {
+                                }
+                                 else {
                                 <option disabled>Nenhum estado disponível</option>
                                 }
                                 </select>                                
@@ -77,10 +78,13 @@
 </main>
 
 })
+
 })
 
 <script>
     async function alteraRegistro() {
+        console.log("valor EstadoIDFK", $("#EstadoIDFK").val());
+        console.log("valor EstadoIDFK sem", $("EstadoIDFK").val());
         // event.preventDefault();        
         resp = await axios.post("/cidade/viewCidade", {
             cidadeID: $("cidadeID").val(),

@@ -44,13 +44,17 @@
                                 <label for="" class="form-label">Epidemia</label>
                                 <select class="form-select" aria-label="Default select example" id="EpidemiaIDfk"
                                     @(model.oper=='v' ? 'disabled' : '' ) name="EpidemiaIDfk">
-                                    @model.Epidemia.forEach(function(item){
-                                    @if(model.data.EpidemiaIDfk === item.EpidemiaIDfk) {
-                                    <option value="@item.EpidemiaIDfk" selected>@item.nomeepidemia</option>
+                                   @if (model.Epidemia && model.Epidemia.length > 0) {
+                                        model.Epidemia.forEach(function(item){
+                                            @if(model.data.EpidemiaIDfk === item.EpidemiaIDfk) {
+                                                <option value="@item.EpidemiaIDfk" selected>@item.nomeepidemia</option>
+                                            } else {
+                                                <option value="@item.EpidemiaIDfk">@item.nomeepidemia</option>
+                                            }
+                                        });
                                     } else {
-                                    <option value="@item.EpidemiaIDfk">@item.nomeepidemia</option>
+                                        <option disabled>Nenhuma epidemia disponível</option>
                                     }
-                                    });
                                 </select>
                             </div>
 

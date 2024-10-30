@@ -44,35 +44,59 @@ const getAllOcorrencias = async (req, res) => {
   };
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de Ocorrencias
-const insertOcorrencias = (req, res) =>
-  (async () => {
-    var oper = "";
-    var registro = {};
-    var Bairro = {};
-    var logradouroLocalTrabalho = {};
-    var logradouro = {};
-    var epidemia = {};
-    var unidBasicaSaude = {};
-    userName = req.session.userName;
-    token = req.session.token;
-    try {
-      if (req.method == "GET") {
-        oper = "c";
-        Bairro = await axios.get(
-          process.env.SERVIDOR + "/GetAllBairros",{}
-        );
-        logradouroLocalTrabalho = await axios.get(
-          process.env.SERVIDOR + "/GetAllLogradouroLocalTrabalho",{}
-        );
-        logradouro = await axios.get(
-          process.env.SERVIDOR + "/GetAllLogradouro",{}
-        );
-        epidemia = await axios.get(
-          process.env.SERVIDOR + "/GetAllEpidemia",{}
-        );
-        unidBasicaSaude = await axios.get(
-          process.env.SERVIDOR + "/GetAllUnidBasicaSaude",{}
-        );
+const insertOcorrencias = async (req, res) => {
+
+  console.log("[ctlOcorrencias|insertOcorrencias] Iniciando...");
+
+  var oper = "";
+  var registro = {};
+  var Bairro = {};
+  var logradouro = {};
+  var epidemia = {};
+  var unidBasicaSaude = {};
+
+  const userName = req.session.userName;
+  const token = req.session.token;
+
+  try {
+    if (req.method === "GET") {
+      oper = "c";
+
+      // Obtendo todos os dados necessários
+      Bairro = await axios.get("http://localhost:20100/acl/bairro/v1/GetAllBairros", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      logradouro = await axios.get("http://localhost:20100/acl/logradouro/v1/GetAllLogradouros", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      epidemia = await axios.get("http://localhost:20100/acl/epidemia/v1/GetAllEpidemias", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      unidBasicaSaude = await axios.get("http://localhost:20100/acl/ubs/v1/GetAllUBSs", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      // Verificações das respostas
+      if (Bairro.data && Bairro.data.regReturn && 
+          logradouro.data && logradouro.data.regReturn &&
+          epidemia.data && epidemia.data.regReturn &&
+          unidBasicaSaude.data && unidBasicaSaude.data.regReturn) {
+
         registro = {
           Ocorrenciaid: 0,
           NomeSuspeito: "",
@@ -92,94 +116,122 @@ const insertOcorrencias = (req, res) =>
           EpidemiaIDfk: "",
           Removido: false,
         };
+
         res.render("Ocorrencias/view_cadOcorrencias", {
           title: "Cadastro da Unidade Básica de Saúde",
           data: registro,
-          Bairro: Bairro.data.registro,
-          logradouroLocalTrabalho: logradouroLocalTrabalho.data.registro,
-          logradouro: logradouro.data.registro,
-          epidemia: epidemia.data.registro,
-          unidBasicaSaude: unidBasicaSaude.data.registro,
+          Bairro: Bairro.data.regReturn,
+          logradouro: logradouro.data.regReturn,
+          epidemia: epidemia.data.regReturn,
+          unidBasicaSaude: unidBasicaSaude.data.regReturn,
           oper: oper,
           userName: userName,
         });
       } else {
-        oper = "c";
-        const OcorrenciasREG = validateForm(req.body);
-        resp = await axios.post(
-          process.env.SERVIDOR + "/insertOcorrencias",
-          {
-            Ocorrenciaid: 0,
-            NomeSuspeito: ubsREG.NomeSuspeito,
-            Datacadastro: ubsREG.Datacadastro,
-            Dataocorrencia: ubsREG.Dataocorrencia,
-            Numero: ubsREG.Numero,
-            Latitude: ubsREG.Latitude,
-            Longitude: ubsREG.Longitude,
-            Localtrabalho: ubsREG.Localtrabalho,
-            Numerolocaltrabalho: ubsREG.Numerolocaltrabalho,
-            Latitudelocaltrabalho: ubsREG.Latitudelocaltrabalho,
-            Longitudelocaltrabalho: ubsREG.Longitudelocaltrabalho,
-            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
-            Bairroidfk: ubsREG.Bairroidfk,
-            LogradourolocaltrabalhoIDFK: ubsREG.LogradourolocaltrabalhoIDFK,
-            Logradouroidfk: ubsREG.Logradouroidfk,
-            EpidemiaIDfk: ubsREG.EpidemiaIDfk,
-            UnidBasicaSaudeIDFK: ubsREG.UnidBasicaSaudeIDFK,
-            Removido: false,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        if (resp.data.status == "ok") {
-          registro = {
-            Ocorrenciaid: 0,
-            NomeSuspeito: "",
-            Datacadastro: "",
-            Dataocorrencia: "",
-            Numero: "",
-            Latitude: "",
-            Longitude: "",
-            Localtrabalho: "",
-            Numerolocaltrabalho: "",
-            Latitudelocaltrabalho: "",
-            Longitudelocaltrabalho: "",
-            UnidBasicaSaudeIDFK: "",
-            Bairroidfk: "",
-            LogradourolocaltrabalhoIDFK: "",
-            Logradouroidfk: "",
-            EpidemiaIDfk: "",
-            Removido: false,
-          };
-        } else {
-          registro = ubsREG;
-        }
-        Bairro = await axios.get(
-          process.env.SERVIDOR + "/GetAllBairros",
-          {}
-        );
-        oper = "c";
-        res.render("Ocorrencias/view_cadOcorrencias", {
-          title: "Cadastro da Unidade Básica de Saúde",
-          data: registro,
-          Bairro: Bairro.data.registro,
-          logradouroLocalTrabalho: logradouroLocalTrabalho.data.registro,
-          logradouro: logradouro.data.registro,
-          epidemia: epidemia.data.registro,
-          unidBasicaSaude: unidBasicaSaude.data.registro,
-          oper: oper,
-          userName: userName,
-        });
+        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
       }
-    } catch (erro) {
-      console.log("[ctlOcorrencias.js|insertOcorrencias] Try Catch: Erro não identificado", erro);
+
+    } else {
+      // Se a requisição for POST
+      oper = "c";
+
+      const OcorrenciasREG = validateForm(req.body);
+
+      // Validações dos campos
+      if (!OcorrenciasREG.Bairroidfk || isNaN(OcorrenciasREG.Bairroidfk)) {
+        throw new Error("Bairroidfk inválido: o valor fornecido não é um número.");
+      }
+      if (!OcorrenciasREG.EpidemiaIDfk || isNaN(OcorrenciasREG.EpidemiaIDfk)) {
+        throw new Error("EpidemiaIDfk inválido: o valor fornecido não é um número.");
+      }
+      if (!OcorrenciasREG.Logradouroidfk || isNaN(OcorrenciasREG.Logradouroidfk)) {
+        throw new Error("Logradouroidfk inválido: o valor fornecido não é um número.");
+      }
+      if (!OcorrenciasREG.UnidBasicaSaudeIDFK || isNaN(OcorrenciasREG.UnidBasicaSaudeIDFK)) {
+        throw new Error("UnidBasicaSaudeIDFK inválido: o valor fornecido não é um número.");
+      }
+
+      // Parseando os IDs
+      const BairroidfkInt = parseInt(OcorrenciasREG.Bairroidfk, 10);
+      const EpidemiaIDfkInt = parseInt(OcorrenciasREG.EpidemiaIDfk, 10);
+      const LogradouroidfkInt = parseInt(OcorrenciasREG.Logradouroidfk, 10);
+      const UnidBasicaSaudeIDFKInt = parseInt(OcorrenciasREG.UnidBasicaSaudeIDFK, 10);
+
+      // Inserindo a ocorrência
+      const resp = await axios.post("http://localhost:20100/acl/ocorrencia/v1/InsertOcorrencia", {
+        Ocorrenciaid: 0,
+        NomeSuspeito: OcorrenciasREG.NomeSuspeito,
+        Datacadastro: OcorrenciasREG.Datacadastro,
+        Dataocorrencia: OcorrenciasREG.Dataocorrencia,
+        Numero: OcorrenciasREG.Numero,
+        Latitude: OcorrenciasREG.Latitude,
+        Longitude: OcorrenciasREG.Longitude,
+        Localtrabalho: OcorrenciasREG.Localtrabalho,
+        Numerolocaltrabalho: OcorrenciasREG.Numerolocaltrabalho,
+        Latitudelocaltrabalho: OcorrenciasREG.Latitudelocaltrabalho,
+        Longitudelocaltrabalho: OcorrenciasREG.Longitudelocaltrabalho,
+        UnidBasicaSaudeIDFK: UnidBasicaSaudeIDFKInt,
+        Bairroidfk: BairroidfkInt,
+        LogradourolocaltrabalhoIDFK: OcorrenciasREG.LogradourolocaltrabalhoIDFK,
+        Logradouroidfk: LogradouroidfkInt,
+        EpidemiaIDfk: EpidemiaIDfkInt,
+        Removido: false,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (resp.data.status === "ok") {
+        registro = {
+          Ocorrenciaid: 0,
+          NomeSuspeito: "",
+          Datacadastro: "",
+          Dataocorrencia: "",
+          Numero: "",
+          Latitude: "",
+          Longitude: "",
+          Localtrabalho: "",
+          Numerolocaltrabalho: "",
+          Latitudelocaltrabalho: "",
+          Longitudelocaltrabalho: "",
+          UnidBasicaSaudeIDFK: "",
+          Bairroidfk: "",
+          LogradourolocaltrabalhoIDFK: "",
+          Logradouroidfk: "",
+          EpidemiaIDfk: "",
+          Removido: false,
+        };
+      } else {
+        registro = OcorrenciasREG;
+      }
+
+      // Obtendo novamente os dados para renderizar a página
+      Bairro = await axios.get("http://localhost:20100/acl/bairro/v1/GetAllBairros", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      res.render("Ocorrencias/view_cadOcorrencias", {
+        title: "Cadastro da Unidade Básica de Saúde",
+        data: registro,
+        Bairro: Bairro.data.regReturn,
+        logradouro: logradouro.data.regReturn,
+        epidemia: epidemia.data.regReturn,
+        unidBasicaSaude: unidBasicaSaude.data.regReturn,
+        oper: oper,
+        userName: userName,
+      });
     }
-  })();
+  } catch (erro) {
+    console.log("[ctlOcorrencias.js|insertOcorrencias] Erro não identificado", erro.response ? erro.response.data : erro.message);
+    res.status(500).send("Erro ao processar a requisição para inserir a ocorrência");
+  }
+};
+
 
 //@ Abre o formulário de cadastro de Ocorrencias para futura edição
 const viewOcorrencias = (req, res) =>

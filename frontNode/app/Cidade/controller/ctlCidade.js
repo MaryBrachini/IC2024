@@ -52,25 +52,27 @@ function validateForm(regFormPar) {
 //@ Abre e faz operações de CRUD no formulário de cadastro de cidade
 const insertCidade = async (req, res) => {
 
-  var  oper = "";
-  var  registro = {};
+  var oper = "";
+  var registro = {};
 
-  console.log("[ctlCidade|insertCidade]registro: ",registro);
+  console.log("[ctlCidade|insertCidade]Iniciando...");
 
   const userName = req.session.userName;
   const token = req.session.token;
 
   /* console.log("[ctlCidade|insertCidade] TOKEN:", token); */
-  
+
+  try {
+
     console.log("[ctlCidade|insertCidade]TRY");
 
     if (req.method == "GET") {
       oper = "c";
-    
+
       console.log("[ctlCidade|insertCidade]IF");
-    
-      const resp = await axios.get(
-        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+
+      let estado = await axios.get(
+        "http://localhost:20100/acl/estado/v1/GetAllEstados",
         {
           headers: {
             "Content-Type": "application/json",
@@ -78,64 +80,62 @@ const insertCidade = async (req, res) => {
           },
         }
       );
-    
-      console.log("[ctlCidade|insertCidade] Valor da resposta:", resp.data);
-    
+
+      console.log("[ctlCidade|insertCidade] Valor do estado.data:", estado.data);
+
       // Verifique se 'regReturn' está disponível na resposta
-      if (resp.data && resp.data.regReturn) {
-        console.log("[ctlCidade|insertCidade] Cidades disponíveis:", resp.data.regReturn);
+      if (estado.data && estado.data.regReturn) {
+        registro = {
+          CidadeID: 0,
+          NomeCidade: "",
+          EstadoIDFK: "",
+          Removido: false,
+        };
+
+        res.render("cidade/view_cadCidade", {
+          title: "Cadastro de cidade",
+          data: registro,
+          resp: estado.data.regReturn,
+          oper: oper,
+          userName: userName,
+        });
       } else {
-        console.log("[ctlCidade|insertCidade] 'regReturn' não está presente na resposta.");
+        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
       }
-    
-      registro = {
-        CidadeID: 0,
-        NomeCidade: "",
-        EstadoIDFK: "",
-        Removido: false,
-      };
-    
-      res.render("cidade/view_cadCidade", {
-        title: "Cadastro de cidade",
-        data: registro,
-        resp: resp.data.regReturn, 
-        oper: oper,
-        userName: userName,
-      });
-    
-      console.log("[ctlCidade|insertCidade] Dados a serem enviados:", resp.data.regReturn);    
 
     } else {
-      try {
+      // Se a requisição for POST
       oper = "c";
       const cidadeREG = validateForm(req.body);
 
-      console.log("[ctlCidade|insertCidade]else");
+      console.log("[ctlCidade|insertCidade] req.body:", req.body);
+      console.log("[ctlCidade|insertCidade] req.body.EstadoIDFK:", req.body.EstadoIDFK);
 
-      if (!token) {
-        console.error("[ctlCidade|insertCidade] Token JWT ausente");
-        return res.status(401).send("Autenticação necessária");
-      }      
+      // Validação para garantir que EstadoIDFK é um número válido
+      if (!cidadeREG.EstadoIDFK || isNaN(cidadeREG.EstadoIDFK)) {
+        throw new Error("EstadoIDFK inválido: o valor fornecido não é um número.");
+      }
 
-      console.log("[ctlCidade|GetAllCidade] TOKEN:", token);
+      const EstadoIDFKInt = parseInt(cidadeREG.EstadoIDFK, 10);
 
+      // Tenta inserir a cidade
       const resp = await axios.post(
-       "http://localhost:20100/acl/cidade/v1/InsertCidade",
+        "http://localhost:20100/acl/cidade/v1/InsertCidade",
         {
           CidadeID: 0,
           NomeCidade: cidadeREG.NomeCidade,
-          EstadoIDFK: cidadeREG.EstadoIDFK,
+          EstadoIDFK: EstadoIDFKInt,
           Removido: false,
         },
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
         }
       );
 
-      console.log("[ctlCidade|insertCidade]else v1/InsertCidade");
+      console.log("[ctlCidade|insertCidade] resp:", resp.data);
 
       if (resp.data.status == "ok") {
         registro = {
@@ -148,10 +148,10 @@ const insertCidade = async (req, res) => {
         registro = cidadeREG;
       }
 
-      console.log("[ctlCidade|insertCidade]resp.data.status == ok",registro);
+      console.log("[ctlCidade|insertCidade]resp.data.status == ok", registro);
 
-      resp = await axios.get(
-        "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+      let estado = await axios.get(
+        "http://localhost:20100/acl/estado/v1/GetAllEstados",
         {
           headers: {
             "Content-Type": "application/json",
@@ -160,23 +160,29 @@ const insertCidade = async (req, res) => {
         }
       );
 
-      console.log("[ctlCidade|insertCidade]else v1/GetAllCidades");
+      console.log("[ctlCidade|insertCidade]else v1/GetAllEstados");
 
-      oper = "c";
-      res.render("cidade/view_cadCidade", {
-        title: "Cadastro de cidade",
-        data: registro,
-        resp: resp.data.registro,
-        oper: oper,
-        userName: userName,
-      });
+      if (estado.data && estado.data.regReturn) {
+        res.render("cidade/view_cadCidade", {
+          title: "Cadastro de cidade",
+          data: registro,
+          resp: estado.data.regReturn,
+          oper: oper,
+          userName: userName,
+          message: "cidade cadastrada com sucesso!",
+          messageType: "success",
+        });
+      } else {
+        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+      }
+    }
 
-      console.log("[ctlCidade|insertCidade]else fim");
-     } catch (erro) {
+    console.log("[ctlCidade|insertCidade]else fim");
+
+  } catch (erro) {
     console.log("[ctlCidade|insertCidade]Erro não identificado", erro.response ? erro.response.data : erro.message);
     res.status(500).send("Erro ao processar a requisição para inserir o cidade");
   }
-}
 };
 
 //@ Abre o formulário de cadastro de cidade para futura edição
@@ -231,6 +237,7 @@ const viewCidade = async (req, res) => {
         console.error("[ctlCidade|viewCidade] Error: Cidade not found");
         res.status(400).json({ status: "error", message: "Cidade não encontrada" });
       }
+
     } else {
       console.log("[ctlCidade|viewCidade]Else GET");
 
@@ -269,7 +276,6 @@ const viewCidade = async (req, res) => {
     }
   } catch (erro) {
     console.error("[ctlCidade.js|viewCidade] Error caught in try-catch block:", erro);
-    res.status(500).json({ status: "error", message: "Cidade não pode ser alterada" });
   }
 };
 
