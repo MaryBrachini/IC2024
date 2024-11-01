@@ -1,128 +1,117 @@
-@html.extend('layout', function(model){
-
-@html.block('content', function(model){
-
-<main>
-
-    <div class="container-fluid px-4">
-        <h1 class="mt-2">@model.title</h1>
-        <ol class="breadcrumb mb-2">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
-        <div class="row">
-            <div class="col-xl-12">
-
-                <div class="card-header">
-
-                </div>
-
-                <div class="card-body">
-                    <div class="col-xl-5">
-                        <form  id="form">
-                            <div class="mb-1" style="display: none">
-                                <input type="text" name="unidBasicaSaudeID" value="@model.data.unidBasicaSaudeID" class="form-control" id="id">
-                            </div>
-                            <div class="mb-1">
-                                <label for="nomeUBS" class="form-label">Nome da UBS</label>
-                                <input type="text" name="nomeUBS" value="@model.data.nomeUBS" class="form-control" id="nomeUBS"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
-                            </div>
-
-                             <div class="mb-1">
-                                <label for="codigoUBS" class="form-label">Codigo da UBS</label>
-                                <input type="text" name="codigoUBS" value="@model.data.codigoUBS" class="form-control" id="codigoUBS"
-                                    @(model.oper=='v' ? 'disabled' : '' )>
-                            </div>
-
-                            <div class="mb-1">
-                                <label for="" class="form-label">Bairro</label>
-                                <select class="form-select" aria-label="Default select example" id="bairroIDFK"
-                                    @(model.oper=='v' ? 'disabled' : '' ) name="bairroIDFK">
-                                    @model.bairro.forEach(function(item){
-                                    @if(model.data.bairroIDFK === item.bairroIDFK) {
-                                    <option value="@item.bairroIDFK" selected>@item.nomeBairro</option>
-                                    } else {
-                                    <option value="@item.bairroIDFK">@item.nomeBairro</option>
+@html.extend('layout', function(model) {
+    @html.block('content', function(model) {
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-2">@model.title</h1>
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item active">@model.title</li>
+                </ol>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="col-xl-5">
+                                <form id="form">
+                                    <div class="mb-1" style="display: none">
+                                        <input type="text" name="unidBasicaSaudeID" value="@model.data.unidBasicaSaudeID" class="form-control" id="unidBasicaSaudeID">
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="nomeUBS" class="form-label">Nome da UBS</label>
+                                        <input type="text" name="nomeUBS" value="@model.data.nomeUBS" class="form-control" id="nomeUBS"
+                                            @(model.oper == 'v' ? 'disabled' : '')>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="codigoUBS" class="form-label">Codigo da UBS</label>
+                                        <input type="text" name="codigoUBS" value="@model.data.codigoUBS" class="form-control" id="codigoUBS"
+                                            @(model.oper == 'v' ? 'disabled' : '')>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="bairroIDFK" class="form-label">Bairro</label>
+                                        <select class="form-select" aria-label="Default select example" id="bairroIDFK"
+                                            @(model.oper == 'v' ? 'disabled' : '') name="bairroIDFK">
+                                            
+                                            @if (model.resp && Array.isArray(model.resp)) {
+                                                @model.resp.forEach(function(registro) {
+                                                    @if(model.data.bairroIDFK === registro.bairroIDFK) {
+                                                        <option value="@registro.Bairroid" selected>@registro.Nomebairro</option>
+                                                    } else {
+                                                        <option value="@registro.Bairroid">@registro.Nomebairro</option>
+                                                    }
+                                                });
+                                            } else {
+                                                <option disabled>Nenhum Bairro disponível</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    @if (model.oper == "c") {
+                                        <button type="submit" class="btn btn-success me-2" formmethod="POST">Salvar</button>
                                     }
-                                    });
-                                </select>
+                                </form>
+                                <div>
+                                    @if (model.oper == "vu") {
+                                        <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro(event)">Salvar Alteração</button>
+                                    }
+                                    @if (model.oper == "v") {
+                                        <button type="button" class="btn btn-warning me-2 mb-3"
+                                            onclick="window.open('/UBS/viewUBS/' + $('#unidBasicaSaudeID').val() + '/vu', '_self')">Alterar</button>
+                                    }
+                                    @if (model.oper == "v") {
+                                        <button type="button" class="btn btn-danger mb-3" onclick="deleteUBS()">Remover</button>
+                                    }
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS'">Fechar sem salvar</button>
                             </div>
-
-                            @if (model.oper=="c") {
-                            <button type="submit" class="btn btn-success me-2" onclick=""
-                                formmethod="POST">Salvar</button>
-                            }
-
-                        </form>
-                        <div>
-                            @if (model.oper=="vu") {
-                            <button type="button" class="btn btn-warning me-2 mb-3" onclick="alteraRegistro()">Salvar
-                                Alteração</button>
-                            }
-
-                            @if (model.oper=="v") {
-                            <button type="button" class="btn btn-warning me-2 mb-3"
-                                onclick="window.open('/UBS/viewUBS/' + $('unidBasicaSaudeID').val() + '/vu', '_self')">Alterar</button>
-                            }
-
-                            @if (model.oper=="v") {
-                            <button type="" class="btn btn-danger mb-3" onclick="deleteUBS()">Remover</button>
-                            }
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS'">Fechar
-                            sem salvar</button>                        
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-</main>
-
-})
-
-})
+        </main>
+    });
+});
 
 <script>
-    async function alteraRegistro() {
-        // event.preventDefault();        
-        resp = await axios.post("/UBS/viewUBS", {
-            unidBasicaSaudeID: $("unidBasicaSaudeID").val(),
-            nomeUBS: $("#nomeUBS").val(),
-            codigoUBS: $("#codigoUBS").val(),
-            bairroIDFK: $("#bairroIDFK").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
+    async function alteraRegistro(event) {
+        event.preventDefault();
+        try {
+            const resp = await axios.post("/UBS/viewUBS", {
+                unidBasicaSaudeID: $("#unidBasicaSaudeID").val(),
+                nomeUBS: $("#nomeUBS").val(),
+                codigoUBS: $("#codigoUBS").val(),
+                bairroIDFK: $("#bairroIDFK").val(),
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (resp.data.status === "ok") {
+                alert("UBS alterada com sucesso!");
+            } else {
+                alert("Houve erro ao alterar os dados da UBS!");
             }
-        });
-        //console.log("[view_cadUBS.vash|alteraRegistro] valor resp:", resp.data.status);
-        if (resp.data.status == "ok") {
-            alert("Rua alterada com sucesso!");
-        } else {
-            alert("Houve erro ao alterar os dados das UBS!");
+        } catch (error) {
+            alert("Erro ao salvar alteração!");
         }
     }
 
-    async function deleteUBS(nomeUBSPar) {
-        resp = await axios.post("/UBS/DeleteUBS", {
-            unidBasicaSaudeID: $("unidBasicaSaudeID").val(),
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
+    async function deleteUBS() {
+        try {
+            const resp = await axios.post("/UBS/DeleteUBS", {
+                unidBasicaSaudeID: $("#unidBasicaSaudeID").val(),
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (resp.data.status === "ok") {
+                alert("UBS removida com sucesso!");
+                window.open("/UBS", "_self");
+            } else {
+                alert("Houve erro ao remover os dados da UBS!");
             }
-        });
-
-        if (resp.data.status == "ok") {
-            alert("UBS removida com sucesso!");
-            window.open("/UBS", "_self");
-        } else {
-            alert("Houve erro ao remover os dados das UBS!");
+        } catch (error) {
+            alert("Erro ao remover UBS!");
         }
-    }
-
-    async function testeFormData() {
-        const form = document.getElementById("form");
-        const formData = new FormData(form);                 
     }
 </script>

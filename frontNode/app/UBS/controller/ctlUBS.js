@@ -45,86 +45,124 @@ const getAllUBS = async (req, res) => {
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de UBS
 const insertUBS = async (req, res) => {
+  let oper = "";
+  let registro = {};
 
-    var oper = "";
-    var registro = {};
-    var Bairro = {};
-    userName = req.session.userName;
-    token = req.session.token;
+  console.log("[ctlUBS.js|insertUBS] Iniciando...");
 
-    if (!token) {
-      return res.status(401).json({ error: 'Usuário não autenticado' });
-    }
+  const userName = req.session.userName;
+  const token = req.session.token;
 
-    try {
-      if (req.method == "GET") {
-        oper = "c";
-        Bairro = await axios.get(
-          "http://localhost:20100/acl/ubs/v1/GetAllUBSs",
-          {}
-        );
-        registro = {
-          UnidBasicaSaudeID: 0,
-          NomeUBS: "",
-          CodigoUBS: "",
-          BairroIDFK: "",
-          Removido: false,
-        };
-        res.render("UBS/view_cadUBS", {
-          title: "Cadastro da Unidade Básica de Saúde",
-          data: registro,
-          Bairro: Bairro.data.registro,
-          oper: oper,
-          userName: userName,
-        });
-      } else {
-        oper = "c";
-        const ubsREG = validateForm(req.body);
-        resp = await axios.post(
-          process.env.SERVIDOR + "/insertUBS",
-          {
-            UnidBasicaSaudeID: 0,
-            NomeUBS: ubsREG.NomeUBS,
-            CodigoUBS: ubsREG.CodigoUBS,
-            BairroIDFK: ubsREG.BairroIDFK,
-            Removido: false,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
+  try {
+      console.log("[ctlUBS.js|insertUBS] TRY");
+
+      if (req.method === "GET") {
+          oper = "c";
+
+          Bairro = await axios.get(
+              "http://localhost:20100/acl/bairro/v1/GetAllBairros",
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
+
+          console.log("[ctlUBS.js|insertUBS] Valor do Bairro.data:", Bairro.data);
+
+          if (Bairro.data && Bairro.data.regReturn) {
+              registro = {
+                  UnidBasicaSaudeID: 0,
+                  NomeUBS: "",
+                  CodigoUBS: "",
+                  BairroIDFK: "",
+                  Removido: false,
+              };
+
+              res.render("UBS/view_cadUBS", {
+                  title: "Cadastro da Unidade Básica de Saúde",
+                  data: registro,
+                  Bairro: Bairro.data.regReturn,
+                  oper: oper,
+                  userName: userName,
+              });
+
+          } else {
+              throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
           }
-        );
 
-        if (resp.data.status == "ok") {
-          registro = {
-            UnidBasicaSaudeID: 0,
-            NomeUBS: "",
-            CodigoUBS:"",
-            BairroIDFK: "",
-            Removido: false,
-          };
-        } else {
-          registro = ubsREG;
-        }
-        Bairro = await axios.get(
-          process.env.SERVIDOR + "/GetAllBairros",
-          {}
-        );
-        oper = "c";
-        res.render("UBS/view_cadUBS", {
-          title: "Cadastro da Unidade Básica de Saúde",
-          data: registro,
-          Bairro: Bairro.data.registro,
-          oper: oper,
-          userName: userName,
-        });
+      } else {
+          // Se a requisição for POST
+          oper = "c";
+          const ubsREG = validateForm(req.body);
+
+          console.log("[ctlUBS.js|insertUBS] req.body:", req.body);
+          console.log("[ctlUBS.js|insertUBS] req.body.BairroIDFK:", req.body.BairroIDFK);
+
+          if (!ubsREG.BairroIDFK || isNaN(ubsREG.BairroIDFK)) {
+              throw new Error("BairroIDFK inválido: o valor fornecido não é um número.");
+          }
+
+          const BairroIDFKInt = parseInt(ubsREG.BairroIDFK, 10);
+
+          const resp = await axios.post(
+              "http://localhost:20100/acl/ubs/v1/InsertUBS",
+              {
+                  UnidBasicaSaudeID: 0,
+                  NomeUBS: ubsREG.NomeUBS,
+                  CodigoUBS: ubsREG.CodigoUBS,
+                  BairroIDFK: BairroIDFKInt,
+                  Removido: false,
+              },
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
+
+          console.log("[ctlUBS.js|insertUBS] resp:", resp.data);
+
+          registro = resp.data.status === "ok" ? {
+              UnidBasicaSaudeID: 0,
+              NomeUBS: "",
+              CodigoUBS: "",
+              BairroIDFK: "",
+              Removido: false,
+          } : ubsREG;
+
+          Bairro = await axios.get(
+              "http://localhost:20100/acl/bairro/v1/GetAllBairros",
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
+
+          if (Bairro.data && Bairro.data.regReturn) {
+              res.render("UBS/view_cadUBS", {
+                  title: "Cadastro da Unidade Básica de Saúde",
+                  data: registro,
+                  Bairro: Bairro.data.regReturn,
+                  oper: oper,
+                  userName: userName,
+              });
+          } else {
+              throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+          }
       }
-    } catch (erro) {
-      console.log("[ctlUBS.js|insertUBS] Try Catch: Erro não identificado", erro);
-    }
-  };
+
+      console.log("[ctlUBS.js|insertUBS] Finalizado com sucesso");
+
+  } catch (erro) {
+      console.log("[ctlUBS.js|insertUBS] Erro não identificado", erro.response ? erro.response.data : erro.message);
+      res.status(500).send("Erro ao processar a requisição para inserir o UBS");
+  }
+};
 
 //@ Abre o formulário de cadastro de UBS para futura edição
 const viewUBS = (req, res) =>
