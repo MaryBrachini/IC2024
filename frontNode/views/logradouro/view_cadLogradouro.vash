@@ -32,9 +32,9 @@
                                             @if (model.resp && Array.isArray(model.resp)) {
                                                 @model.resp.forEach(function(registro) {
                                                     @if(model.data.CidadeIDFK === registro.CidadeIDFK) {
-                                                        <option value="@registro.CidadeIDFK" selected>@registro.NomeCidade</option>
+                                                        <option value="@registro.CidadeID" selected>@registro.NomeCidade</option>
                                                     } else {
-                                                        <option value="@registro.CidadeIDFK">@registro.NomeCidade</option>
+                                                        <option value="@registro.CidadeID">@registro.NomeCidade</option>
                                                     }
                                                 });
                                             } else {

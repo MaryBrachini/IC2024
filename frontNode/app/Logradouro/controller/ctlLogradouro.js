@@ -5,10 +5,10 @@ const getAllLogradouro = async (req, res) => {
 
   console.log("getAllLogradouro");
 
-  const token = req.session.token
-  /* console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token); */
+  const token = req.session.token;
   const userName = req.session.userName;
-
+  /* console.log("[ctlLogradouro|getAllLogradouro] TOKEN:", token); */
+  
   try {
     console.log("[ctlLogradouro|getAllLogradouro]TRY");
 
@@ -22,7 +22,8 @@ const getAllLogradouro = async (req, res) => {
       }
     );
 
-    console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data.regReturn));
+    console.log("[ctlLogradouro|resp.data.regReturn] CidadeIDFK:", resp.data.regReturn);
+    console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data));
 
     // Renderiza a página com os dados obtidos
     res.render("logradouro/view_manutencao", {
@@ -57,18 +58,25 @@ function validateForm(regFormPar) {
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de logradouro
 const insertLogradouro = async (req, res) => {
+
   var oper = "";
   var registro = {};
-  var resp = {};
 
   console.log("[ctlLogradouro|insertLogradouro] Iniciando...");
 
   const userName = req.session.userName;
   const token = req.session.token;
 
+/* console.log("ctlLogradouro|insertLogradouro] TOKEN:", token); */
+
   try {
+
+    console.log("ctlLogradouro|insertLogradouro] TRY"); 
+
     if (req.method == "GET") {
       oper = "c";
+
+      console.log("ctlLogradouro|insertLogradouro]TRY IF");
 
       const cidade = await axios.get(
         "http://localhost:20100/acl/cidade/v1/GetAllCidades",
@@ -100,6 +108,7 @@ const insertLogradouro = async (req, res) => {
       } else {
         throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
       }
+
     } else {
       // Se a requisição for POST
       oper = "c";
@@ -155,6 +164,9 @@ const insertLogradouro = async (req, res) => {
           },
         }
       );
+
+      onsole.log("[ctlCidade|insertCidade]else v1/GetAllCidades");
+
 
       if (cidade.data && cidade.data.regReturn) {
         res.render("logradouro/view_cadLogradouro", {
