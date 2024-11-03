@@ -19,6 +19,11 @@ Abrir o Pager Off
 ```
 \pset pager off
 ```
+Abrir o Banco de dados
+```
+\c vdadosdev postgres
+```
+
 Para criar o database 
 ```
 \i createDatabaseVDados.sql
