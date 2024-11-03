@@ -1,6 +1,5 @@
-@html.extend('layout', function(model){
-
-    @html.block('content', function(model){
+@html.extend('layout', function(model) {
+    @html.block('content', function(model) {
         <main style="text-align: center;">
             <div class="tabbable tabs-left" style="margin: 0 auto; width: 80%;">
                 <div class="tab-content" style="padding: 20px;">
@@ -152,6 +151,7 @@
 
                     <div style="padding-top: 20px;">
                         <h5>Gráficos de Ocorrências</h5>
+
                         <div class="row mb-1" style="padding-top: 20px;">
                             <div class="col-6">
                                 <h6>Gráfico de Barras - Ocorrências por Epidemia</h6>
@@ -212,87 +212,92 @@
                             </div>
                         </div>          
                     </div>
+                    
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        // Dados para Epidemia
+                        const labelsEpidemia = @JSON.stringify(model.contagemEpidemiaArray.map(ocorrencia => ocorrencia.epidemia));
+                        const dataEpidemia = @JSON.stringify(model.contagemEpidemiaArray.map(ocorrencia => ocorrencia.epidemiacount));
+
+                        // Dados para UBS
+                        const labelsUBS = @JSON.stringify(model.contagemPorUBSArray.map(ocorrencia => ocorrencia.ubs));
+                        const dataUBS = @JSON.stringify(model.contagemPorUBSArray.map(ocorrencia => ocorrencia.ubscount));
+
+                        // Dados para Logradouro
+                        const labelsLogradouro = @JSON.stringify(model.contagemPorLogradouroArray.map(ocorrencia => ocorrencia.logradouro));
+                        const dataLogradouro = @JSON.stringify(model.contagemPorLogradouroArray.map(ocorrencia => ocorrencia.logradourocount));
+
+                        // Dados para Bairro
+                        const labelsBairro = @JSON.stringify(model.contagemPorBairroArray.map(ocorrencia => ocorrencia.bairro));
+                        const dataBairro = @JSON.stringify(model.contagemPorBairroArray.map(ocorrencia => ocorrencia.bairrocount));
+
+                        // Dados para Data
+                        const labelsData = @JSON.stringify(model.contagemPorDataArray.map(ocorrencia => ocorrencia.dataOcorrencia));
+                        const dataData = @JSON.stringify(model.contagemPorDataArray.map(ocorrencia => ocorrencia.dataOcorrenciacount));
+
+                        console.log('Rótulos para Epidemia:', labelsEpidemia);
+                        console.log('Dados para Epidemia:', dataEpidemia);
+
+                        // Função para criar gráficos
+                        function createChart(chartId, type, labels, data, label) {
+                            return new Chart(document.getElementById(chartId), {
+                                type: type,
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: label,
+                                        data: data,
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.6)',
+                                            'rgba(54, 162, 235, 0.6)',
+                                            'rgba(255, 206, 86, 0.6)',
+                                            'rgba(75, 192, 192, 0.6)',
+                                            'rgba(153, 102, 255, 0.6)',
+                                            'rgba(255, 159, 64, 0.6)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: type === 'bar' ? { y: { beginAtZero: true } } : {}
+                                }
+                            });
+                        }
+
+                        // Criar Gráficos para Epidemia
+                        createChart('barChartEpidemia', 'bar', labelsEpidemia, dataEpidemia, 'Ocorrências por Epidemia');
+                        createChart('pieChartEpidemia', 'pie', labelsEpidemia, dataEpidemia, 'Ocorrências por Epidemia');
+
+                        // Criar Gráficos para UBS
+                        createChart('barChartUBS', 'bar', labelsUBS, dataUBS, 'Ocorrências por UBS');
+                        createChart('pieChartUBS', 'pie', labelsUBS, dataUBS, 'Ocorrências por UBS');
+
+                        // Criar Gráficos para Logradouro
+                        createChart('barChartLogradouro', 'bar', labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+                        createChart('pieChartLogradouro', 'pie', labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+
+                        // Criar Gráficos para Bairro
+                        createChart('barChartBairro', 'bar', labelsBairro, dataBairro, 'Ocorrências por Bairro');
+                        createChart('pieChartBairro', 'pie', labelsBairro, dataBairro, 'Ocorrências por Bairro');
+
+                        // Criar Gráficos para Data
+                        if (Array.isArray(labelsData) && Array.isArray(dataData) && labelsData.length > 0 && dataData.length > 0) {
+                            createChart('barChartData', 'bar', labelsData, dataData, 'Ocorrências por Data');
+                            createChart('pieChartData', 'pie', labelsData, dataData, 'Ocorrências por Data');
+                        } else {
+                            console.error('Nenhum dado disponível para os gráficos de Data.');
+                        }
+                    </script>
                 </div>
             </div>
         </main>
-    })
-
-})
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // Dados para Epidemia
-    const labelsEpidemia = @JSON.stringify(model.contagemEpidemiaArray.map(ocorrencia => ocorrencia.epidemia));
-    const dataEpidemia = @JSON.stringify(model.contagemEpidemiaArray.map(ocorrencia => ocorrencia.epidemiacount));
-
-    // Dados para UBS
-    const labelsUBS = @JSON.stringify(model.contagemPorUBSArray.map(ocorrencia => ocorrencia.ubs));
-    const dataUBS = @JSON.stringify(model.contagemPorUBSArray.map(ocorrencia => ocorrencia.ubscount));
-
-    // Dados para Logradouro
-    const labelsLogradouro = @JSON.stringify(model.contagemPorLogradouroArray.map(ocorrencia => ocorrencia.logradouro));
-    const dataLogradouro = @JSON.stringify(model.contagemPorLogradouroArray.map(ocorrencia => ocorrencia.logradourocount));
-
-    // Dados para Bairro
-    const labelsBairro = @JSON.stringify(model.contagemPorBairroArray.map(ocorrencia => ocorrencia.bairro));
-    const dataBairro = @JSON.stringify(model.contagemPorBairroArray.map(ocorrencia => ocorrencia.bairrocount));
-
-    // Dados para Data
-    const labelsData = @JSON.stringify(model.contagemPorDataArray.map(ocorrencia => ocorrencia.dataOcorrencia));
-    const dataData = @JSON.stringify(model.contagemPorDataArray.map(ocorrencia => ocorrencia.dataOcorrenciacount));
-
-    // Função para criar gráficos
-    function createChart(chartId, type, labels, data, label) {
-        return new Chart(document.getElementById(chartId), {
-            type: type,
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: label,
-                    data: data,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: type === 'bar' ? { y: { beginAtZero: true } } : {}
-            }
-        });
-    }
-
-    // Criando gráficos para Epidemia
-    createChart('barChartEpidemia', 'bar', labelsEpidemia, dataEpidemia, 'Ocorrências por Epidemia');
-    createChart('pieChartEpidemia', 'pie', labelsEpidemia, dataEpidemia, 'Ocorrências por Epidemia');
-
-    // Criando gráficos para UBS
-    createChart('barChartUBS', 'bar', labelsUBS, dataUBS, 'Ocorrências por UBS');
-    createChart('pieChartUBS', 'pie', labelsUBS, dataUBS, 'Ocorrências por UBS');
-
-    // Criando gráficos para Logradouro
-    createChart('barChartLogradouro', 'bar', labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
-    createChart('pieChartLogradouro', 'pie', labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
-
-    // Criando gráficos para Bairro
-    createChart('barChartBairro', 'bar', labelsBairro, dataBairro, 'Ocorrências por Bairro');
-    createChart('pieChartBairro', 'pie', labelsBairro, dataBairro, 'Ocorrências por Bairro');
-
-    // Criando gráficos para Data
-    createChart('barChartData', 'bar', labelsData, dataData, 'Ocorrências por Data');
-    createChart('pieChartData', 'pie', labelsData, dataData, 'Ocorrências por Data');
-</script>
+    });
+});
