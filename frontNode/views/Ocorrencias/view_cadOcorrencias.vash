@@ -37,12 +37,12 @@
                             <div class="col-6">
                                 <label for="Logradouroidfk" class="form-label">Logradouro da residência</label>
                                 <select class="form-select" aria-label="Default select example" id="Logradouroidfk" @(model.oper == 'v' ? 'disabled' : '') name="Logradouroidfk">
-                                    @if (model.resp && Array.isArray(model.resp)) {
-                                        @model.resp.forEach(function(registro) {
-                                            @if (model.data.Logradouroidfk === registro.Logradouroidfk) {
-                                                <option value="@registro.Logradouroidfk" selected>@registro.nomelogradouro</option>
+                                    @if (model.logradouro && Array.isArray(model.logradouro)) {
+                                        @model.logradouro.forEach(function(registro) {
+                                            @if (model.data.Logradouroidfk === registro.Logradouroid) {
+                                                <option value="@registro.Logradouroid" selected>@registro.Nomelogradouro</option>
                                             } else {
-                                                <option value="@registro.Logradouroidfk">@registro.nomelogradouro</option>
+                                                <option value="@registro.Logradouroid">@registro.Nomelogradouro</option>
                                             }
                                         });
                                     } else {

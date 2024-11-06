@@ -102,3 +102,12 @@ Authorization: Bearer {{accessToken}}
     "OcorrenciaID": 7
 }
 
+
+###
+GET http://localhost:40000/relatorio/GetData
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    
+}

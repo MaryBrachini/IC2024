@@ -104,7 +104,7 @@ const getRelatorioOcorrencias = async (req, res) => {
         res.render("relatorio/view_relatorio", {
             title: "Relatório de Ocorrências",
             totalOcorrencias: totalOcorrencias,
-            contagemEpidemiaArray: contagemEpidemiaArray,
+            contagemEpidemiaArray: contagemEpidemiaArray[0],
             contagemPorUBSArray: contagemPorUBSArray,
             contagemPorLogradouroArray: contagemPorLogradouroArray,
             contagemPorBairroArray: contagemPorBairroArray,
@@ -119,6 +119,83 @@ const getRelatorioOcorrencias = async (req, res) => {
     }
 };
 
+const GetData = async (req, res) => {
+
+    const token = req.session.token;
+
+    try {
+        const resp = await axios.get(
+            'http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+
+        const ocorrencias = resp.data.regReturn;
+
+        // Contagem adicional por categorias
+        const contagemPorEpidemia = {};
+        const contagemPorUBS = {};
+        const contagemPorLogradouro = {};
+        const contagemPorBairro = {};
+        const contagemPorData = {};
+
+        // Preencher as contagens
+        ocorrencias.forEach(ocorrencia => {
+            const epidemia = ocorrencia.Epidemiaidfk;
+            const ubs = ocorrencia.UnidBasicaSaudeIDFK;
+            const logradouro = ocorrencia.Logradouroidfk;
+            const bairro = ocorrencia.Bairroidfk;
+            const dataOcorrencia = new Date(ocorrencia.Dataocorrencia).toLocaleDateString();
+
+            contagemPorEpidemia[epidemia] = (contagemPorEpidemia[epidemia] || 0) + 1;
+            contagemPorUBS[ubs] = (contagemPorUBS[ubs] || 0) + 1;
+            contagemPorLogradouro[logradouro] = (contagemPorLogradouro[logradouro] || 0) + 1;
+            contagemPorBairro[bairro] = (contagemPorBairro[bairro] || 0) + 1;
+            contagemPorData[dataOcorrencia] = (contagemPorData[dataOcorrencia] || 0) + 1;
+        });
+
+        // Transformar os objetos em arrays iteráveis
+        const contagemEpidemiaArray = Object.entries(contagemPorEpidemia).map(([epidemia, epidemiacount]) => {
+            return { epidemia, epidemiacount };
+        });
+        const contagemPorUBSArray = Object.entries(contagemPorUBS).map(([ubs, ubscount]) => {
+            return { ubs, ubscount };
+        });
+        const contagemPorLogradouroArray = Object.entries(contagemPorLogradouro).map(([logradouro, logradourocount]) => {
+            return { logradouro, logradourocount };
+        });
+        const contagemPorBairroArray = Object.entries(contagemPorBairro).map(([bairro, bairrocount]) => {
+            return { bairro, bairrocount };
+        });
+        const contagemPorDataArray = Object.entries(contagemPorData).map(([dataOcorrencia, dataOcorrenciacount]) => {
+            return { dataOcorrencia, dataOcorrenciacount };
+        });
+
+        // Envia a resposta com todas as contagens formatadas
+        res.status(200).json({
+            regReturn: {
+                epidemia: contagemEpidemiaArray,
+                ubs: contagemPorUBSArray,
+                logradouro: contagemPorLogradouroArray,
+                bairro: contagemPorBairroArray,
+                dataOcorrencia: contagemPorDataArray
+            }
+        });
+    } catch (error) {
+        console.error("Erro ao obter dados de ocorrências:", error);
+        res.status(500).json({
+            message: "Erro ao buscar dados de ocorrências",
+            error: error.message
+        });
+    }
+};
+
+
 module.exports = {
     getRelatorioOcorrencias,
+    GetData
 };

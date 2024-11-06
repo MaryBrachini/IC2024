@@ -17,6 +17,7 @@ function authenticationMiddleware(req, res, next) {
 };
 
 /* GET métodos */
-router.get('/', authenticationMiddleware, relatorioApp.getRelatorioOcorrencias); // Rota para visualizar o relatório
+router.get('/', authenticationMiddleware, relatorioApp.getRelatorioOcorrencias);
+router.get('/GetData',  relatorioApp.GetData); // Rota para visualizar o relatório
 
 module.exports = router;
