@@ -104,7 +104,7 @@ const getRelatorioOcorrencias = async (req, res) => {
         res.render("relatorio/view_relatorio", {
             title: "Relatório de Ocorrências",
             totalOcorrencias: totalOcorrencias,
-            contagemEpidemiaArray: contagemEpidemiaArray[0],
+            contagemEpidemiaArray: contagemEpidemiaArray,
             contagemPorUBSArray: contagemPorUBSArray,
             contagemPorLogradouroArray: contagemPorLogradouroArray,
             contagemPorBairroArray: contagemPorBairroArray,
@@ -159,30 +159,30 @@ const GetData = async (req, res) => {
         });
 
         // Transformar os objetos em arrays iteráveis
-        const contagemEpidemiaArray = Object.entries(contagemPorEpidemia).map(([epidemia, epidemiacount]) => {
+        const contagemEpidemiaArray2 = Object.entries(contagemPorEpidemia).map(([epidemia, epidemiacount]) => {
             return { epidemia, epidemiacount };
         });
-        const contagemPorUBSArray = Object.entries(contagemPorUBS).map(([ubs, ubscount]) => {
+        const contagemPorUBSArray2 = Object.entries(contagemPorUBS).map(([ubs, ubscount]) => {
             return { ubs, ubscount };
         });
-        const contagemPorLogradouroArray = Object.entries(contagemPorLogradouro).map(([logradouro, logradourocount]) => {
+        const contagemPorLogradouroArray2 = Object.entries(contagemPorLogradouro).map(([logradouro, logradourocount]) => {
             return { logradouro, logradourocount };
         });
-        const contagemPorBairroArray = Object.entries(contagemPorBairro).map(([bairro, bairrocount]) => {
+        const contagemPorBairroArray2 = Object.entries(contagemPorBairro).map(([bairro, bairrocount]) => {
             return { bairro, bairrocount };
         });
-        const contagemPorDataArray = Object.entries(contagemPorData).map(([dataOcorrencia, dataOcorrenciacount]) => {
+        const contagemPorDataArray2 = Object.entries(contagemPorData).map(([dataOcorrencia, dataOcorrenciacount]) => {
             return { dataOcorrencia, dataOcorrenciacount };
         });
 
         // Envia a resposta com todas as contagens formatadas
         res.status(200).json({
             regReturn: {
-                epidemia: contagemEpidemiaArray,
-                ubs: contagemPorUBSArray,
-                logradouro: contagemPorLogradouroArray,
-                bairro: contagemPorBairroArray,
-                dataOcorrencia: contagemPorDataArray
+                epidemia: contagemEpidemiaArray2,
+                ubs: contagemPorUBSArray2,
+                logradouro: contagemPorLogradouroArray2,
+                bairro: contagemPorBairroArray2,
+                dataOcorrencia: contagemPorDataArray2
             }
         });
     } catch (error) {
