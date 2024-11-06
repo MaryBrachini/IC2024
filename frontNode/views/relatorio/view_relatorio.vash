@@ -46,8 +46,8 @@
                     <h4 style="padding-top: 20px;">Contagem de Ocorrências por Categoria</h4>
                     
                     <div class="row mb-1" style="padding-top: 5px;">
-                        <div class="col-4">
-                        @*<h5>Epidemia</h5>
+                        <@* div class="col-4">
+                            <h5>Epidemia</h5>
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
@@ -63,8 +63,8 @@
                                         </tr>
                                     })
                                 </tbody>
-                            </table> *@
-                        </div>
+                            </table>
+                        </div> *@
 
                         <div class="col-4">
                             <h5>Unidade Básica de Saúde</h5>
@@ -151,7 +151,6 @@
 
                     <div style="padding-top: 20px;">
                         <h4>Gráficos de Ocorrências</h4>
-
                         
                         <div class="row mb-1" style="padding-top: 20px;">
                             <h5>Gráficos das Epidemias</h5>
@@ -216,32 +215,118 @@
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-                    <script>
-                        async function fetchDataAndCreateCharts() {
+                        <script>
+
+                            let labelsepi = '';
+                            let dataepi = '';
+
+                            let labelsubs = '';
+                            let dataubs = '';
+
+                            let labelslog= '';
+                            let datalog= '';
+
+                            let labelsbairro= '';
+                            let databairro= '';
+
+                            let labelsdata= '';
+                            let datadata= '';
+
+
+                            async function fetchDataAndCreateCharts() {
+
+                                labelsepi = '';
+                                dataepi = '';
+
+                                labelsubs = '';
+                                dataubs = '';
+
+                                labelslog= '';
+                                datalog= '';
+
+                                labelsbairro= '';
+                                databairro= '';
+
+                                labelsdata= '';
+                                datadata= '';
+
+
                             try {
                                 const response = await axios.get('http://localhost:40000/relatorio/GetData');
+                                console.log("response.data",response.data);
+
+
                                 const ocorrencias = response.data.regReturn;
 
-                                if (!ocorrencias || ocorrencias.length === 0) {
-                                    console.error("Nenhum dado disponível em 'regReturn'");
-                                    return;
-                                }
-
                                 // Extrair dados específicos para cada gráfico
-                                const labelsepi = ocorrencias.map(ocorrencia => ocorrencia.epidemia);
-                                const dataepi = ocorrencias.map(ocorrencia => ocorrencia.epidemiacount);
 
-                                const labelsubs = ocorrencias.map(ocorrencia => ocorrencia.ubs);
-                                const dataubs = ocorrencias.map(ocorrencia => ocorrencia.ubscount);
+                                const epidemias = ocorrencias.epidemia;
+                                const ubss = ocorrencias.ubs;
+                                const logradouros = ocorrencias.logradouro;
+                                const bairros = ocorrencias.bairro;
+                                const dataOcorrencias = ocorrencias.dataOcorrencia;
+        
+                                if (ocorrencias && Array.isArray(ocorrencias.epidemia)) {
+                                    labelsepi = epidemias.map(function(ocorrencia) { 
+                                        return ocorrencia.epidemia; 
+                                    });
+                                    
+                                    dataepi = epidemias.map(function(ocorrencia) { 
+                                    return ocorrencia.epidemiacount; 
+                                    });
+                                    console.log("labelsepi",labelsepi);
+                                    console.log("dataepi",dataepi);
+                                
+                                } else {
+                                    console.error('Erro: epidemia não é um array ou está vazio', epidemias);
+                                }                             
 
-                                const labelslog = ocorrencias.map(ocorrencia => ocorrencia.logradouro);
-                                const datalog = ocorrencias.map(ocorrencia => ocorrencia.logradourocount);
 
-                                const labelsbairro = ocorrencias.map(ocorrencia => ocorrencia.bairro);
-                                const databairro = ocorrencias.map(ocorrencia => ocorrencia.bairrocount);
+                                if (ocorrencias && Array.isArray(ocorrencias.ubs)) {
+                                labelsubs = ubss.map(function(ocorrencia) { 
+                                    return ocorrencia.ubs; 
+                                });
+                                dataubs = ubss.map(function(ocorrencia) { 
+                                    return ocorrencia.ubscount; 
+                                });
+                                } else {
+                                    console.error('Erro: epidemia não é um array ou está vazio', ubss);
+                                } 
 
-                                const labelsdata = ocorrencias.map(ocorrencia => ocorrencia.dataOcorrencia);
-                                const datadata = ocorrencias.map(ocorrencia => ocorrencia.dataOcorrenciacount);
+                                if (ocorrencias && Array.isArray(ocorrencias.logradouro)) {
+                                 labelslog = logradouros.map(function(ocorrencia) { 
+                                    return ocorrencia.logradouro; 
+                                });
+                                 datalog = logradouros.map(function(ocorrencia) { 
+                                    return ocorrencia.logradourocount; 
+                                });
+                                } else {
+                                    console.error('Erro: epidemia não é um array ou está vazio', logradouros);
+                                } 
+
+
+                                if (ocorrencias && Array.isArray(ocorrencias.bairro)) {
+                                labelsbairro = bairros.map(function(ocorrencia) { 
+                                    return ocorrencia.bairro; 
+                                });
+                                 databairro = bairros.map(function(ocorrencia) { 
+                                    return ocorrencia.bairrocount; 
+                                });
+                                } else {
+                                    console.error('Erro: epidemia não é um array ou está vazio', bairros);
+                                } 
+
+
+                                if (ocorrencias && Array.isArray(ocorrencias.dataOcorrencia)) {
+                                labelsdata = dataOcorrencias.map(function(ocorrencia) { 
+                                    return ocorrencia.dataOcorrencia; 
+                                });
+                                 datadata = dataOcorrencias.map(function(ocorrencia) { 
+                                    return ocorrencia.dataOcorrenciacount; 
+                                });
+                                } else {
+                                    console.error('Erro: epidemia não é um array ou está vazio', dataOcorrencias);
+                                } 
 
                                 // Função para criar gráfico de barras
                                 function createBarChart(ctx, labels, data, label) {
@@ -344,9 +429,11 @@
                         }
 
                         document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts);
-                    </script>
+
+                        </script>
                 </div>
             </div>
         </main>
+        
     });
 });
