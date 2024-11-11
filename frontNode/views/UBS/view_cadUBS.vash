@@ -32,7 +32,7 @@
                                         <select class="form-select" aria-label="Default select example" id="BairroIDFK" name="BairroIDFK" 
                                             @(model.oper == 'v' ? 'disabled' : '')>
 
-                                            @if (model.Bairro && Array.isArray(model.resp)) {
+                                            @if (model.Bairro && Array.isArray(model.Bairro)) {
                                                 @model.Bairro.forEach(function(registro){
                                                     @if(model.data.BairroIDFK === registro.BairroIDFK) {
                                                         <option value="@registro.Bairroid" selected>@registro.Nomebairro</option>

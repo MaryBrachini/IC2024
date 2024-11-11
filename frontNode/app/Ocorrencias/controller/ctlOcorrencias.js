@@ -215,6 +215,27 @@ const insertOcorrencias = async (req, res) => {
         },
       });
 
+      logradouro = await axios.get("http://localhost:20100/acl/logradouro/v1/GetAllLogradouros", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      epidemia = await axios.get("http://localhost:20100/acl/epidemia/v1/GetAllEpidemias", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      unidBasicaSaude = await axios.get("http://localhost:20100/acl/ubs/v1/GetAllUBSs", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
       res.render("Ocorrencias/view_cadOcorrencias", {
         title: "Cadastro da Unidade Básica de Saúde",
         data: registro,
@@ -232,6 +253,11 @@ const insertOcorrencias = async (req, res) => {
   }
 };
 
+//@ Função para validar campos no formulário
+function validateForm(regFormPar) {
+
+  return regFormPar;
+}
 
 //@ Abre o formulário de cadastro de Ocorrencias para futura edição
 const viewOcorrencias = (req, res) =>
