@@ -295,3 +295,8 @@ DEBUG=frontnode:* npm start
 ```
 ### 
 </details>
+
+<details>
+<summary>Anotações</summary>
+No relatorio é possivel refazer sua estrutura para otimizar, pegar os dados do periodo selecionado e em cima desses dados gerar os dados com as quantidades, mostrar os graficos e ter a opção de gerar um pdf e CSV
+</details>
