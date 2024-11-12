@@ -47,7 +47,7 @@
                                     </div>
                                     
                                     @if (model.oper == "c") {
-                                        <button type="submit" class="btn btn-success me-2">Salvar</button>
+                                        <button type="submit" class="btn btn-success me-2" formmethod="POST"> Salvar</button>
                                     }
                                     <button type="button" class="btn btn-primary" onclick="window.location.href = '/UBS'">Fechar sem salvar</button>
                                 </form>

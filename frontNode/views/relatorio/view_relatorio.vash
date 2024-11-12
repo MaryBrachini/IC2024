@@ -530,7 +530,7 @@
                                         options: {
                                             responsive: true,
                                             scales: {
-                                                y: {
+                                                y: {    
                                                     beginAtZero: true,
                                                     ticks: {
                                                         callback: function(value) {

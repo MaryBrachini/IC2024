@@ -25,7 +25,7 @@
                                 <th>ID</th>
                                 <th>UBS</th>
                                 <th>Código</th>
-                                <th>Cidade</th>
+                                <th>Bairro</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
                                     <td>@registro.UnidBasicaSaudeID</td>
                                     <td>@registro.NomeUBS</td>
                                     <td>@registro.CodigoUBS</td>
-                                    <td>@registro.BairroIDFK</td>
+                                    <td>@registro.Nomebairro</td>
                                 </tr>
                             })
                         </tbody>

@@ -81,12 +81,13 @@
                            <div class="col-1"></div>
 
                             <div class="col-4">
-                                <label for="Epidemiaidfk" class="form-label">Epidemia</label>
+                                <label for="EpidemiaIDfk" class="form-label">Epidemia</label>
                                 <select class="form-select" aria-label="Default select example"
-                                 id="Epidemiaidfk" @(model.oper == 'v' ? 'disabled' : '') name="Epidemiaidfk">
+                                 id="EpidemiaIDfk" @(model.oper == 'v' ? 'disabled' : '') name="EpidemiaIDfk">
+
                                     @if (model.epidemia && Array.isArray(model.epidemia)) {
                                         @model.epidemia.forEach(function(registro) {
-                                            @if (model.data.Epidemiaidfk === registro.Epidemiaid) {
+                                            @if (model.data.EpidemiaIDfk === registro.Epidemiaid) {
                                                 <option value="@registro.Epidemiaid" selected>@registro.Nomeepidemia</option>
                                             } else {
                                                 <option value="@registro.Epidemiaid">@registro.Nomeepidemia</option>
@@ -150,7 +151,7 @@
                         </style> *@
 
                         <!-- Seção Lat e Long -->
-                        <div class="row mb-1">
+                      @*   <div class="row mb-1">
                              <div class="col-1"></div>
 
                             <div class="col-4">
@@ -165,7 +166,7 @@
                                 <input type="text" name="longitudeLocalTrabalho" value="@model.data.longitudeLocalTrabalho" class="form-control" id="longitudeLocalTrabalho" @(model.oper == 'v' ? 'disabled' : '')>
                             </div>
                        </div>
-
+ *@
 
                         <!-- Seção Logradouro, num e bairro -->
                         <div class="row mb-1">
@@ -221,7 +222,7 @@
 
                                 <div class="col-1"></div>
 
-                                <div class="col-3">
+                                @* <div class="col-3">
                                     <label for="Latitude" class="form-label">Latitude do Trabalho</label>
                                     <input type="text" name="Latitude" value="@model.data.Latitude" class="form-control" id="Latitude" @(model.oper == 'v' ? 'disabled' : '')>
                                 </div>
@@ -229,16 +230,15 @@
                                 <div class="col-3">
                                     <label for="longitude" class="form-label">Longitude do Trabalho</label>
                                     <input type="text" name="longitude" value="@model.data.longitude" class="form-control" id="longitude" @(model.oper == 'v' ? 'disabled' : '')>
-                                </div>
+                                </div> *@
                             </div>                      
 
                         <br>
 
                         @if (model.oper == "c") {
                             <button type="submit" class="btn btn-success me-2" formmethod="POST">Salvar</button>
-                            <button type="button" class="btn btn-primary" onclick="window.location.href = '/Ocorrencias'">Fechar sem salvar</button>
-
                         }
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = '/Ocorrencias'">Fechar sem salvar</button>
                     </form>
 
                         <div>
@@ -275,13 +275,9 @@
             logradouroidfk: $("#Logradouroidfk").val(),
             numero: $("#numero").val(),
             bairroidfk: $("#Bairroidfk").val(),
-            latitude: $("#latitude").val(),
-            longitude: $("#longitude").val(),
             localTrabalho: $("#localTrabalho").val(),
             LogradourolocaltrabalhoIDFK: $("#LogradourolocaltrabalhoIDFK").val(),
-            numeroLocalTrabalho: $("#numeroLocalTrabalho").val(),
-            latitudeLocalTrabalho: $("#latitudeLocalTrabalho").val(),
-            longitudeLocalTrabalho: $("#longitudeLocalTrabalho").val(),
+            numeroLocalTrabalho: $("#numeroLocalTrabalho").val(),       
             UnidBasicaSaudeIDFK: $("#UnidBasicaSaudeIDFK").val(),
         }, {
             headers: {

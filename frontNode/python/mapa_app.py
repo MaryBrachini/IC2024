@@ -57,7 +57,7 @@ def get_data_from_db(time_filter):
     query = """
         SELECT latitude, longitude
         FROM vdaocorrencia
-        WHERE dataocorrencia >= %s
+        WHERE dataocorrencia >= %s 
     """
     cur.execute(query, (time_filter,))
     data = cur.fetchall()

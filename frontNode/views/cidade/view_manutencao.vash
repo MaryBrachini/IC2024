@@ -36,7 +36,7 @@
                                         </td>
                                         <td>@registro.CidadeID</td>
                                         <td>@registro.NomeCidade</td>
-                                        <td>@registro.EstadoIDFK</td>
+                                        <td>@registro.Nomeestado</td>
                                     </tr>
                                 })
                             </tbody>

@@ -22,20 +22,44 @@ const getAllLogradouro = async (req, res) => {
       }
     );
 
-    console.log("[ctlLogradouro|resp.data.regReturn] CidadeIDFK:", resp.data.regReturn);
+    const cidade = await axios.get(
+      "http://localhost:20100/acl/cidade/v1/GetAllCidades",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+     // Associando o nome do estadcidadeo às logradouro
+     const logradourocidade = resp.data.regReturn.map(logradouro => {
+      // Encontrando o cidade correspondente à logradouro
+      const cidadeencontrado = cidade.data.regReturn.find(b => b.CidadeID === logradouro.CidadeIDFK);
+      
+      // Retornando a logradouro com o nome do cidade adicionado
+      return {
+        ...logradouro,
+        NomeCidade: cidadeencontrado ? cidadeencontrado.NomeCidade : "Estado não encontrado",
+      };
+    });
+
+    console.log("[ctlCidade|GetAllCidade] Resposta de Cidades:", resp.data.regReturn);
+    console.log("[ctlCidade|GetAllCidade] Resposta de Estados:", cidade.data.regReturn);
+
     console.log("[ctlLogradouro|resp.data]", JSON.stringify(resp.data));
 
     // Renderiza a página com os dados obtidos
     res.render("logradouro/view_manutencao", {
         title: "Manutenção do Logradouro",
-        data: resp.data.regReturn,
+        data: logradourocidade,
         userName: userName,
       });
    
       console.log("Resposta enviada com sucesso para logradouro");
       
     } catch (error) {
-      console.error('Erro ao buscar logradouro:' );  //, error);
+      console.error('Erro ao buscar logradouro:');
   
       if (!res.headersSent) {
         res.status(500).json({ error: 'Erro ao buscar logradouro' });
@@ -187,9 +211,6 @@ const insertLogradouro = async (req, res) => {
     res.status(500).send("Erro ao processar a requisição para inserir o logradouro");
   }
 };
-
-
-
 
 //@ Abre o formulário de cadastro de logradouro para futura edição
 const viewLogradouro = (req, res) =>

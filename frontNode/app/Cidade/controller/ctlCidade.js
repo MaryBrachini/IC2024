@@ -18,13 +18,40 @@ const GetAllCidade = async (req, res) => {
         },
       }
     );
+
+    let estado = await axios.get(
+      "http://localhost:20100/acl/estado/v1/GetAllEstados",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+     // Associando o nome do estado às cidade
+     const cidadeestado = resp.data.regReturn.map(cidade => {
+      // Encontrando o estado correspondente à cidade
+      const estadoencontrado = estado.data.regReturn.find(b => b.Estadoid === cidade.EstadoIDFK);
+      
+      // Retornando a cidade com o nome do estado adicionado
+      return {
+        ...cidade,
+        Nomeestado: estadoencontrado ? estadoencontrado.Nomeestado : "Estado não encontrado",
+      };
+    });
+
+    console.log("[ctlCidade|GetAllCidade] Resposta de Cidades:", resp.data.regReturn);
+    console.log("[ctlCidade|GetAllCidade] Resposta de Estados:", estado.data.regReturn);
+
+
   
   console.log("[ctlCidade|resp.data]", JSON.stringify(resp.data.regReturn));
 
     // Renderiza a página com os dados obtidos
     res.render("cidade/view_manutencao", {
       title: "Manutenção da Cidade",
-      data: resp.data.regReturn,
+      data: cidadeestado,
       userName: userName,
     });
   } catch (erro) {
