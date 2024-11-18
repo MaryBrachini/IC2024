@@ -24,7 +24,7 @@ Authorization: Bearer {{accessToken}}
 {
     "Removido": false, 
     "UnidBasicaSaudeIDFK": 3,
-	"NomeSuspeito": "José da Silva",	
+	"NomeSuspeito": "José da Silva2",	
     "datacadastro": "12/01/2024",       
     "dataocorrencia": "08/01/2024",
     "epidemiaidfk":2,

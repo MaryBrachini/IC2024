@@ -38,7 +38,7 @@
                                         </td>
                                         <td>@registro.Logradouroid</td>
                                         <td>@registro.Nomelogradouro</td>
-                                        <td>@registro.CidadeIDFK</td>
+                                        <td>@registro.NomeCidade</td>
                                      </tr>
                                 });
                             }

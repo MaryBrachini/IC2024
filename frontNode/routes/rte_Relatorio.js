@@ -18,6 +18,6 @@ function authenticationMiddleware(req, res, next) {
 
 /* GET métodos */
 router.get('/', authenticationMiddleware, relatorioApp.getRelatorioOcorrencias);
-router.get('/GetData',  relatorioApp.GetData); // Rota para visualizar o relatório
+router.get('/GetData',  relatorioApp.GetData);
 
 module.exports = router;

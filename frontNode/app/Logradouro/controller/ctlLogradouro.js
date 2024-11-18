@@ -189,7 +189,7 @@ const insertLogradouro = async (req, res) => {
         }
       );
 
-      onsole.log("[ctlCidade|insertCidade]else v1/GetAllCidades");
+      console.log("[ctlCidade|insertCidade]else v1/GetAllCidades");
 
 
       if (cidade.data && cidade.data.regReturn) {

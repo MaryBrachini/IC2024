@@ -4,10 +4,34 @@
             <div class="tabbable tabs-left" style="margin: 0 auto; width: 80%;">
                 <div class="tab-content" style="padding: 20px;">
                     <h1>Relatório de Ocorrências</h1>
-                    <br>
+                    
+                    @* OCORRENCIAS NOS PERIODOS PADRAO *@
+                    <div>
+                        <h4 style="padding-top: 20px;">Ocorrências no Período</h4>
+
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Últimos 15 Dias</th>
+                                    <th>Último Mês</th>
+                                    <th>Últimos 6 Meses</th>
+                                    <th>Último Ano</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @*<td>@model.totalOcorrencias.last15Days</td>
+                                    <td>@model.totalOcorrencias.lastMonth</td>
+                                    <td>@model.totalOcorrencias.last6Months</td>
+                                    <td>@model.totalOcorrencias.lastYear</td> *@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    @* FIM OCORRENCIAS NOS PERIODOS PADRAO *@
 
                     @* FILTRAGEM DE PERIODO *@
-                    <div class="row mb-1" style="padding-top: 5px;">
+                    <div class="row mb-1" style="padding-top: 25px;">
                         <h2>Filtro de Datas</h2>
                         <form id="dateFilterForm">
                             <div class="row mb-1">
@@ -43,13 +67,7 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredEpidemiaData">                                    
-                                        @model.contagemEpidemiaArray.forEach(function(ocorrencia) {
-                                            <tr>
-                                                <td>@ocorrencia.epidemia</td>
-                                                <td>@ocorrencia.epidemiacount</td>
-                                            </tr>
-                                        })
+                                    <tbody id="filteredEpidemiaData">
                                     </tbody>
                                 </table>
                             </div>
@@ -64,12 +82,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="filteredUBSData">
-                                        @model.contagemPorUBSArray.forEach(function(ocorrencia) {
-                                            <tr>
-                                                <td>@ocorrencia.ubs</td>
-                                                <td>@ocorrencia.ubscount</td>
-                                            </tr>
-                                        })
                                     </tbody>
                                 </table>
                             </div>
@@ -83,13 +95,7 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredLogradouroData">
-                                        @model.contagemPorLogradouroArray.forEach(function(ocorrencia) {
-                                            <tr>
-                                                <td>@ocorrencia.logradouro</td>
-                                                <td>@ocorrencia.logradourocount</td>
-                                            </tr>
-                                        })
+                                    <tbody id="filteredLogradouroData">                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -106,13 +112,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="filteredBairroData">
-                                        <!-- Dados filtrados de Bairro serão exibidos aqui -->
-                                        @model.contagemPorBairroArray.forEach(function(ocorrencia) {
-                                            <tr>
-                                                <td>@ocorrencia.bairro</td>
-                                                <td>@ocorrencia.bairrocount</td>
-                                            </tr>
-                                        })
                                     </tbody>
                                 </table>
                             </div>
@@ -279,6 +278,7 @@
                                 // Compara as datas
                                 return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
                             });*/
+
                             var filteredData = dataOcorrencias.filter(function(ocorrencia) {
                                 // Converte a dataOcorrencia de string (DD/MM/YYYY) para Date
                                 const ocorrenciaDate = convertDateFormat(ocorrencia.dataOcorrencia);
@@ -329,10 +329,10 @@
 
                             // Atualiza todas as tabelas
                             updateTable('filteredData', filteredData, ['dataOcorrencia', 'dataOcorrenciacount']);
-                            /*updateTable('filteredEpidemiaData', filteredEpidemia, ['epidemia', 'epidemiacount']);
-                            updateTable('filteredUBSData', filteredUBS, ['ubs', 'ubscount']);
-                            updateTable('filteredLogradouroData', filteredLogradouro, ['logradouro', 'logradourocount']);
-                            updateTable('filteredBairroData', filteredBairro, ['bairro', 'bairrocount']);*/
+                            /*updateTable('filteredEpidemiaData', filteredEpidemia, ['Nomeepidemia', 'epidemiacount']);
+                            updateTable('filteredUBSData', filteredUBS, ['NomeUBS', 'ubscount']);
+                            updateTable('filteredLogradouroData', filteredLogradouro, ['Nomelogradouro', 'logradourocount']);
+                            updateTable('filteredBairroData', filteredBairro, ['Nomebairro', 'bairrocount']);*/
                         }
                     </script>
                     @* FIM DO SCRIP DA FILTRAGEM *@
@@ -403,118 +403,74 @@
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                     <script>
-                        let labelsepi = '';
-                        let dataepi = '';
+                    document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts); 
 
-                        let labelsubs = '';
-                        let dataubs = '';
+                        let labelsEpidemia=[],dataEpidemia=[];
+                        let labelsUBS=[], dataUBS=[];
+                        let labelsLogradouro=[], dataLogradouro=[];
+                        let labelsBairro=[],dataBairro=[];
+                        let labelsDataO=[],dataDataO=[];
 
-                        let labelslog= '';
-                        let datalog= '';
+                    async function fetchDataAndCreateCharts() {
 
-                        let labelsbairro= '';
-                        let databairro= '';
+                        // Limpar variáveis
+                            labelsEpidemia = [], dataEpidemia = [];
+                            labelsUBS = [], dataUBS = [];
+                            labelsLogradouro = [], dataLogradouro = [];
+                            labelsBairro = [], dataBairro = [];
+                            labelsDataO = [], dataDataO = [];
 
-                        let labelsdata= '';
-                        let datadata= '';
+                        try {                            
 
+                            const response = await axios.get('http://localhost:40000/relatorio/GetData');
+                            console.log("Resposta completa:", response); // Verifique se a resposta é uma promessa resolvida
+                            console.log("Response.data:", response.data); // Verifique os dados recebidos
+                            
+                            if (!response.data) {
+                                console.error("Dados não encontrados. Verifique a resposta do servidor.");
+                                return;
+                            }
 
-                        async function fetchDataAndCreateCharts() {
+                            const {contagemEpidemiaArray2,contagemPorUBSArray2,contagemPorLogradouroArray2,
+                                contagemPorBairroArray2,contagemPorDataArray2} = response.data;                                       
+                                                           
+                                // Dados da API
+                                const epidemia = Array.isArray(response.data.contagemEpidemiaArray2) ? response.data.contagemEpidemiaArray2 : [];
+                                const ubs = Array.isArray(response.data.contagemPorUBSArray2) ? response.data.contagemPorUBSArray2 : [];
+                                const logradouro = Array.isArray(response.data.contagemPorLogradouroArray2) ? response.data.contagemPorLogradouroArray2 : [];
+                                const bairros = Array.isArray(response.data.contagemPorBairroArray2) ? response.data.contagemPorBairroArray2 : [];
+                                const dataO = Array.isArray(response.data.contagemPorDataArray2) ? response.data.contagemPorDataArray2 : [];
 
-                            labelsepi = '';
-                            dataepi = '';
+                                console.log("epidemia:", epidemia);
+                                console.log("ubs:", ubs);
+                                console.log("logradouro:", logradouro);
+                                console.log("bairros:", bairros);
+                                console.log("dataO:", dataO);
+                             
+                            // Processar Epidemias
+                            if (epidemia.length) {
+                                labelsEpidemia = epidemia.map(ocorrencia => ocorrencia.Nomeepidemia);
+                                dataEpidemia = epidemia.map(ocorrencia => ocorrencia.epidemiacount);
+                            } else {
+                                console.warn("Epidemia está vazio ou não é um array.");
+                            }
 
-                            labelsubs = '';
-                            dataubs = '';
+                            // Processar dados de UBS, Logradouro, Bairro e Data
+                            labelsUBS = ubs.map(u => u.NomeUBS);
+                            dataUBS = ubs.map(u => u.ubscount);
 
-                            labelslog= '';
-                            datalog= '';
+                            labelsLogradouro = logradouro.map(l => l.Nomelogradouro);
+                            dataLogradouro = logradouro.map(l => l.logradourocount);
 
-                            labelsbairro= '';
-                            databairro= '';
+                            labelsBairro = bairros.map(b => b.Nomebairro);
+                            dataBairro = bairros.map(b => b.bairrocount);
 
-                            labelsdata= '';
-                            datadata= '';
+                            labelsDataO = dataO.map(d => d.dataOcorrencia);
+                            dataDataO = dataO.map(d => d.dataOcorrenciacount);
 
-                            try {
-                                const response = await axios.get('http://localhost:40000/relatorio/GetData');
-                                console.log("response.data",response.data);
-
-
-                                const ocorrencias = response.data.regReturn;
-
-                                // Extrair dados específicos para cada gráfico
-
-                                const epidemias = ocorrencias.epidemia;
-                                const ubss = ocorrencias.ubs;
-                                const logradouros = ocorrencias.logradouro;
-                                const bairros = ocorrencias.bairro;
-                                const dataOcorrencias = ocorrencias.dataOcorrencia;
-        
-                                if (ocorrencias && Array.isArray(ocorrencias.epidemia)) {
-                                    labelsepi = epidemias.map(function(ocorrencia) { 
-                                        return ocorrencia.epidemia; 
-                                    });
-                                    
-                                    dataepi = epidemias.map(function(ocorrencia) { 
-                                    return ocorrencia.epidemiacount; 
-                                    });
-                                    console.log("labelsepi",labelsepi);
-                                    console.log("dataepi",dataepi);
-                                
-                                } else {
-                                    console.error('Erro: epidemia não é um array ou está vazio', epidemias);
-                                }                             
-
-
-                                if (ocorrencias && Array.isArray(ocorrencias.ubs)) {
-                                labelsubs = ubss.map(function(ocorrencia) { 
-                                    return ocorrencia.ubs; 
-                                });
-                                dataubs = ubss.map(function(ocorrencia) { 
-                                    return ocorrencia.ubscount; 
-                                });
-                                } else {
-                                    console.error('Erro: epidemia não é um array ou está vazio', ubss);
-                                } 
-
-                                if (ocorrencias && Array.isArray(ocorrencias.logradouro)) {
-                                 labelslog = logradouros.map(function(ocorrencia) { 
-                                    return ocorrencia.logradouro; 
-                                });
-                                 datalog = logradouros.map(function(ocorrencia) { 
-                                    return ocorrencia.logradourocount; 
-                                });
-                                } else {
-                                    console.error('Erro: epidemia não é um array ou está vazio', logradouros);
-                                } 
-
-
-                                if (ocorrencias && Array.isArray(ocorrencias.bairro)) {
-                                labelsbairro = bairros.map(function(ocorrencia) { 
-                                    return ocorrencia.bairro; 
-                                });
-                                 databairro = bairros.map(function(ocorrencia) { 
-                                    return ocorrencia.bairrocount; 
-                                });
-                                } else {
-                                    console.error('Erro: epidemia não é um array ou está vazio', bairros);
-                                } 
-
-
-                                if (ocorrencias && Array.isArray(ocorrencias.dataOcorrencia)) {
-                                labelsdata = dataOcorrencias.map(function(ocorrencia) { 
-                                    return ocorrencia.dataOcorrencia; 
-                                });
-                                 datadata = dataOcorrencias.map(function(ocorrencia) { 
-                                    return ocorrencia.dataOcorrenciacount; 
-                                });
-                                } else {
-                                    console.error('Erro: epidemia não é um array ou está vazio', dataOcorrencias);
-                                } 
-
-                                // Função para criar gráfico de barras
+                                // Função para criar gráficos de barras
                                 function createBarChart(ctx, labels, data, label) {
+                                    console.log("Criando gráfico de barras", { labels, data, label });
                                     return new Chart(ctx, {
                                         type: 'bar',
                                         data: {
@@ -530,12 +486,9 @@
                                         options: {
                                             responsive: true,
                                             scales: {
-                                                y: {    
+                                                y: {
                                                     beginAtZero: true,
                                                     ticks: {
-                                                        callback: function(value) {
-                                                            return Math.round(value);
-                                                        },
                                                         stepSize: 1
                                                     }
                                                 }
@@ -544,7 +497,8 @@
                                     });
                                 }
 
-                                // Função para criar gráfico de pizza
+
+                                // Função para criar gráficos de pizza
                                 function createPieChart(ctx, labels, data, label) {
                                     return new Chart(ctx, {
                                         type: 'pie',
@@ -559,8 +513,7 @@
                                                     'rgba(255, 206, 86, 0.2)',
                                                     'rgba(75, 192, 192, 0.2)',
                                                     'rgba(153, 102, 255, 0.2)',
-                                                    'rgba(255, 159, 64, 0.2)',
-                                                    'rgba(201, 203, 207, 0.2)'
+                                                    'rgba(255, 159, 64, 0.2)'
                                                 ],
                                                 borderColor: [
                                                     'rgba(255, 99, 132, 1)',
@@ -568,8 +521,7 @@
                                                     'rgba(255, 206, 86, 1)',
                                                     'rgba(75, 192, 192, 1)',
                                                     'rgba(153, 102, 255, 1)',
-                                                    'rgba(255, 159, 64, 1)',
-                                                    'rgba(201, 203, 207, 1)'
+                                                    'rgba(255, 159, 64, 1)'
                                                 ],
                                                 borderWidth: 1
                                             }]
@@ -579,47 +531,46 @@
                                             plugins: {
                                                 legend: {
                                                     position: 'top',
-                                                },
-                                                tooltip: {
-                                                    callbacks: {
-                                                        label: function(context) {
-                                                            let label = context.label || '';
-                                                            let value = context.raw || 0;
-                                                            return `${label}: ${Math.round(value)}`;
-                                                        }
-                                                    }
                                                 }
                                             }
                                         }
                                     });
                                 }
 
-                                // Criação dos gráficos de barras
-                                createBarChart(document.getElementById('epibar').getContext('2d'), labelsepi, dataepi, 'Ocorrências de Epidemias');
-                                createBarChart(document.getElementById('ubsbar').getContext('2d'), labelsubs, dataubs, 'Ocorrências por UBS');
-                                createBarChart(document.getElementById('logbar').getContext('2d'), labelslog, datalog, 'Ocorrências por Logradouro');
-                                createBarChart(document.getElementById('bairrobar').getContext('2d'), labelsbairro, databairro, 'Ocorrências por Bairro');
-                                createBarChart(document.getElementById('databar').getContext('2d'), labelsdata, datadata, 'Ocorrências por Data');
+                                // Agora as variáveis estão definidas corretamente e podem ser passadas para os gráficos de pizza
+                                createPieChart(document.getElementById('epipie').getContext('2d'), labelsEpidemia, dataEpidemia, 'Ocorrências de Epidemias');
+                                createPieChart(document.getElementById('ubspie').getContext('2d'), labelsUBS, dataUBS, 'Ocorrências por UBS');
+                                createPieChart(document.getElementById('logpie').getContext('2d'), labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+                                createPieChart(document.getElementById('bairropie').getContext('2d'), labelsBairro, dataBairro, 'Ocorrências por Bairro');
+                                createPieChart(document.getElementById('datapie').getContext('2d'), labelsDataO, dataDataO, 'Ocorrências por Data');
 
-                                // Criação dos gráficos de pizza
-                                createPieChart(document.getElementById('epipie').getContext('2d'), labelsepi, dataepi, 'Distribuição de Epidemias');
-                                createPieChart(document.getElementById('ubspie').getContext('2d'), labelsubs, dataubs, 'Distribuição por UBS');
-                                createPieChart(document.getElementById('logpie').getContext('2d'), labelslog, datalog, 'Distribuição por Logradouro');
-                                createPieChart(document.getElementById('bairropie').getContext('2d'), labelsbairro, databairro, 'Distribuição por Bairro');
-                                createPieChart(document.getElementById('datapie').getContext('2d'), labelsdata, datadata, 'Distribuição por Data');
-
+                                // Agora as variáveis estão definidas corretamente e podem ser passadas para os gráficos de pizza
+                                createBarChart(document.getElementById('epibar').getContext('2d'), labelsEpidemia, dataEpidemia, 'Ocorrências de Epidemias');
+                                createBarChart(document.getElementById('ubsbar').getContext('2d'), labelsUBS, dataUBS, 'Ocorrências por UBS');
+                                createBarChart(document.getElementById('logbar').getContext('2d'), labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+                                createBarChart(document.getElementById('bairrobar').getContext('2d'), labelsBairro, dataBairro, 'Ocorrências por Bairro');
+                                createBarChart(document.getElementById('databar').getContext('2d'), labelsDataO, dataDataO, 'Ocorrências por Data');
+                                
                             } catch (error) {
-                                console.error("Erro ao buscar dados:", error);
+                                // Mostra o erro completo
+                                if (error.response) {
+                                    // O servidor respondeu com um status code fora da faixa 2xx
+                                    console.error('Erro no backend:', error.response.data);
+                                    console.error('Status Code:', error.response.status);
+                                } else if (error.request) {
+                                    // A requisição foi feita, mas não houve resposta
+                                    console.error('Erro na requisição:', error.request);
+                                } else {
+                                    // Erro desconhecido ao configurar a requisição
+                                    console.error('Erro desconhecido:', error.message);
+                                }
                             }
-                        }
-
-                        document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts);
-                                   
-                    </script>
-                    @* FIM SCRIP DOS GRAFICOS *@
+                        }                             
+                        </script>
+                        @* FIM SCRIP DOS GRAFICOS *@
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
     });
 });
 

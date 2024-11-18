@@ -49,47 +49,51 @@ const insertOcorrencias = async (req, res) => {
   console.log("[ctlOcorrencias|insertOcorrencias] Iniciando...");
 
   var oper = "";
-  var registro = {};
-  var Bairro = {};
-  var logradouro = {};
-  var epidemia = {};
-  var unidBasicaSaude = {};
+  let registro = {};
 
   const userName = req.session.userName;
   const token = req.session.token;
 
   try {
+    console.log("[ctlOcorrencias|insertOcorrencias] try");
+
     if (req.method === "GET") {
       oper = "c";
+      console.log("[ctlOcorrencias|insertOcorrencias] try if");
 
       // Obtendo todos os dados necessários
-      Bairro = await axios.get("http://localhost:20100/acl/bairro/v1/GetAllBairros", {
+      let Bairro = await axios.get("http://localhost:20100/acl/bairro/v1/GetAllBairros", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
 
-      logradouro = await axios.get("http://localhost:20100/acl/logradouro/v1/GetAllLogradouros", {
+      let logradouro = await axios.get("http://localhost:20100/acl/logradouro/v1/GetAllLogradouros", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
 
-      epidemia = await axios.get("http://localhost:20100/acl/epidemia/v1/GetAllEpidemias", {
+      let epidemia = await axios.get("http://localhost:20100/acl/epidemia/v1/GetAllEpidemias", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
 
-      unidBasicaSaude = await axios.get("http://localhost:20100/acl/ubs/v1/GetAllUBSs", {
+      let unidBasicaSaude = await axios.get("http://localhost:20100/acl/ubs/v1/GetAllUBSs", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
+
+      console.log("[] Valor do Bairro.data:", Bairro.data);
+      console.log("[] Valor do logradouro.data:", logradouro.data);
+      console.log("[] Valor do epidemia.data:", epidemia.data);
+      console.log("[] Valor do unidBasicaSaude.data:", unidBasicaSaude.data);
 
       // Verificações das respostas
       if (Bairro.data && Bairro.data.regReturn && 
@@ -112,6 +116,8 @@ const insertOcorrencias = async (req, res) => {
           EpidemiaIDfk: "",
           Removido: false,
         };
+
+        console.log("[ctlOcorrencias|insertOcorrencias]registro:",registro);
 
         res.render("Ocorrencias/view_cadOcorrencias", {
           title: "Cadastro da Unidade Básica de Saúde",
@@ -151,6 +157,7 @@ const insertOcorrencias = async (req, res) => {
       const BairroidfkInt = parseInt(OcorrenciasREG.Bairroidfk, 10);
       const EpidemiaIDfkInt = parseInt(OcorrenciasREG.EpidemiaIDfk, 10);
       const LogradouroidfkInt = parseInt(OcorrenciasREG.Logradouroidfk, 10);
+      const LogradouroidInt = parseInt(OcorrenciasREG.Logradouroidfk, 10);
       const UnidBasicaSaudeIDFKInt = parseInt(OcorrenciasREG.UnidBasicaSaudeIDFK, 10);
 
       // Inserindo a ocorrência
@@ -164,8 +171,8 @@ const insertOcorrencias = async (req, res) => {
         Numerolocaltrabalho: OcorrenciasREG.Numerolocaltrabalho,
         UnidBasicaSaudeIDFK: UnidBasicaSaudeIDFKInt,
         Bairroidfk: BairroidfkInt,
-        LogradourolocaltrabalhoIDFK: OcorrenciasREG.LogradourolocaltrabalhoIDFK,
-        Logradouroidfk: LogradouroidfkInt,
+        LogradourolocaltrabalhoIDFK: LogradouroidfkInt,
+        Logradouroidfk: LogradouroidInt,
         EpidemiaIDfk: EpidemiaIDfkInt,
         Removido: false,
       }, {
@@ -236,7 +243,7 @@ const insertOcorrencias = async (req, res) => {
       });
     }
   } catch (erro) {
-    console.log("[ctlOcorrencias.js|insertOcorrencias] Erro não identificado", erro.response ? erro.response.data : erro.message);
+    console.log("[ctlOcorrencias.js|insertOcorrencias] Erro não identificado", erro.response ? erro.response.data : erro.message, erro.config);
     res.status(500).send("Erro ao processar a requisição para inserir a ocorrência");
   }
 };
