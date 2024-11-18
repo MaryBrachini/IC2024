@@ -403,7 +403,7 @@
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                     <script>
-                    document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts); 
+                        document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts); 
 
                         let labelsEpidemia=[],dataEpidemia=[];
                         let labelsUBS=[], dataUBS=[];
@@ -411,29 +411,28 @@
                         let labelsBairro=[],dataBairro=[];
                         let labelsDataO=[],dataDataO=[];
 
-                    async function fetchDataAndCreateCharts() {
+                        async function fetchDataAndCreateCharts() {
 
-                        // Limpar variáveis
+                            // Limpar variáveis
                             labelsEpidemia = [], dataEpidemia = [];
                             labelsUBS = [], dataUBS = [];
                             labelsLogradouro = [], dataLogradouro = [];
                             labelsBairro = [], dataBairro = [];
                             labelsDataO = [], dataDataO = [];
 
-                        try {                            
+                            try {                            
+                                const response = await axios.get('http://localhost:40000/relatorio/GetData');
+                                console.log("Resposta completa:", response);
+                                console.log("Response.data:", response.data);
+                                
+                                if (!response.data) {
+                                    console.error("Dados não encontrados. Verifique a resposta do servidor.");
+                                    return;
+                                }
 
-                            const response = await axios.get('http://localhost:40000/relatorio/GetData');
-                            console.log("Resposta completa:", response); // Verifique se a resposta é uma promessa resolvida
-                            console.log("Response.data:", response.data); // Verifique os dados recebidos
-                            
-                            if (!response.data) {
-                                console.error("Dados não encontrados. Verifique a resposta do servidor.");
-                                return;
-                            }
-
-                            const {contagemEpidemiaArray2,contagemPorUBSArray2,contagemPorLogradouroArray2,
-                                contagemPorBairroArray2,contagemPorDataArray2} = response.data;                                       
-                                                           
+                                const {contagemEpidemiaArray2,contagemPorUBSArray2,contagemPorLogradouroArray2,
+                                    contagemPorBairroArray2,contagemPorDataArray2} = response.data;                                       
+                                                            
                                 // Dados da API
                                 const epidemia = Array.isArray(response.data.contagemEpidemiaArray2) ? response.data.contagemEpidemiaArray2 : [];
                                 const ubs = Array.isArray(response.data.contagemPorUBSArray2) ? response.data.contagemPorUBSArray2 : [];
@@ -446,29 +445,25 @@
                                 console.log("logradouro:", logradouro);
                                 console.log("bairros:", bairros);
                                 console.log("dataO:", dataO);
-                             
-                            // Processar Epidemias
-                            if (epidemia.length) {
+                                
+                                // Processar Epidemias                               
                                 labelsEpidemia = epidemia.map(ocorrencia => ocorrencia.Nomeepidemia);
                                 dataEpidemia = epidemia.map(ocorrencia => ocorrencia.epidemiacount);
-                            } else {
-                                console.warn("Epidemia está vazio ou não é um array.");
-                            }
 
-                            // Processar dados de UBS, Logradouro, Bairro e Data
-                            labelsUBS = ubs.map(u => u.NomeUBS);
-                            dataUBS = ubs.map(u => u.ubscount);
+                                // Processar dados de UBS, Logradouro, Bairro e Data
+                                labelsUBS = ubs.map(u => u.NomeUBS);
+                                dataUBS = ubs.map(u => u.ubscount);
 
-                            labelsLogradouro = logradouro.map(l => l.Nomelogradouro);
-                            dataLogradouro = logradouro.map(l => l.logradourocount);
+                                labelsLogradouro = logradouro.map(l => l.Nomelogradouro);
+                                dataLogradouro = logradouro.map(l => l.logradourocount);
 
-                            labelsBairro = bairros.map(b => b.Nomebairro);
-                            dataBairro = bairros.map(b => b.bairrocount);
+                                labelsBairro = bairros.map(b => b.Nomebairro);
+                                dataBairro = bairros.map(b => b.bairrocount);
 
-                            labelsDataO = dataO.map(d => d.dataOcorrencia);
-                            dataDataO = dataO.map(d => d.dataOcorrenciacount);
+                                labelsDataO = dataO.map(d => d.dataOcorrencia);
+                                dataDataO = dataO.map(d => d.dataOcorrenciacount);
 
-                                // Função para criar gráficos de barras
+                                    // Função para criar gráficos de barras
                                 function createBarChart(ctx, labels, data, label) {
                                     console.log("Criando gráfico de barras", { labels, data, label });
                                     return new Chart(ctx, {
@@ -496,8 +491,6 @@
                                         }
                                     });
                                 }
-
-
                                 // Função para criar gráficos de pizza
                                 function createPieChart(ctx, labels, data, label) {
                                     return new Chart(ctx, {
@@ -550,27 +543,27 @@
                                 createBarChart(document.getElementById('logbar').getContext('2d'), labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
                                 createBarChart(document.getElementById('bairrobar').getContext('2d'), labelsBairro, dataBairro, 'Ocorrências por Bairro');
                                 createBarChart(document.getElementById('databar').getContext('2d'), labelsDataO, dataDataO, 'Ocorrências por Data');
-                                
-                            } catch (error) {
-                                // Mostra o erro completo
-                                if (error.response) {
-                                    // O servidor respondeu com um status code fora da faixa 2xx
-                                    console.error('Erro no backend:', error.response.data);
-                                    console.error('Status Code:', error.response.status);
-                                } else if (error.request) {
-                                    // A requisição foi feita, mas não houve resposta
-                                    console.error('Erro na requisição:', error.request);
-                                } else {
-                                    // Erro desconhecido ao configurar a requisição
-                                    console.error('Erro desconhecido:', error.message);
+                                    
+                                } catch (error) {
+                                    // Mostra o erro completo
+                                    if (error.response) {
+                                        // O servidor respondeu com um status code fora da faixa 2xx
+                                        console.error('Erro no backend:', error.response.data);
+                                        console.error('Status Code:', error.response.status);
+                                    } else if (error.request) {
+                                        // A requisição foi feita, mas não houve resposta
+                                        console.error('Erro na requisição:', error.request);
+                                    } else {
+                                        // Erro desconhecido ao configurar a requisição
+                                        console.error('Erro desconhecido:', error.message);
+                                    }
                                 }
-                            }
-                        }                             
-                        </script>
-                        @* FIM SCRIP DOS GRAFICOS *@
-                    </div>
+                            }                             
+                    </script>
+                    @* FIM SCRIP DOS GRAFICOS *@
                 </div>
-            </main>
+            </div>
+        </main>
     });
 });
 
