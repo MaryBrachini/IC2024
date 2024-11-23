@@ -6,7 +6,7 @@ content-type: application/json
 
 {
     "username": "qwe",    
-    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+    "passWord": "qwe"
 }
 
 # Seta o token
@@ -24,14 +24,14 @@ Authorization: Bearer {{accessToken}}
 {
     "Removido": false, 
     "UnidBasicaSaudeIDFK": 3,
-	"NomeSuspeito": "José da Silva2",	
-    "datacadastro": "12/01/2024",       
-    "dataocorrencia": "08/01/2024",
+	"NomeSuspeito": "Carlos Eduardo",	
+    "datacadastro": "20/11/2024",       
+    "dataocorrencia": "16/10/2024",
     "epidemiaidfk":2,
-    "logradouroidfk":12,
-    "numero": 3728,   
-    "bairroidfk":4,
-    "Localtrabalho":null,
+    "logradouroidfk":25,
+    "numero": 3014,   
+    "bairroidfk":33,
+    "Localtrabalho":"Casa",
     "LogradourolocaltrabalhoIDFK": null,
     "Numerolocaltrabalho": null    
 }
@@ -43,8 +43,7 @@ GET http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{accessToken}}
 
-{
-}
+{}
 
 ### Testes de Busca de Localização Geográfica: latitude e Longitude
 ## GetGeoAddress
@@ -63,7 +62,7 @@ content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "OcorrenciaID": 14
+    "OcorrenciaID": 4
 }
 
 

@@ -46,14 +46,15 @@ const getRelatorioOcorrencias = async (req, res) => {
         }).length;
 
         // Organiza os dados de contagem para o template
-        const totalOcorrencias = {
-            last15Days: quinzenal,
-            lastMonth: mensal,
-            last6Months: semestral,
-            lastYear: anual,
+        const Ocorrenciasperiodo = {
+            quinzenal: quinzenal,
+            mensal: mensal,
+            semestral: semestral,
+            anual: anual,
         };
 
-        console.log("[ctlRelatorio|getRelatorioOcorrencias] totalOcorrencias:", totalOcorrencias);
+        console.log("[ctlRelatorio|getRelatorioOcorrencias] Ocorrenciasperiodo:", Ocorrenciasperiodo);
+        
         //@*FIM OCORRENCIAS NOS PERIODOS PADRAO *@
 
 
@@ -206,7 +207,7 @@ const getRelatorioOcorrencias = async (req, res) => {
         // Renderiza a página com todos os dados
         res.render("relatorio/view_relatorio", {
             title: "Relatório de Ocorrências",
-            totalOcorrencias: ocorrencias.length,  // Definir o total corretamente
+            Ocorrenciasperiodo: Ocorrenciasperiodo,
             contagemEpidemiaArray,
             contagemPorUBSArray,
             contagemPorLogradouroArray,
@@ -383,33 +384,24 @@ const GetData = async (req, res) => {
         });
 
         // Logs após a criação dos arrays
-        /* console.log("[ctlRelatorio|GetData] contagemPorEpidemia:", contagemEpidemiaArray2);
-        console.log("[ctlRelatorio|GetData] contagemPorUBS:", contagemPorUBSArray2);
-        console.log("[ctlRelatorio|GetData] contagemPorLogradouro:", contagemPorLogradouroArray2);
-        console.log("[ctlRelatorio|GetData] contagemPorBairro:", contagemPorBairroArray2); */
-
-        
-            console.log("Dados sendo enviados:", {
-                contagemEpidemiaArray2,
-                contagemPorUBSArray2,
-                contagemPorLogradouroArray2,
-                contagemPorBairroArray2,
-                contagemPorDataArray2
-            });
-            res.setHeader('Content-Type', 'application/json');
-            res.json({
-                regReturn: true,
-                contagemEpidemiaArray2,
-                contagemPorUBSArray2,
-                contagemPorLogradouroArray2,
-                contagemPorBairroArray2,
-                contagemPorDataArray2
-            });
-        
-        
+        /* console.log("Dados sendo enviados:", {
+            contagemEpidemiaArray2,
+            contagemPorUBSArray2,
+            contagemPorLogradouroArray2,
+            contagemPorBairroArray2,
+            contagemPorDataArray2
+        }); */
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            regReturn: true,
+            contagemEpidemiaArray2,
+            contagemPorUBSArray2,
+            contagemPorLogradouroArray2,
+            contagemPorBairroArray2,
+            contagemPorDataArray2
+        });      
 
         console.log("[ctlRelatorio|GetData] Resposta enviada com sucesso para o relatório de ocorrências");
-
 
     } catch (erro) {
         console.error("[ctlRelatorio|GetData]Erro não identificado", erro.response ? erro.response.data : erro.message);

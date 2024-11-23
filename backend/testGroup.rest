@@ -6,7 +6,7 @@ content-type: application/json
 
 {
     "username": "qwe",    
-    "passWord": "76d80224611fc919a5d54f0ff9fba446"
+    "passWord": "qwe"
 }
 
 # Seta o token
