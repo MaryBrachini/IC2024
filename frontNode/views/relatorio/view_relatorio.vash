@@ -30,29 +30,8 @@
                     </div>
                     @* FIM OCORRENCIAS NOS PERIODOS PADRAO *@
 
-                    @* FILTRAGEM DE PERIODO *@
-                    <div class="row mb-1" style="padding-top: 25px;">
-                        <h2>Filtro de Datas</h2>
-                        <form id="dateFilterForm">
-                            <div class="row mb-1">
-                                <div class="col-5">
-                                    <label for="startDate">Data de Início:</label>
-                                    <input type="date" class="form-control" id="startDate" required>
-                                </div>
-                                
-                                <div class="col-5">
-                                    <label for="endDate">Data de Fim:</label>
-                                    <input type="date" class="form-control" id="endDate" required>
-                                </div>
-                            
-                                <div class="col-2" style="padding-top: 25px;">
-                                    <button type="button" class="btn btn-primary" onclick="filterDates()">Filtrar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    @* FIM FILTRAGEM DE PERIODO *@
-                    
+
+                   
                     @* LOCAL QUE RETORNA DADOS DO RELATORIO *@
                     <div>
                         <h4 style="padding-top: 20px;">Contagem de Ocorrências por Categoria</h4>
@@ -67,7 +46,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredEpidemiaData">
+                                    <tbody>
+                                    @model.contagemEpidemiaArray.forEach(function(ocorrencia) {
+                                        <tr>
+                                            <td>@ocorrencia.Nomeepidemia</td>
+                                            <td>@ocorrencia.epidemiacount</td>
+                                        </tr>
+                                    })
                                     </tbody>
                                 </table>
                             </div>
@@ -81,7 +66,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredUBSData">
+                                    <tbody>
+                                    @model.contagemPorUBSArray.forEach(function(ocorrencia) {
+                                        <tr>
+                                            <td>@ocorrencia.NomeUBS</td>
+                                            <td>@ocorrencia.ubscount</td>
+                                        </tr>
+                                    })
                                     </tbody>
                                 </table>
                             </div>
@@ -95,7 +86,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredLogradouroData">                                       
+                                    <tbody> 
+                                    @model.contagemPorLogradouroArray.forEach(function(ocorrencia) {
+                                        <tr>
+                                            <td>@ocorrencia.Nomelogradouro</td>
+                                            <td>@ocorrencia.logradourocount</td>
+                                        </tr>   
+                                    })                                   
                                     </tbody>
                                 </table>
                             </div>
@@ -111,7 +108,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredBairroData">
+                                    <tbody>
+                                    @model.contagemPorBairroArray.forEach(function(ocorrencia) {
+                                        <tr>
+                                            <td>@ocorrencia.Nomebairro</td>
+                                            <td>@ocorrencia.bairrocount</td>
+                                        </tr>
+                                    })
                                     </tbody>
                                 </table>
                             </div>
@@ -125,8 +128,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="filteredData">
-                                        <!-- Dados filtrados serão exibidos aqui -->
+                                    <tbody>
+                                    @model.contagemPorDataArray.forEach(function(ocorrencia) {
+                                        <tr>
+                                            <td>@ocorrencia.dataOcorrencia</td>
+                                            <td>@ocorrencia.dataOcorrenciacount</td>
+                                        </tr>
+                                    })
                                     </tbody>
                                 </table>
                             </div>
@@ -134,209 +142,231 @@
                     </div>
                     @* FIM DADOS RELATORIO *@
 
-                    @* SCRIP DA FILTRAGEM *@
+                    @* GRAFICOS *@
+                    <div style="padding-top: 20px;">
+                        <h4>Gráficos de Ocorrências</h4>
+                        
+                        <div class="row mb-1" style="padding-top: 20px;">
+                            <h5>Gráficos das Epidemias</h5>
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="epibar" width="400" height="200"></canvas>                         
+                            </div>
+
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="epipie" style="width: 100%; height: 100%;"></canvas>                         
+                            </div>
+
+                        </div>
+                        
+                        <div class="row mb-1" style="padding-top: 20px;">
+                            <h5>Gráficos das Unidade Básica de Saúde</h5>
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="ubsbar" width="400" height="200"></canvas>                         
+                            </div>
+
+                             <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="ubspie" style="width: 100%; height: 100%;"></canvas>                         
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-1" style="padding-top: 20px;">
+                            <h5>Gráficos dos Logradouros</h5>
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="logbar" width="400" height="200"></canvas>                         
+                            </div>
+
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="logpie" style="width: 100%; height: 100%;"></canvas>                         
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-1" style="padding-top: 20px;">
+                            <h5>Gráficos dos Bairros</h5>
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="bairrobar" width="400" height="200"></canvas>                         
+                            </div>
+
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="bairropie" style="width: 100%; height: 100%;"></canvas>                         
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-1" style="padding-top: 20px;">
+                            <h5>Gráficos de Data da Ocorrência</h5>
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="databar" width="400" height="200"></canvas>                         
+                            </div>
+
+                            <div class="col-6" style="width: 400px; height: 200px;">
+                                <canvas id="datapie" style="width: 100%; height: 100%;"></canvas>                         
+                            </div>
+                        </div>
+                    </div>
+                    @* FIM GRAFICOS *@
+
+                    @* SCRIP DOS GRAFICOS *@
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                     <script>
-                        // Função para buscar as ocorrências
-                        async function filtro() {
-                            try {
+                        document.addEventListener('DOMContentLoaded', fetchDataAndCreateCharts); 
+
+                        let labelsEpidemia=[],dataEpidemia=[];
+                        let labelsUBS=[], dataUBS=[];
+                        let labelsLogradouro=[], dataLogradouro=[];
+                        let labelsBairro=[],dataBairro=[];
+                        let labelsDataO=[],dataDataO=[];
+
+                        async function fetchDataAndCreateCharts() {
+
+                            // Limpar variáveis
+                            labelsEpidemia = [], dataEpidemia = [];
+                            labelsUBS = [], dataUBS = [];
+                            labelsLogradouro = [], dataLogradouro = [];
+                            labelsBairro = [], dataBairro = [];
+                            labelsDataO = [], dataDataO = [];
+
+                            try {                            
                                 const response = await axios.get('http://localhost:40000/relatorio/GetData');
-                                console.log("response.data", response.data);
-
-                                const ocorrencias = response.data.regReturn;
-                                console.log("ocorrencias", ocorrencias);
-
-                                return ocorrencias; // Retorna os dados de ocorrências para a função filterDates
-                            } catch (error) {
-                                console.error("Erro ao buscar dados:", error);
-                            }
-                        }
-
-                        // Função para converter a data de DD/MM/YYYY para YYYY-MM-DD
-                        function convertDateFormat(dateStr) {
-                            const parts = dateStr.split('/');
-                            return new Date(parts[2], parts[1] - 1, parts[0]); // Cria um novo objeto Date com ano, mês e dia
-                        }
-
-                        // Função que será chamada ao clicar no botão "Filtrar"
-                        async function filterDates() {
-                            const ocorrencias = await filtro(); // Aguarda os dados de ocorrências
-                            let dataOcorrencias = ocorrencias ? ocorrencias.dataOcorrencia : [];
-                            /*let epidemias = ocorrencias ? ocorrencias.epidemia : [];
-                            let ubs = ocorrencias ? ocorrencias.ubs : [];
-                            let logradouros = ocorrencias ? ocorrencias.logradouro : [];
-                            let bairros = ocorrencias ? ocorrencias.bairro : [];*/
-
-                            console.log("dataOcorrencias", dataOcorrencias);
-
-                            /*if (Array.isArray(epidemias)) {
-                                // Filtra as ocorrências para manter a data e a contagem
-                                epidemias = epidemias.map(function(ocorrencia) { 
-                                    return {
-                                        epidemia: ocorrencia.epidemia,
-                                        epidemiacount: ocorrencia.epidemiacount
-                                    };
-                                });
-                            } else {
-                                console.error('Erro: epidemia não é um array ou está vazio', epidemias);
-                            }
-
-                            if (Array.isArray(ubs)) {
-                                // Filtra as ocorrências para manter a data e a contagem
-                                ubs = ubs.map(function(ocorrencia) { 
-                                    return {
-                                        ubs: ocorrencia.ubs,
-                                        ubscount: ocorrencia.ubscount
-                                    };
-                                });
-                            } else {
-                                console.error('Erro: ubs não é um array ou está vazio', ubs);
-                            }
-
-                            if (Array.isArray(logradouros)) {
-                                // Filtra as ocorrências para manter a data e a contagem
-                                logradouros = logradouros.map(function(ocorrencia) { 
-                                    return {
-                                        logradouro: ocorrencia.logradouro,
-                                        logradourocount: ocorrencia.logradourocount
-                                    };
-                                });
-                            } else {
-                                console.error('Erro: logradouro não é um array ou está vazio', logradouros);
-                            }
-
-                            if (Array.isArray(bairros)) {
-                                // Filtra as ocorrências para manter a data e a contagem
-                                bairros = bairros.map(function(ocorrencia) { 
-                                    return {
-                                        bairro: ocorrencia.bairro,
-                                        bairrocount: ocorrencia.bairrocount
-                                    };
-                                });
-                            } else {
-                                console.error('Erro: bairro não é um array ou está vazio', bairros);
-                            }*/
-
-                            if (Array.isArray(dataOcorrencias)) {
-                                // Filtra as ocorrências para manter a data e a contagem
-                                dataOcorrencias = dataOcorrencias.map(function(ocorrencia) { 
-                                    return {
-                                        dataOcorrencia: ocorrencia.dataOcorrencia,
-                                        dataOcorrenciacount: ocorrencia.dataOcorrenciacount
-                                    };
-                                });
-                            } else {
-                                console.error('Erro: dataOcorrencia não é um array ou está vazio', dataOcorrencias);
-                            }
-
-                            // Pega as datas de início e fim do formulário
-                            var startDate = document.getElementById('startDate').value;
-                            var endDate = document.getElementById('endDate').value;
-
-                            console.log("Data de Início:", startDate);
-                            console.log("Data de Fim:", endDate);
-
-                            // Verifica se as datas foram preenchidas
-                            if (!startDate || !endDate) {
-                                alert("Por favor, preencha ambas as datas.");
-                                return;
-                            }
-
-                            // Converte as datas de início e fim para o formato Date (YYYY-MM-DD)
-                            startDate = new Date(startDate);
-                            endDate = new Date(endDate);
-
-                            // Filtra as ocorrências com base no intervalo de datas
-                            /*var filteredEpidemia = epidemias.filter(function(ocorrencia) {
-                                // Converte a epidemia de string (DD/MM/YYYY) para Date
-                                const ocorrenciaDate = convertDateFormat(ocorrencia.epidemia);
-                                console.log("OcorrenciaDate:", ocorrenciaDate);
-
-                                // Compara as datas
-                                return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
-                            });
-                            var filteredUBS = dataOcorrencias.filter(function(ocorrencia) {
-                                // Converte a dataOcorrencia de string (DD/MM/YYYY) para Date
-                                const ocorrenciaDate = convertDateFormat(ocorrencia.dataOcorrencia);
-                                console.log("OcorrenciaDate:", ocorrenciaDate);
+                                console.log("Resposta completa:", response);
+                                console.log("Response.data:", response.data);
                                 
-                                // Compara as datas
-                                return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
-                            });
-                            var filteredLogradouro = dataOcorrencias.filter(function(ocorrencia) {
-                                // Converte a dataOcorrencia de string (DD/MM/YYYY) para Date
-                                const ocorrenciaDate = convertDateFormat(ocorrencia.dataOcorrencia);
-                                console.log("OcorrenciaDate:", ocorrenciaDate);
-                                
-                                // Compara as datas
-                                return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
-                            });
-                            var filteredBairro = dataOcorrencias.filter(function(ocorrencia) {
-                                // Converte a dataOcorrencia de string (DD/MM/YYYY) para Date
-                                const ocorrenciaDate = convertDateFormat(ocorrencia.dataOcorrencia);
-                                console.log("OcorrenciaDate:", ocorrenciaDate);
-                                
-                                // Compara as datas
-                                return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
-                            });*/
-
-                            var filteredData = dataOcorrencias.filter(function(ocorrencia) {
-                                // Converte a dataOcorrencia de string (DD/MM/YYYY) para Date
-                                const ocorrenciaDate = convertDateFormat(ocorrencia.dataOcorrencia);
-                                console.log("OcorrenciaDate:", ocorrenciaDate);
-                                
-                                // Compara as datas
-                                return ocorrenciaDate >= startDate && ocorrenciaDate <= endDate;
-                            });
-
-                            // Função para filtrar dados por datas
-                            function filterDataByDate(dataArray, dateField) {
-                                return dataArray.filter(function(item) {
-                                    const itemDate = convertDateFormat(item[dateField]);
-                                    return itemDate >= startDate && itemDate <= endDate;
-                                });
-                            }
-
-                            // Filtra todos os dados por datas
-                            var filteredData = filterDataByDate(dataOcorrencias, 'dataOcorrencia');
-                            /*var filteredEpidemia = filterDataByDate(epidemias, 'epidemia');
-                            var filteredUBS = filterDataByDate(ubs, 'ubs');
-                            var filteredLogradouro = filterDataByDate(logradouros, 'logradouro');
-                            var filteredBairro = filterDataByDate(bairros, 'bairro');*/
-
-                            console.log("Dados filtrados de Data:", filteredData);
-                            /*console.log("Dados filtrados de Epidemia:", filteredEpidemia);
-                            console.log("Dados filtrados de UBS:", filteredUBS);
-                            console.log("Dados filtrados de Logradouro:", filteredLogradouro);
-                            console.log("Dados filtrados de Bairro:", filteredBairro);*/
-
-                            // Exibe as ocorrências filtradas nas tabelas
-                            function updateTable(tableId, filteredData, columns) {
-                                var tbody = document.getElementById(tableId);
-                                tbody.innerHTML = ""; // Limpa o conteúdo da tabela antes de inserir os novos dados
-                                
-                                if (filteredData.length > 0) {
-                                    filteredData.forEach(function(item) {
-                                        var row = document.createElement('tr');
-                                        row.innerHTML = columns.map(function(col) {
-                                            return "<td>" + item[col] + "</td>";
-                                        }).join('');
-                                        tbody.appendChild(row);
-                                    });
-                                } else {
-                                    tbody.innerHTML = "<tr><td colspan='2'>Nenhuma ocorrência encontrada no período selecionado.</td></tr>";
+                                if (!response.data) {
+                                    console.error("Dados não encontrados. Verifique a resposta do servidor.");
+                                    return;
                                 }
-                            }
 
-                            // Atualiza todas as tabelas
-                            updateTable('filteredData', filteredData, ['dataOcorrencia', 'dataOcorrenciacount']);
-                            /*updateTable('filteredEpidemiaData', filteredEpidemia, ['Nomeepidemia', 'epidemiacount']);
-                            updateTable('filteredUBSData', filteredUBS, ['NomeUBS', 'ubscount']);
-                            updateTable('filteredLogradouroData', filteredLogradouro, ['Nomelogradouro', 'logradourocount']);
-                            updateTable('filteredBairroData', filteredBairro, ['Nomebairro', 'bairrocount']);*/
-                        }
+                                const {contagemEpidemiaArray2,contagemPorUBSArray2,contagemPorLogradouroArray2,
+                                    contagemPorBairroArray2,contagemPorDataArray2} = response.data;                                       
+                                                            
+                                // Dados da API
+                                const epidemia = Array.isArray(response.data.contagemEpidemiaArray2) ? response.data.contagemEpidemiaArray2 : [];
+                                const ubs = Array.isArray(response.data.contagemPorUBSArray2) ? response.data.contagemPorUBSArray2 : [];
+                                const logradouro = Array.isArray(response.data.contagemPorLogradouroArray2) ? response.data.contagemPorLogradouroArray2 : [];
+                                const bairros = Array.isArray(response.data.contagemPorBairroArray2) ? response.data.contagemPorBairroArray2 : [];
+                                const dataO = Array.isArray(response.data.contagemPorDataArray2) ? response.data.contagemPorDataArray2 : [];
+
+                                /* console.log("epidemia:", epidemia);
+                                console.log("ubs:", ubs);
+                                console.log("logradouro:", logradouro);
+                                console.log("bairros:", bairros);
+                                console.log("dataO:", dataO); */
+                                
+                                // Processar Epidemias                               
+                                labelsEpidemia = epidemia.map(ocorrencia => ocorrencia.Nomeepidemia);
+                                dataEpidemia = epidemia.map(ocorrencia => ocorrencia.epidemiacount);
+
+                                // Processar dados de UBS, Logradouro, Bairro e Data
+                                labelsUBS = ubs.map(u => u.NomeUBS);
+                                dataUBS = ubs.map(u => u.ubscount);
+
+                                labelsLogradouro = logradouro.map(l => l.Nomelogradouro);
+                                dataLogradouro = logradouro.map(l => l.logradourocount);
+
+                                labelsBairro = bairros.map(b => b.Nomebairro);
+                                dataBairro = bairros.map(b => b.bairrocount);
+
+                                labelsDataO = dataO.map(d => d.dataOcorrencia);
+                                dataDataO = dataO.map(d => d.dataOcorrenciacount);
+
+                                    // Função para criar gráficos de barras
+                                function createBarChart(ctx, labels, data, label) {
+                                    console.log("Criando gráfico de barras", { labels, data, label });
+                                    return new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: labels,
+                                            datasets: [{
+                                                label: label,
+                                                data: data,
+                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true,
+                                                    ticks: {
+                                                        stepSize: 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                                // Função para criar gráficos de pizza
+                                function createPieChart(ctx, labels, data, label) {
+                                    return new Chart(ctx, {
+                                        type: 'pie',
+                                        data: {
+                                            labels: labels,
+                                            datasets: [{
+                                                label: label,
+                                                data: data,
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            plugins: {
+                                                legend: {
+                                                    position: 'top',
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                                // Agora as variáveis estão definidas corretamente e podem ser passadas para os gráficos de pizza
+                                createPieChart(document.getElementById('epipie').getContext('2d'), labelsEpidemia, dataEpidemia, 'Ocorrências de Epidemias');
+                                createPieChart(document.getElementById('ubspie').getContext('2d'), labelsUBS, dataUBS, 'Ocorrências por UBS');
+                                createPieChart(document.getElementById('logpie').getContext('2d'), labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+                                createPieChart(document.getElementById('bairropie').getContext('2d'), labelsBairro, dataBairro, 'Ocorrências por Bairro');
+                                createPieChart(document.getElementById('datapie').getContext('2d'), labelsDataO, dataDataO, 'Ocorrências por Data');
+
+                                // Agora as variáveis estão definidas corretamente e podem ser passadas para os gráficos de pizza
+                                createBarChart(document.getElementById('epibar').getContext('2d'), labelsEpidemia, dataEpidemia, 'Ocorrências de Epidemias');
+                                createBarChart(document.getElementById('ubsbar').getContext('2d'), labelsUBS, dataUBS, 'Ocorrências por UBS');
+                                createBarChart(document.getElementById('logbar').getContext('2d'), labelsLogradouro, dataLogradouro, 'Ocorrências por Logradouro');
+                                createBarChart(document.getElementById('bairrobar').getContext('2d'), labelsBairro, dataBairro, 'Ocorrências por Bairro');
+                                createBarChart(document.getElementById('databar').getContext('2d'), labelsDataO, dataDataO, 'Ocorrências por Data');
+                                    
+                                } catch (error) {
+                                    // Mostra o erro completo
+                                    if (error.response) {
+                                        // O servidor respondeu com um status code fora da faixa 2xx
+                                        console.error('Erro no backend:', error.response.data);
+                                        console.error('Status Code:', error.response.status);
+                                    } else if (error.request) {
+                                        // A requisição foi feita, mas não houve resposta
+                                        console.error('Erro na requisição:', error.request);
+                                    } else {
+                                        // Erro desconhecido ao configurar a requisição
+                                        console.error('Erro desconhecido:', error.message);
+                                    }
+                                }
+                            }                             
                     </script>
-                    @* FIM DO SCRIP DA FILTRAGEM *@
-                   
+                    @* FIM SCRIP DOS GRAFICOS *@
+
                 </div>
             </div>
         </main>

@@ -52,7 +52,7 @@ content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    
+    "endereco":"Av. jeronimo figueira da costa, 3050 - propovo, votuporanga - SP"
 }
 
 ### Testes de Ocorrencia

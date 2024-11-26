@@ -22,8 +22,7 @@ const getRelatorioOcorrencias = async (req, res) => {
         const ocorrencias = resp.data.regReturn;
         console.log("[ctlRelatorio|getRelatorioOcorrencias]ocorrencias:", ocorrencias);
 
-
-        //@* OCORRENCIAS NOS PERIODOS PADRAO *@
+        //@************************** OCORRENCIAS NOS PERIODOS PADRAO ************************************@
         // Calcula a contagem das ocorrências por períodos
         const quinzenal = ocorrencias.filter(ocorrencia => {
             const dataOcorrencia = new Date(ocorrencia.Dataocorrencia);
@@ -55,11 +54,12 @@ const getRelatorioOcorrencias = async (req, res) => {
 
         console.log("[ctlRelatorio|getRelatorioOcorrencias] Ocorrenciasperiodo:", Ocorrenciasperiodo);
         
-        //@*FIM OCORRENCIAS NOS PERIODOS PADRAO *@
+        //@************************** FIM OCORRENCIAS NOS PERIODOS PADRAO ********************************@
 
 
 
-        //@* DADOS DO RELATORIO *@
+
+        //@********************************** DADOS DO RELATORIO *****************************************@
         const ubs = await axios.get("http://localhost:20100/acl/ubs/v1/GetAllUBSs", {
             headers: {
               "Content-Type": "application/json",
@@ -101,19 +101,6 @@ const getRelatorioOcorrencias = async (req, res) => {
                 const logEncontrado = logradourosData.find(l => l.Logradouroid === ocorrencia.Logradouroidfk);
                 const bairroEncontrado = bairrosData.find(b => b.Bairroid === ocorrencia.Bairroidfk);
         
-                /* if (!epidemiaEncontrado) {
-                    console.log("epidemia não encontrado para o ID:", ocorrencia.Epidemiaidfk);
-                }
-                if (!ubsEncontrado) {
-                    console.log("UBS não encontrada para o ID:", ocorrencia.UnidBasicaSaudeIDFK);
-                }
-                if (!logEncontrado) {
-                    console.log("Logradouro não encontrado para o ID:", ocorrencia.Logradouroidfk);
-                }
-                if (!bairroEncontrado) {
-                    console.log("Bairro não encontrado para o ID:", ocorrencia.Bairroidfk);
-                } */
-        
                 return {
                     ...ocorrencia,
                     Nomeepidemia: epidemiaEncontrado ? epidemiaEncontrado.Nomeepidemia : "epidemia não encontrado",
@@ -130,7 +117,6 @@ const getRelatorioOcorrencias = async (req, res) => {
         );
         
         console.log("[ctlRelatorio|GetData] Todas as ocorrências:", todasOcorrencias);
-        
 
         // Definindo as variáveis de contagem
         const contagemPorEpidemia = {};
@@ -138,7 +124,6 @@ const getRelatorioOcorrencias = async (req, res) => {
         const contagemPorLogradouro = {};
         const contagemPorBairro = {};
         const contagemPorData = {};
-
 
         // Preencher as contagens com base nas ocorrências
         todasOcorrencias.forEach(ocorrencia => {
@@ -228,7 +213,6 @@ const getRelatorioOcorrencias = async (req, res) => {
 const GetData = async (req, res) => {
     console.log("[ctlRelatorio|GetData] Iniciando GetData...");
 
-    const userName = req.session.userName;
     const token = req.session.token;
 
     try {

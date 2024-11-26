@@ -25,7 +25,6 @@
                         <table id="example" class="stripe" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Ação</th>
                                     <th>ID</th>
                                     <th>Data da Ocorrência</th>
                                     <th>Epidemia ID</th>
@@ -36,15 +35,10 @@
                             </thead>
                             <tbody>
                                 @model.data.forEach(function(registro) {
-                                <tr>                                    
-                                    <td>
-                                        <a href="/Ocorrencias/viewOcorrencias/@registro.Ocorrenciaid" class="btn btn-info btn-sm">
-                                            <i class="fa fa-magnifying-glass"></i> Visualizar
-                                        </a>
-                                    </td>
+                                <tr>
                                     <td>@registro.Ocorrenciaid</td>
                                     <td>@registro.Dataocorrencia</td>
-                                    <td>@registro.EpidemiaIDfk</td>
+                                    <td>@registro.Epidemiaidfk</td>
                                     <td>@registro.UnidBasicaSaudeIDFK</td>
                                     <td>@registro.Logradouroidfk</td>                                   
                                     <td>@registro.Bairroidfk</td>                                    
