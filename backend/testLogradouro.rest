@@ -23,8 +23,8 @@ content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {   
-    "nomelogradouro": "Rua Colômbia",
-    "cidadeidfk": 12
+    "nomelogradouro": "Av. Simão Alvares Carrilho",
+    "cidadeidfk": 19
 }
 
 ### Testes de Logradouro
@@ -57,8 +57,8 @@ content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "LogradouroID": 23,    
-    "nomelogradouro": "LogradMODiRest_{{datahora}}"
+    "LogradouroID": 26,    
+    "nomelogradouro": "Padre Isidóro Cordeiro Paranhos"
 }
 
 

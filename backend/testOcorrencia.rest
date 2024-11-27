@@ -23,17 +23,17 @@ Authorization: Bearer {{accessToken}}
 
 {
     "Removido": false, 
-    "UnidBasicaSaudeIDFK": 3,
-	"NomeSuspeito": "Carlos Eduardo",	
-    "datacadastro": "20/11/2024",       
-    "dataocorrencia": "16/10/2024",
-    "epidemiaidfk":2,
-    "logradouroidfk":25,
-    "numero": 3014,   
-    "bairroidfk":33,
-    "Localtrabalho":"Casa",
-    "LogradourolocaltrabalhoIDFK": null,
-    "Numerolocaltrabalho": null    
+    "UnidBasicaSaudeIDFK": 12,
+    "NomeSuspeito": "maria",
+    "datacadastro": "2024-05-30",
+    "dataocorrencia": "2024-05-14",
+    "epidemiaidfk":4,
+    "logradouroidfk":27,
+    "numero": 2249 ,   
+    "bairroidfk":53,
+    "Localtrabalho":"casa",
+    "LogradourolocaltrabalhoIDFK":27,
+    "Numerolocaltrabalho": 2249     
 }
 
 

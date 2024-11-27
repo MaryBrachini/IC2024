@@ -42,8 +42,8 @@ Authorization: Bearer {{accessToken}}
 
 {
     "Removido": false,
-    "Codigobairro": "vilaamerica",
-    "Nomebairro": "Vila America"
+    "Codigobairro": "pozzobon",
+    "Nomebairro": "pozzobon"
 }
 
 ### Testes de vdaBairro

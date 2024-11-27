@@ -22,8 +22,8 @@ Content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "nomeCidade": "teste",
-    "estadoIDFK": 2
+    "nomeCidade": "Fernandopolis",
+    "estadoIDFK": 4
 }
 
 ### Testes de Cidade

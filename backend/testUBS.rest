@@ -22,9 +22,9 @@ Content-type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-      "codigoubs": "vilaamerica",
-      "nomeubs": "Danilo A. V. Medeiros",
-      "bairroidfk": 4
+      "codigoubs": "ParqueNacoes",
+      "nomeubs": "Daniele Cristine Lamana",
+      "bairroidfk": 53
 }
 
 ### Testes de UBS
