@@ -21,7 +21,6 @@
                     <table id="example" class="stripe" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Ação</th>
                                 <th>ID</th>
                                 <th>UBS</th>
                                 <th>Código</th>
@@ -31,11 +30,6 @@
                         <tbody>
                             @model.data.forEach(function(registro) {
                                 <tr>
-                                    <td>
-                                        <a href="/UBS/v1/viewUBS/@registro.UnidBasicaSaudeID" class="btn btn-info btn-sm">
-                                            <i class="fa fa-magnifying-glass"></i> Visualizar
-                                        </a>
-                                    </td>
                                     <td>@registro.UnidBasicaSaudeID</td>
                                     <td>@registro.NomeUBS</td>
                                     <td>@registro.CodigoUBS</td>
@@ -49,10 +43,8 @@
         </div>
     </div>
 </main>
-
   })
 })
-
 <script>
     var table = new DataTable('#example', {
         dom: 'B<"top"fi>rt<"bottom"lp><"clear">',

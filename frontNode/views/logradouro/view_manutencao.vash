@@ -20,28 +20,19 @@
                         <table id="example" class="stripe" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Ação</th>
                                     <th>ID</th>
                                     <th>Nome do Logradouro</th>
                                     <th>Cidade</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @{
-                                model.data.forEach(function(registro) {
+                             @model.data.forEach(function(registro) {
                                     <tr>
-                                        <td>
-                                            <a href="/logradouro/viewLogradouro/@registro.Logradouroid" 
-                                                class="btn btn-info btn-sm" aria-label="Visualizar logradouro @registro.Logradouroid">
-                                                <i class="fa fa-magnifying-glass"></i> Visualizar
-                                            </a>
-                                        </td>
                                         <td>@registro.Logradouroid</td>
                                         <td>@registro.Nomelogradouro</td>
-                                        <td>@registro.NomeCidade</td>
-                                     </tr>
-                                });
-                            }
+                                        <td>@registro.CidadeIDFK</td>
+                                    </tr>
+                                })                            
                             </tbody>
                         </table>
                     </div>

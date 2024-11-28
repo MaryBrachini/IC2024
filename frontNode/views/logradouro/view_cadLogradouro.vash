@@ -27,9 +27,11 @@
                             </div>
 
                             <div class="mb-1">
-                                <label for="CidadeIDFK" class="form-label">Cidade</label>
-                                        <select class="form-select" aria-label="Default select example" id="CidadeIDFK" @(model.oper == 'v' ? 'disabled' : '') name="CidadeIDFK">
-                                            @if (model.resp && Array.isArray(model.resp)) {
+                                <label for="" class="form-label">Cidade</label>
+                                        <select class="form-select" aria-label="Default select example"
+                                         id="CidadeIDFK" name="CidadeIDFK" @(model.oper == 'v' ? 'disabled' : '')>
+
+                                            @if (model.resp && Array.isArray(model.resp)&& model.resp.length > 0) {
                                                 @model.resp.forEach(function(registro) {
                                                     @if(model.data.CidadeIDFK === registro.CidadeIDFK) {
                                                         <option value="@registro.CidadeID" selected>@registro.NomeCidade</option>
@@ -78,6 +80,21 @@
 })
 
 })
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = "@model.message";
+        const messageType = "@model.messageType";
+
+        if (message) {
+            if (messageType === "success") {
+                alert(message);
+            } else if (messageType === "error") {
+                alert("Erro: " + message);
+            }
+        }
+    });
+</script>
+
 
 <script>
     async function alteraRegistro() {
