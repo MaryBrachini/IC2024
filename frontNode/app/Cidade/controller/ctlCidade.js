@@ -78,139 +78,152 @@ function validateForm(regFormPar) {
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de cidade
 const insertCidade = async (req, res) => {
-
-  var oper = "";
-  var registro = {};
+  let oper = "";
+  let registro = {};
+  let resp = {}; // Inicializa resp para garantir que esteja definida
+  let message = "";
+  let messageType = "";
 
   console.log("[ctlCidade|insertCidade]Iniciando...");
 
   const userName = req.session.userName;
   const token = req.session.token;
 
-  /* console.log("[ctlCidade|insertCidade] TOKEN:", token); */
-
   try {
+      console.log("[ctlCidade|insertCidade]TRY");
 
-    console.log("[ctlCidade|insertCidade]TRY");
+      if (req.method == "GET") {
+          oper = "c";
 
-    if (req.method == "GET") {
-      oper = "c";
+          console.log("[ctlCidade|insertCidade]IF");
 
-      console.log("[ctlCidade|insertCidade]IF");
+          let estado = await axios.get(
+              "http://localhost:20100/acl/estado/v1/GetAllEstados",
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
 
-      let estado = await axios.get(
-        "http://localhost:20100/acl/estado/v1/GetAllEstados",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+          console.log("[ctlCidade|insertCidade] Valor do estado.data:", estado.data);
 
-      console.log("[ctlCidade|insertCidade] Valor do estado.data:", estado.data);
+          // Verifique se 'regReturn' está disponível na resposta
+          if (estado.data && estado.data.regReturn) {
+              registro = {
+                  CidadeID: 0,
+                  NomeCidade: "",
+                  EstadoIDFK: "",
+                  Removido: false,
+              };
 
-      // Verifique se 'regReturn' está disponível na resposta
-      if (estado.data && estado.data.regReturn) {
-        registro = {
-          CidadeID: 0,
-          NomeCidade: "",
-          EstadoIDFK: "",
-          Removido: false,
-        };
-
-        res.render("cidade/view_cadCidade", {
-          title: "Cadastro de cidade",
-          data: registro,
-          resp: estado.data.regReturn,
-          oper: oper,
-          userName: userName,
-        });
+              return res.render("cidade/view_cadCidade", {
+                  title: "Cadastro de cidade",
+                  data: registro,
+                  resp: estado.data.regReturn,
+                  oper: oper,
+                  userName: userName,
+                  message: "",
+                  messageType: ""
+              });
+          } else {
+              throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+          }
       } else {
-        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+          // Se a requisição for POST
+          oper = "c";
+          const cidadeREG = validateForm(req.body);
+
+          console.log("[ctlCidade|insertCidade] req.body:", req.body);
+          console.log("[ctlCidade|insertCidade] req.body.EstadoIDFK:", req.body.EstadoIDFK);
+
+          // Validação para garantir que EstadoIDFK é um número válido
+          if (!cidadeREG.EstadoIDFK || isNaN(cidadeREG.EstadoIDFK)) {
+              throw new Error("EstadoIDFK inválido: o valor fornecido não é um número.");
+          }
+
+          const EstadoIDFKInt = parseInt(cidadeREG.EstadoIDFK, 10);
+
+          // Tenta inserir a cidade
+          resp = await axios.post(
+              "http://localhost:20100/acl/cidade/v1/InsertCidade",
+              {
+                  CidadeID: 0,
+                  NomeCidade: cidadeREG.NomeCidade,
+                  EstadoIDFK: EstadoIDFKInt,
+                  Removido: false,
+              },
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
+
+          console.log("[ctlCidade|insertCidade] resp:", resp.data);
+
+          if (resp.data.status == "ok") {
+              registro = {
+                  CidadeID: 0,
+                  NomeCidade: "",
+                  EstadoIDFK: "",
+                  Removido: false,
+              };
+              message = "Cidade cadastrada com sucesso!";
+              messageType = "success";
+          } else {
+              message = "Cidade cadastrada com sucesso!";
+              messageType = "error";
+          }
+
+          console.log("[ctlCidade|insertCidade]resp.data.status == ok", registro);
+
+          let estado = await axios.get(
+              "http://localhost:20100/acl/estado/v1/GetAllEstados",
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + token,
+                  },
+              }
+          );
+
+          console.log("[ctlCidade|insertCidade]else v1/GetAllEstados");
+
+          if (estado.data && estado.data.regReturn) {
+              return res.render("cidade/view_cadCidade", {
+                  title: "Cadastro de cidade",
+                  data: registro,
+                  resp: estado.data.regReturn,
+                  oper: oper,
+                  userName: userName,
+                  message: message,
+                  messageType: messageType
+              });
+          } else {
+              throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
+          }
       }
 
-    } else {
-      // Se a requisição for POST
-      oper = "c";
-      const cidadeREG = validateForm(req.body);
+      console.log("[ctlCidade|insertCidade]else fim");
 
-      console.log("[ctlCidade|insertCidade] req.body:", req.body);
-      console.log("[ctlCidade|insertCidade] req.body.EstadoIDFK:", req.body.EstadoIDFK);
-
-      // Validação para garantir que EstadoIDFK é um número válido
-      if (!cidadeREG.EstadoIDFK || isNaN(cidadeREG.EstadoIDFK)) {
-        throw new Error("EstadoIDFK inválido: o valor fornecido não é um número.");
-      }
-
-      const EstadoIDFKInt = parseInt(cidadeREG.EstadoIDFK, 10);
-
-      // Tenta inserir a cidade
-      const resp = await axios.post(
-        "http://localhost:20100/acl/cidade/v1/InsertCidade",
-        {
-          CidadeID: 0,
-          NomeCidade: cidadeREG.NomeCidade,
-          EstadoIDFK: EstadoIDFKInt,
-          Removido: false,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("[ctlCidade|insertCidade] resp:", resp.data);
-
-      if (resp.data.status == "ok") {
-        registro = {
-          CidadeID: 0,
-          NomeCidade: "",
-          EstadoIDFK: "",
-          Removido: false,
-        };
+      if (resp.data && resp.data.status === "success") {
+          return res.json({ status: "success", mensagem: "Cidade inserida com sucesso!" });
       } else {
-        registro = cidadeREG;
+          console.log("[ctlCidade.js|insertCidade] Erro ao inserir Cidade:", resp.data);
+          return res.json({ status: "erro", mensagem: "Erro ao inserir Cidade!" });
       }
-
-      console.log("[ctlCidade|insertCidade]resp.data.status == ok", registro);
-
-      let estado = await axios.get(
-        "http://localhost:20100/acl/estado/v1/GetAllEstados",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("[ctlCidade|insertCidade]else v1/GetAllEstados");
-
-      if (estado.data && estado.data.regReturn) {
-        res.render("cidade/view_cadCidade", {
-          title: "Cadastro de cidade",
-          data: registro,
-          resp: estado.data.regReturn,
-          oper: oper,
-          userName: userName,
-          message: "cidade cadastrada com sucesso!",
-          messageType: "success",
-        });
-      } else {
-        throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
-      }
-    }
-
-    console.log("[ctlCidade|insertCidade]else fim");
 
   } catch (erro) {
-    console.log("[ctlCidade|insertCidade]Erro não identificado", erro.response ? erro.response.data : erro.message);
-    res.status(500).send("Erro ao processar a requisição para inserir o cidade");
+      console.error("[ctlCidade|insertCidade]Erro não identificado", erro.response ? erro.response.data : erro.message);
+      if (!res.headersSent) {
+          res.status(500).send("Erro ao processar a requisição para inserir a cidade");
+      }
   }
 };
+
 
 //@ Abre o formulário de cadastro de cidade para futura edição
 const viewCidade = async (req, res) => {

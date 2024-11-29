@@ -79,6 +79,20 @@
 })
 
 })
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = "@model.message";
+        const messageType = "@model.messageType";
+
+        if (message) {
+            if (messageType === "success") {
+                alert(message);
+            } else if (messageType === "error") {
+                alert(message);
+            }
+        }
+    });
+</script>
 
 <script>
     async function alteraRegistro() {

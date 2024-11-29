@@ -2,7 +2,7 @@
     @html.block('content', function(model) {
         <main>
             <div class="container-fluid d-flex flex-column align-items-center">
-            <h1 class="mt-2" style="padding-top:20px">@model.title</h1>
+            <h1 class="mt-2" style="padding-top:20px">Cadastro da Ocorrência</h1>
             <div class="row justify-content-center">
                 <div class="col-xl-12">
                     <div class="card-header"></div>
@@ -12,36 +12,36 @@
                             <form id="form" class="text-center">
 
                                 <div class="mb-1" style="display: none">
-                                    <input type="text" name="ocorrenciaid" value="@model.data.ocorrenciaid" class="form-control" id="ocorrenciaid">
+                                    <input type="text" name="Ocorrenciaid" value="@model.data.Ocorrenciaid" class="form-control" id="Ocorrenciaid">
                                 </div>
 
                                 <!-- Seção Nome e datas -->
                                 <div class="row mb-1" style="padding-top:20px">
                                     <div class="col-4">
-                                        <label for="nomeSuspeito" class="form-label">Nome do Suspeito</label>
-                                        <input type="text" name="nomeSuspeito" value="@model.data.nomeSuspeito" class="form-control" 
-                                        placeholder="ex. Fulano" id="nomeSuspeito" @(model.oper == 'v' ? 'disabled' : '')>
+                                        <label for="NomeSuspeito" class="form-label">Nome do Suspeito</label>
+                                        <input type="text" name="NomeSuspeito" value="@model.data.NomeSuspeito" class="form-control" 
+                                        placeholder="ex. Fulano" id="NomeSuspeito" @(model.oper == 'v' ? 'disabled' : '')>
                                     </div>
                                 
                                     <div class="col-4">
-                                        <label for="datacadastro" class="form-label">Data do Cadastro <span style="color: red;">*</span></label>
-                                        <input type="date" name="datacadastro" value="@model.data.datacadastro" class="form-control" id="datacadastro" @(model.oper == 'v' ? 'disabled' : '')>
+                                        <label for="Datacadastro" class="form-label">Data do Cadastro <span style="color: red;">*</span></label>
+                                        <input type="date" name="Datacadastro" value="@model.data.Datacadastro" class="form-control" id="Datacadastro" @(model.oper == 'v' ? 'disabled' : '')>
                                     </div>
 
                                     <div class="col-4">
-                                        <label for="dataocorrencia" class="form-label">Data Ocorrência <span style="color: red;">*</span></label>
-                                        <input type="date" name="dataocorrencia" value="@model.data.dataocorrencia" class="form-control" id="dataocorrencia" @(model.oper == 'v' ? 'disabled' : '')>
+                                        <label for="Dataocorrencia" class="form-label">Data Ocorrência <span style="color: red;">*</span></label>
+                                        <input type="date" name="Dataocorrencia" value="@model.data.Dataocorrencia" class="form-control" id="Dataocorrencia" @(model.oper == 'v' ? 'disabled' : '')>
                                     </div>
                                 </div>
 
-                                <!-- Seção rua, numero e bairro -->
+                                <!-- Seção rua, Numero e bairro -->
                                 <div class="row mb-1"  style="padding-top:10px">
                                     <div class="col-6">
-                                        <label for="Logradouroidfk" class="form-label">Logradouro da residência</label>
-                                        <select class="form-select" aria-label="Default select example" id="Logradouroidfk" @(model.oper == 'v' ? 'disabled' : '') name="Logradouroidfk">
+                                        <label for="logradouroidfk" class="form-label">Logradouro da residência</label>
+                                        <select class="form-select" aria-label="Default select example" id="logradouroidfk" @(model.oper == 'v' ? 'disabled' : '') name="logradouroidfk">
                                             @if (model.logradouro && Array.isArray(model.logradouro)) {
                                                 @model.logradouro.forEach(function(registro) {
-                                                    @if (model.data.Logradouroidfk === registro.Logradouroid) {
+                                                    @if (model.data.logradouroidfk === registro.Logradouroid) {
                                                         <option value="@registro.Logradouroid" selected>@registro.Nomelogradouro</option>
                                                     } else {
                                                         <option value="@registro.Logradouroid">@registro.Nomelogradouro</option>
@@ -54,9 +54,9 @@
                                     </div>
 
                                     <div class="col-2">
-                                        <label for="numero" class="form-label">N° da residência</label>
-                                        <input type="text" name="numero" value="@model.data.numero" class="form-control" 
-                                            placeholder="ex. 9999" id="numero" @(model.oper == 'v' ? 'disabled' : '')>
+                                        <label for="Numero" class="form-label">N° da residência</label>
+                                        <input type="text" name="Numero" value="@model.data.Numero" class="form-control" 
+                                            placeholder="ex. 9999" id="Numero" @(model.oper == 'v' ? 'disabled' : '')>
                                     </div>
 
                                     <div class="col-4">
@@ -81,13 +81,13 @@
                                 <!-- Seção Epidemia e UBS -->
                                 <div class="row mb-1"  style="padding-top:10px">
                                     <div class="col-6">
-                                        <label for="EpidemiaIDfk" class="form-label">Epidemia</label>
+                                        <label for="Epidemiaidfk" class="form-label">Epidemia</label>
                                         <select class="form-select" aria-label="Default select example"
-                                        id="EpidemiaIDfk" @(model.oper == 'v' ? 'disabled' : '') name="EpidemiaIDfk">
+                                        id="Epidemiaidfk" @(model.oper == 'v' ? 'disabled' : '') name="Epidemiaidfk">
 
                                             @if (model.epidemia && Array.isArray(model.epidemia)) {
                                                 @model.epidemia.forEach(function(registro) {
-                                                    @if (model.data.EpidemiaIDfk === registro.Epidemiaid) {
+                                                    @if (model.data.Epidemiaidfk === registro.Epidemiaid) {
                                                         <option value="@registro.Epidemiaid" selected>@registro.Nomeepidemia</option>
                                                     } else {
                                                         <option value="@registro.Epidemiaid">@registro.Nomeepidemia</option>
@@ -137,15 +137,15 @@
                                     </div>
 
                                     <div class="col-2">
-                                        <label for="numeroLocalTrabalho" class="form-label">N° Trabalho</label>
-                                        <input type="text" name="numeroLocalTrabalho" value="@model.data.numeroLocalTrabalho" class="form-control"
-                                        placeholder="ex. 9999" id="numeroLocalTrabalho" @(model.oper == 'v' ? 'disabled' : '')>
+                                        <label for="Numerolocaltrabalho" class="form-label">N° Trabalho</label>
+                                        <input type="text" name="Numerolocaltrabalho" value="@model.data.Numerolocaltrabalho" class="form-control"
+                                        placeholder="ex. 9999" id="Numerolocaltrabalho" @(model.oper == 'v' ? 'disabled' : '')>
                                     </div>                      
                                 
                                         <div class="col-5">
-                                            <label for="localTrabalho" class="form-label">Local de Trabalho</label>
-                                            <input type="text" name="localTrabalho" value="@model.data.localTrabalho" class="form-control"
-                                            placeholder="ex. Loja 1" id="localTrabalho" @(model.oper == 'v' ? 'disabled' : '')>
+                                            <label for="Localtrabalho" class="form-label">Local de Trabalho</label>
+                                            <input type="text" name="Localtrabalho" value="@model.data.Localtrabalho" class="form-control"
+                                            placeholder="ex. Loja 1" id="Localtrabalho" @(model.oper == 'v' ? 'disabled' : '')>
                                         </div>                               
                                     </div>                      
 
@@ -180,20 +180,33 @@
     });
 });
 <script>
-    /*async function alteraRegistro() {
-        event.preventDefault();        
-        resp = await axios.post("/Ocorrencias/viewOcorrencias", {
-            ocorrenciaid: $("#ocorrenciaid").val(),
-            nomeSuspeito: $("#nomeSuspeito").val(),
-            datacadastro: $("#datacadastro").val(),
-            dataocorrencia: $("#dataocorrencia").val(),
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = "<%= message %>";
+        const messageType = "<%= messageType %>";
+        
+        if (message) {
+            if (messageType === "success") {
+                alert(message);
+            } else if (messageType === "error") {
+                alert("Erro: " + message);
+            }
+        }
+    });
+
+    async function alteraRegistro() {
+          
+        const resp = await axios.post("/Ocorrencias/viewOcorrencias", {
+            Ocorrenciaid: $("#Ocorrenciaid").val(),
+            NomeSuspeito: $("#NomeSuspeito").val(),
+            Datacadastro: $("#Datacadastro").val(),
+            Dataocorrencia: $("#Dataocorrencia").val(),
             Epidemiaidfk: $("#Epidemiaidfk").val(),
-            logradouroidfk: $("#Logradouroidfk").val(),
-            numero: $("#numero").val(),
-            bairroidfk: $("#Bairroidfk").val(),
-            localTrabalho: $("#localTrabalho").val(),
+            logradouroidfk: $("#logradouroidfk").val(),
+            Numero: $("#Numero").val(),
+            Bairroidfk: $("#Bairroidfk").val(),
+            Localtrabalho: $("#Localtrabalho").val(),
             LogradourolocaltrabalhoIDFK: $("#LogradourolocaltrabalhoIDFK").val(),
-            numeroLocalTrabalho: $("#numeroLocalTrabalho").val(),       
+            Numerolocaltrabalho: $("#Numerolocaltrabalho").val(),       
             UnidBasicaSaudeIDFK: $("#UnidBasicaSaudeIDFK").val(),
         }, {
             headers: {
@@ -207,29 +220,4 @@
             alert("Houve erro ao alterar os dados das Ocorrencias!");
         }
     }
-
-    async function deleteOcorrencias() {
-       
-        const ocorrenciaid = $("#ocorrenciaid").val();
-        
-        if (!ocorrenciaid) {
-            alert("ID da ocorrência não encontrado.");
-            return;
-        }
-
-        const resp = await axios.post("/Ocorrencias/DeleteOcorrencias", {
-            ocorrenciaid,
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        if (resp.data.status == "ok") {
-            alert("Ocorrências removida com sucesso!");
-            window.open("/Ocorrencias", "_self");
-        } else {
-            alert("Houve erro ao remover os dados das Ocorrências!");
-        }
-    }*/
 </script>
