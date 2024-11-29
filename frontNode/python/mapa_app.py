@@ -20,8 +20,8 @@ st.markdown(
         margin-bottom: 20px;
     }
     iframe {
-        height: 50vh;
-        width: 63vw;
+        height: 90vh;
+        width: 70vw;
         border: none;
         overflow: hidden;
     }
