@@ -3,9 +3,6 @@
 <main>
   <div class="container-fluid px-4">
     <h1 class="mt-2">@model.title</h1>
-    <ol class="breadcrumb mb-2">
-      <li class="breadcrumb-item active">@model.title</li>
-    </ol>
     <div class="row">
       <div class="col-xl-12">
         <div class="card-header"></div>
@@ -163,7 +160,7 @@
         alert(resp.data.mensagem);
         limpaForm();
       } else {
-        alert("Houve um erro: " + resp.data.mensagem);
+        alert(resp.data.mensagem);
       }
     } catch (error) {
       alert("[view_cadEstado|btnSalvar]Ocorreu um erro inesperado!" + error);

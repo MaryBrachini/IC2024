@@ -78,7 +78,7 @@ const openEpidemiaInsert = async(req, res) => {
 //@ Função para validar campos no formulário
 function validateForm(regFormPar) {
 
-  console.log("[ctlBairro.js|validateForm]");
+  console.log("[ctlEpidemia.js|validateForm]");
 
   regFormPar.EpidemiaID = regFormPar.EpidemiaID ? parseInt(regFormPar.EpidemiaID) : 0;
   regFormPar.Removido = regFormPar.Removido === "true";
@@ -159,7 +159,7 @@ const getDados  = async (req, res) => {
 const insertEpidemia = async (req, res) => {
 
     token = req.session.token;
-    console.log("[ctlBairro.js|insertEpidemia]");
+    console.log("[ctlEpidemia.js|insertEpidemia]");
 
     try {
     /* console.log("[ctlEpidemia.js|insertEpidemia]try"); */
@@ -170,7 +170,7 @@ const insertEpidemia = async (req, res) => {
         const regPost = validateForm(req.body);
         regPost.EpidemiaID = 0;
 
-        console.log("[ctlBairro.js|InsertBairro] Dados a serem enviados:", regPost);
+        console.log("[ctlEpidemia.js|insertEpidemia] Dados a serem enviados:", regPost);
 
         const resp = await axios.post(
           "http://localhost:20100/acl/epidemia/v1/InsertEpidemia",
@@ -185,11 +185,13 @@ const insertEpidemia = async (req, res) => {
 
         console.log("[ctlEpidemia.js|insertEpidemia]await axios.post");
 
-        if (resp.data.status == "ok") {
-          res.json({ status: "ok", mensagem: "Epidemia inserida com sucesso!" });
+        if (resp.data.status === "success") {
+          res.json({ status: "success", mensagem: "Epidemia inserido com sucesso!" });
         } else {
-          res.json({ status: "erro", mensagem: "Erro ao inserir epidemia!" });
+          console.log("[ctlEpidemia.js|insertEpidemia] Erro ao inserir Epidemia:", resp.data);
+          res.json({ status: "erro", mensagem: "Erro ao inserir Epidemia!" });
         }
+        
       }
     } catch (erro) {
       console.log(

@@ -20,7 +20,7 @@ const getAllUBS = async (req, res) => {
     );
 
     // Obtendo os bairros
-    let bairro = await axios.get(
+    const bairro = await axios.get(
       "http://localhost:20100/acl/bairro/v1/GetAllBairros",
       {
         headers: {
@@ -66,9 +66,11 @@ const getAllUBS = async (req, res) => {
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de UBS
 const insertUBS = async (req, res) => {
-
   let oper = "";
   let registro = {};
+  let resp = {}; // Inicializa resp para garantir que esteja definida
+  let message = "";
+  let messageType = "";
 
   console.log("[ctlUBS.js|insertUBS] Iniciando...");
 
@@ -81,7 +83,7 @@ const insertUBS = async (req, res) => {
       if (req.method === "GET") {
           oper = "c";
 
-          let bairro = await axios.get(
+          const bairro = await axios.get(
               "http://localhost:20100/acl/bairro/v1/GetAllBairros",
               {
                   headers: {
@@ -93,7 +95,7 @@ const insertUBS = async (req, res) => {
 
           console.log("[ctlCidade|insertCidade] Valor do bairro.data:", bairro.data);
 
-           // Verifique se 'regReturn' está disponível na resposta
+          // Verifique se 'regReturn' está disponível na resposta
           if (bairro.data && bairro.data.regReturn) {
               registro = {
                   UnidBasicaSaudeID: 0,
@@ -103,22 +105,21 @@ const insertUBS = async (req, res) => {
                   Removido: false,
               };
 
-              res.render("UBS/view_cadUBS", {
+              return res.render("UBS/view_cadUBS", {
                   title: "Cadastro da Unidade Básica de Saúde",
                   data: registro,
                   Bairro: bairro.data.regReturn,
                   oper: oper,
                   userName: userName,
+                  message: "",
+                  messageType: ""
               });
           } else {
               throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
           }
-
       } else {
-        // Se a requisição for POST
-
+          // Se a requisição for POST
           oper = "c";
-          /* const ubsREG = validateForm(req.body); */
           const ubsREG = req.body;
 
           console.log("[ctlUBS.js|insertUBS] req.body:", ubsREG);
@@ -131,7 +132,7 @@ const insertUBS = async (req, res) => {
           const BairroIDFKInt = parseInt(ubsREG.BairroIDFK, 10);
 
           // Tenta inserir a cidade
-          const resp = await axios.post(
+          resp = await axios.post(
               "http://localhost:20100/acl/ubs/v1/InsertUBS",
               {
                   UnidBasicaSaudeID: 0,
@@ -151,20 +152,23 @@ const insertUBS = async (req, res) => {
           console.log("[ctlUBS.js|insertUBS] resp:", resp.data);
 
           if (resp.data.status == "ok") {
-          registro = {
-              UnidBasicaSaudeID: 0,
-              NomeUBS: "",
-              CodigoUBS: "",
-              BairroIDFK: "",
-              Removido: false,
-            };
-          } else { 
-            ubsREG;
+              registro = {
+                  UnidBasicaSaudeID: 0,
+                  NomeUBS: "",
+                  CodigoUBS: "",
+                  BairroIDFK: "",
+                  Removido: false,
+              };
+              message = "Unidade Básica de Saúde cadastrada com sucesso!";
+              messageType = "success";
+          } else {
+              message = "Unidade Básica de Saúde cadastrada com sucesso!";
+              messageType = "success";
           }
 
           console.log("[ctlUBS.js|insertUBS] resp.data.status == ok", registro);
 
-          let bairro = await axios.get(
+          const bairro = await axios.get(
               "http://localhost:20100/acl/bairro/v1/GetAllBairros",
               {
                   headers: {
@@ -177,12 +181,14 @@ const insertUBS = async (req, res) => {
           console.log("[ctlUBS.js|insertUBS]else v1/GetAllEstados");
 
           if (bairro.data && bairro.data.regReturn) {
-              res.render("UBS/view_cadUBS", {
+              return res.render("UBS/view_cadUBS", {
                   title: "Cadastro da Unidade Básica de Saúde",
                   data: registro,
                   Bairro: bairro.data.regReturn,
                   oper: oper,
                   userName: userName,
+                  message: message,
+                  messageType: messageType
               });
           } else {
               throw new Error("O campo 'regReturn' não foi encontrado na resposta da API.");
@@ -191,11 +197,23 @@ const insertUBS = async (req, res) => {
 
       console.log("[ctlUBS.js|insertUBS] Finalizado com sucesso");
 
+      if (resp.data && resp.data.status === "success") {
+          return res.json({ status: "success", mensagem: "Bairro inserido com sucesso!" });
+      } else {
+          console.log("[ctlBairro.js|InsertBairro] Erro ao inserir bairro:", resp.data);
+          return res.json({ status: "erro", mensagem: "Erro ao inserir bairro!" });
+      }
+
   } catch (erro) {
       console.error("[ctlUBS.js|insertUBS] Erro não identificado", erro.response ? erro.response.data : erro.message);
-      res.status(500).send("Erro ao processar a requisição para inserir o UBS");
+      if (!res.headersSent) {
+          res.status(500).send("Erro ao processar a requisição para inserir o UBS");
+      }
   }
 };
+
+
+
 
 
 //@ Abre o formulário de cadastro de UBS para futura edição
@@ -210,7 +228,7 @@ const viewUBS = (req, res) =>
         const id = req.params.id;
         oper = req.params.oper;
         parseInt(id);
-        resp = await axios.post(
+        const  resp = await axios.post(
           process.env.SERVIDOR + "/getUBSByID",
           {
             UnidBasicaSaudeID: id,
@@ -236,7 +254,7 @@ const viewUBS = (req, res) =>
         oper = "vu";
         const ubsREG = validateForm(req.body);
         const id = parseInt(ubsREG.id);
-        resp = await axios.post(
+        const resp = await axios.post(
           process.env.SERVIDOR + "/updateUBS",
           {
             UnidBasicaSaudeID: id,

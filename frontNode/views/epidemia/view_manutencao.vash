@@ -25,33 +25,18 @@
                         <table id="example" class="stripe" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Ação</th>
                                     <th>ID</th>
                                     <th>Nome</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @model.data.forEach(function(registro) {
-                                        <tr>                                    
-                                            <td>
-                                                <!-- Link de visualização comentado, descomente se necessário -->
-                                                <a href="/epidemia/openEpidemiaUpdate/@registro.EpidemiaID"
-                                                 class="btn btn-info btn-sm"  aria-label="Visualizar epidemia @registro.EpidemiaID">
-                                                    <i class="fa fa-magnifying-glass"></i> Visualizar
-                                                </a> 
-                                            </td>
+                                        <tr>
                                             <td>@registro.Epidemiaid</td>
                                             <td>@registro.Nomeepidemia</td>
                                         </tr>
                                     })
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

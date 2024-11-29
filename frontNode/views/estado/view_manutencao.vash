@@ -5,10 +5,7 @@
 <main>
 
     <div class="container-fluid px-4">
-        <h1 class="mt-4">@model.title</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">@model.title</li>
-        </ol>
+        <h1 class="mt-4">@model.title</h1>        
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
@@ -24,7 +21,6 @@
                         <table id="example" class="stripe" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Ação</th>
                                     <th>ID</th>
                                     <th>UF</th>
                                     <th>Nome do Estado</th>
@@ -32,26 +28,13 @@
                             </thead>
                             <tbody>
                                 @model.data.forEach(function(registro) {
-                                        <tr>                                    
-                                            <td>
-                                                <a href="/estado/openEstadoInsert" class="btn btn-info btn-sm">
-                                                    <i class="fa fa-magnifying-glass"></i> Visualizar
-                                                </a>
-                                            </td>
+                                        <tr>
                                             <td>@registro.Estadoid</td>
                                             <td>@registro.Uf</td>
                                             <td>@registro.Nomeestado</td>
                                         </tr>
                                 })
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Ação</th>
-                                    <th>ID</th>
-                                    <th>UF</th>
-                                    <th>Nome do Estado</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
