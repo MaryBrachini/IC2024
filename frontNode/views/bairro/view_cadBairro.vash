@@ -61,8 +61,8 @@
     </div>
   </div>
 </main>
-
-}) })
+})
+})
 
 <script>
   const form = document.getElementById("form");
@@ -173,7 +173,7 @@
         alert(resp.data.mensagem);
         limpaForm();
       } else {
-        alert("Houve um erro: " + resp.data.mensagem);
+        alert(resp.data.mensagem);
       }
     } catch (error) {
       alert("[view_cadBairro|btnSalvar]Ocorreu um erro inesperado!" + error);

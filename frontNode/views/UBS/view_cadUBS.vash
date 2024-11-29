@@ -71,6 +71,20 @@
         </main>
     });
 });
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = "@model.message";
+        const messageType = "@model.messageType";
+
+        if (message) {
+            if (messageType === "success") {
+                alert(message);
+            } else if (messageType === "error") {
+                alert(message);
+            }
+        }
+    });
+</script>
 
 <script>
     async function alteraRegistro(event) {
@@ -94,29 +108,7 @@
             alert("Houve erro ao alterar os dados das UBS!");
         }
     }
-
-    async function deleteUBS() {
-        try {
-            const resp = await axios.post("/UBS/DeleteUBS", {
-                UnidBasicaSaudeID: $("#UnidBasicaSaudeID").val(),
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            if (resp.data.status === "ok") {
-                alert("UBS removida com sucesso!");
-                window.open("/UBS", "_self");
-            } else {
-                alert("Houve erro ao remover os dados da UBS!");
-            }
-        } catch (error) {
-            console.error("Erro ao remover UBS:", error);
-            alert("Erro ao remover UBS!");
-        }
-    }
-
+    
     async function testeFormData() {
         const form = document.getElementById("form");
         const formData = new FormData(form);  
