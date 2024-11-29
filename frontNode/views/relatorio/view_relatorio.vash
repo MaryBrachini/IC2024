@@ -47,12 +47,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @model.contagemEpidemiaArray.forEach(function(ocorrencia) {
-                                        <tr>
-                                            <td>@ocorrencia.Nomeepidemia</td>
-                                            <td>@ocorrencia.epidemiacount</td>
-                                        </tr>
-                                    })
+                                        @model.contagemEpidemiaArray.forEach(function(ocorrencia) {
+                                            <tr>
+                                                <td>@ocorrencia.Nomeepidemia</td>
+                                                <td>@ocorrencia.epidemiacount</td>
+                                            </tr>
+                                        })
                                     </tbody>
                                 </table>
                             </div>
@@ -67,16 +67,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @model.contagemPorUBSArray.forEach(function(ocorrencia) {
-                                        <tr>
-                                            <td>@ocorrencia.NomeUBS</td>
-                                            <td>@ocorrencia.ubscount</td>
-                                        </tr>
-                                    })
+                                        @model.contagemPorUBSArray.forEach(function(ocorrencia) {
+                                            <tr>
+                                                <td>@ocorrencia.NomeUBS</td>
+                                                <td>@ocorrencia.ubscount</td>
+                                            </tr>
+                                        })
                                     </tbody>
                                 </table>
                             </div>
-                        
+
                             <div class="col-4">
                                 <h5>Logradouro</h5>
                                 <table class="table table-striped table-bordered table-hover">
@@ -86,13 +86,13 @@
                                             <th>Quantidade</th>
                                         </tr>
                                     </thead>
-                                    <tbody> 
-                                    @model.contagemPorLogradouroArray.forEach(function(ocorrencia) {
-                                        <tr>
-                                            <td>@ocorrencia.Nomelogradouro</td>
-                                            <td>@ocorrencia.logradourocount</td>
-                                        </tr>   
-                                    })                                   
+                                    <tbody>
+                                        @model.contagemPorLogradouroArray.forEach(function(ocorrencia) {
+                                            <tr>
+                                                <td>@ocorrencia.Nomelogradouro</td>
+                                                <td>@ocorrencia.logradourocount</td>
+                                            </tr>
+                                        })
                                     </tbody>
                                 </table>
                             </div>
@@ -109,16 +109,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @model.contagemPorBairroArray.forEach(function(ocorrencia) {
-                                        <tr>
-                                            <td>@ocorrencia.Nomebairro</td>
-                                            <td>@ocorrencia.bairrocount</td>
-                                        </tr>
-                                    })
+                                        @model.contagemPorBairroArray.forEach(function(ocorrencia) {
+                                            <tr>
+                                                <td>@ocorrencia.Nomebairro</td>
+                                                <td>@ocorrencia.bairrocount</td>
+                                            </tr>
+                                        })
                                     </tbody>
                                 </table>
                             </div>
-                        
+
                             <div class="col-6">
                                 <h5>Data da Ocorrência</h5>
                                 <table class="table table-striped table-bordered table-hover">
@@ -129,18 +129,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @model.contagemPorDataArray.forEach(function(ocorrencia) {
-                                        <tr>
-                                            <td>@ocorrencia.dataOcorrencia</td>
-                                            <td>@ocorrencia.dataOcorrenciacount</td>
-                                        </tr>
-                                    })
+                                        @model.contagemPorDataArray.forEach(function(ocorrencia) {
+                                            <tr>
+                                                <td>@ocorrencia.dataOcorrencia</td>
+                                                <td>@ocorrencia.dataOcorrenciacount</td>
+                                            </tr>
+                                        })
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    @* FIM DADOS RELATORIO *@
+                    @* FIM LOCAL QUE RETORNA DADOS DO RELATORIO *@
 
                     @* GRAFICOS *@
                     <div style="padding-top: 20px;">
