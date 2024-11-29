@@ -2,46 +2,112 @@ const axios = require("axios");
 
 //@ Abre o formulário de manutenção de Ocorrencias
 const getAllOcorrencias = async (req, res) => {
-
   console.log("[getAllOcorrencias]");
 
-  token = req.session.token
-  userName = req.session.userName;
-  /* console.log("[ctlOcorrencias|getAllOcorrencias] TOKEN:", token); */
+  const token = req.session.token;
+  const userName = req.session.userName;
 
   try {
-    const resp = await axios.get(
-      'http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',     
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+      // Obtendo todas as ocorrências
+      const resp = await axios.get(
+          'http://localhost:20100/acl/ocorrencia/v1/GetAllOcorrencias',
+          {
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+              },
+          }
+      );
 
-    console.log("[ctlOcorrencias|resp.data]", JSON.stringify(resp.data.regReturn));
+      console.log("[ctlOcorrencias|resp.data]", JSON.stringify(resp.data.regReturn));
 
-    // Renderiza a página com os dados obtidos
-    res.render("Ocorrencias/view_manutencao", {
-        title: "Manutenção das Ocorrências",
-        data: resp.data.regReturn,
-        userName: userName,
+      // Obtendo os dados relacionados
+      const bairro = await axios.get(
+          "http://localhost:20100/acl/bairro/v1/GetAllBairros",
+          {
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+              },
+          }
+      );
+
+      const logradouro = await axios.get(
+          "http://localhost:20100/acl/logradouro/v1/GetAllLogradouros",
+          {
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+              },
+          }
+      );
+
+      const epidemia = await axios.get(
+          "http://localhost:20100/acl/epidemia/v1/GetAllEpidemias",
+          {
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+              },
+          }
+      );
+
+      const unidBasicaSaude = await axios.get(
+          "http://localhost:20100/acl/ubs/v1/GetAllUBSs",
+          {
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+              },
+          }
+      );
+
+      console.log("[ctlOcorrencias|bairro.data]", JSON.stringify(bairro.data.regReturn));
+      console.log("[ctlOcorrencias|logradouro.data]", JSON.stringify(logradouro.data.regReturn));
+      console.log("[ctlOcorrencias|epidemia.data]", JSON.stringify(epidemia.data.regReturn));
+      console.log("[ctlOcorrencias|unidBasicaSaude.data]", JSON.stringify(unidBasicaSaude.data.regReturn));
+
+      // Associando os nomes aos IDs nas ocorrências
+      const ocorrenciasComNomes = resp.data.regReturn.map(ocorrencia => {
+          const bairroEncontrado = bairro.data.regReturn.find(b => b.Bairroid === ocorrencia.Bairroidfk);
+          const logradouroEncontrado = logradouro.data.regReturn.find(l => l.Logradouroid === ocorrencia.Logradouroidfk);
+          const epidemiaEncontrada = epidemia.data.regReturn.find(e => e.Epidemiaid === ocorrencia.Epidemiaidfk);
+          const ubsEncontrada = unidBasicaSaude.data.regReturn.find(u => u.UnidBasicaSaudeID === ocorrencia.UnidBasicaSaudeIDFK);
+
+          console.log(`OcorrenciaID: ${ocorrencia.Ocorrenciaid}, BairroID: ${ocorrencia.Bairroidfk}, Bairro: ${bairroEncontrado ? bairroEncontrado.Nomebairro : "Bairro não encontrado"}`);
+          console.log(`OcorrenciaID: ${ocorrencia.Ocorrenciaid}, LogradouroID: ${ocorrencia.Logradouroidfk}, Logradouro: ${logradouroEncontrado ? logradouroEncontrado.Nomelogradouro : "Logradouro não encontrado"}`);
+          console.log(`OcorrenciaID: ${ocorrencia.Ocorrenciaid}, EpidemiaID: ${ocorrencia.Epidemiaidfk}, Epidemia: ${epidemiaEncontrada ? epidemiaEncontrada.Nomeepidemia : "Epidemia não encontrada"}`);
+          console.log(`OcorrenciaID: ${ocorrencia.Ocorrenciaid}, UBSID: ${ocorrencia.UnidBasicaSaudeIDFK}, UBS: ${ubsEncontrada ? ubsEncontrada.NomeUBS : "UBS não encontrada"}`);
+
+          return {
+              ...ocorrencia,
+              NomeBairro: bairroEncontrado ? bairroEncontrado.Nomebairro : "Bairro não encontrado",
+              NomeLogradouro: logradouroEncontrado ? logradouroEncontrado.Nomelogradouro : "Logradouro não encontrado",
+              NomeEpidemia: epidemiaEncontrada ? epidemiaEncontrada.Nomeepidemia : "Epidemia não encontrada",
+              NomeUBS: ubsEncontrada ? ubsEncontrada.NomeUBS : "UBS não encontrada",
+          };
       });
-   
+
+      // Renderiza a página com os dados obtidos
+      res.render("Ocorrencias/view_manutencao", {
+          title: "Manutenção das Ocorrências",
+          data: ocorrenciasComNomes,
+          userName: userName,
+      });
+
       console.log("Resposta enviada com sucesso para ocorrencias");
-      
-    } catch (error) {
-      console.error('Erro ao buscar ocorrencias:' );
-  
+
+  } catch (error) {
+      console.error('Erro ao buscar ocorrencias:', error);
+
       if (!res.headersSent) {
-        res.status(500).json({ error: 'Erro ao buscar ocorrencias' });
-        console.log("Resposta de erro enviada");
+          res.status(500).json({ error: 'Erro ao buscar ocorrencias' });
+          console.log("Resposta de erro enviada");
       } else {
-        console.log("Erro ao buscar ocorrencias, mas a resposta já havia sido enviada");
+          console.log("Erro ao buscar ocorrencias, mas a resposta já havia sido enviada");
       }
-    }
-  };
+  }
+};
 
 //@ Abre e faz operações de CRUD no formulário de cadastro de Ocorrencias
 const insertOcorrencias = async (req, res) => {
@@ -91,10 +157,10 @@ const insertOcorrencias = async (req, res) => {
               },
           });
 
-          console.log("[] Valor do Bairro.data:", Bairro.data);
+         /*  console.log("[] Valor do Bairro.data:", Bairro.data);
           console.log("[] Valor do logradouro.data:", logradouro.data);
           console.log("[] Valor do epidemia.data:", epidemia.data);
-          console.log("[] Valor do unidBasicaSaude.data:", unidBasicaSaude.data);
+          console.log("[] Valor do unidBasicaSaude.data:", unidBasicaSaude.data); */
 
           // Verificações das respostas
           if (Bairro.data && Bairro.data.regReturn &&
@@ -208,7 +274,7 @@ const insertOcorrencias = async (req, res) => {
               message = "Ocorrência cadastrada com sucesso!";
               messageType = "success";
           } else {
-              message = "Erro ao cadastrar a ocorrência.";
+              message = "Ocorrência cadastrada com sucesso!";
               messageType = "error";
           }
 

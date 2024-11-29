@@ -181,18 +181,20 @@
 });
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const message = "<%= message %>";
-        const messageType = "<%= messageType %>";
-        
+        const message = "@model.message";
+        const messageType = "@model.messageType";
+
         if (message) {
             if (messageType === "success") {
                 alert(message);
             } else if (messageType === "error") {
-                alert("Erro: " + message);
+                alert(message);
             }
         }
     });
+</script>
 
+<script>
     async function alteraRegistro() {
           
         const resp = await axios.post("/Ocorrencias/viewOcorrencias", {
