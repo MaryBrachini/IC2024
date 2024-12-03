@@ -22,7 +22,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nome do Logradouro</th>
-                                    <th>Cidade</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -30,7 +29,6 @@
                                     <tr>
                                         <td>@registro.Logradouroid</td>
                                         <td>@registro.Nomelogradouro</td>
-                                        <td>@registro.CidadeIDFK</td>
                                     </tr>
                                 })                            
                             </tbody>
